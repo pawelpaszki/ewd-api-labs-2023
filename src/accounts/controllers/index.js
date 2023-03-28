@@ -27,16 +27,16 @@ export default (dependencies) => {
   const updateAccount = async (request, response, next) => {
     // Input
     const id = request.params.id;
+    const { firstName, lastName, email, password } = request.body;
     // Treatment
     const account = await accountService.getAccount(id, dependencies);
     if (account !== undefined) {
-      const persistedAccount = await accountService.updateAccount(account, dependencies);
+      const persistedAccount = await accountService.updateAccount(account.id, firstName, lastName, email, password, dependencies);
       response.status(200).json(persistedAccount);
     } else {
       response.status(404);
     }
   };
-
 
   return {
     createAccount,
