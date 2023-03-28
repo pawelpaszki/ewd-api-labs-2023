@@ -14,6 +14,8 @@ const createRouter = (dependencies) => {
   router.route('/:id')
     .get(accountsController.getAccount);
 
+  router.route('/:id').put(accountsController.updateAccount);
+
   return router;
 };
 export default createRouter;

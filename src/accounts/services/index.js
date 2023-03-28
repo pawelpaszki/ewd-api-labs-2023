@@ -13,5 +13,9 @@ export default {
   },
   findByEmail: (email, { accountsRepository }) => {
     return accountsRepository.getByEmail(email);
+  },
+  updateAccount: (id, firstName, lastName, email, password, { accountsRepository }) => {
+    const account = new Account(id, firstName, lastName, email, password);
+    return accountsRepository.merge(account);
   }
 };

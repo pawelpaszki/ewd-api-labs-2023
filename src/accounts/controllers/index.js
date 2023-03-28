@@ -24,11 +24,24 @@ export default (dependencies) => {
     //output
     response.status(200).json(accounts);
   };
+  const updateAccount = async (request, response, next) => {
+    // Input
+    const id = request.params.id;
+    // Treatment
+    const account = await accountService.getAccount(id, dependencies);
+    if (account !== undefined) {
+      const persistedAccount = await accountService.updateAccount(account, dependencies);
+      response.status(200).json(persistedAccount);
+    } else {
+      response.status(404);
+    }
+  };
 
 
   return {
     createAccount,
     getAccount,
-    listAccounts
+    listAccounts,
+    updateAccount
   };
 };
