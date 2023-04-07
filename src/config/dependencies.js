@@ -1,4 +1,5 @@
-import AccountsRepositoryInMemory from '../accounts/repositories/InMemoryRepository'
+import AccountsRepositoryInMemory from '../accounts/repositories/InMemoryRepository';
+import AccountsRepositoryMongo from '../accounts/repositories/MongoAccountRepository';
 
 const buildDependencies = () => {
   const dependencies = {
@@ -7,7 +8,7 @@ const buildDependencies = () => {
   if (process.env.DATABASE_DIALECT === "in-memory") {
     dependencies.accountsRepository = new AccountsRepositoryInMemory();
   } else if (process.env.DATABASE_DIALECT === "mongo") {
-    throw new Error('Add Mongo Support');
+    dependencies.accountsRepository = new AccountsRepositoryMongo();
   } else if (process.env.DATABASE_DIALECT === "mysql") {
     throw new Error('Add MySQL support');
   } else {
