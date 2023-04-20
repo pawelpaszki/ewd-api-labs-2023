@@ -1,5 +1,3 @@
-// import Genre from "../entities/Genre";
-
 export default {
   find: ({ genresRepository }) => {
     return genresRepository.find();

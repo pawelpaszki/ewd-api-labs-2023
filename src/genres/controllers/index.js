@@ -20,7 +20,6 @@ export default (dependencies) => {
     //output
     response.status(200).json(genres);
   };
-  
 
   return {
     getGenre,

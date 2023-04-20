@@ -28,4 +28,12 @@ export default class extends GenreRepository {
       return new Genre(result.id, result.tmdbID, result.name);
     });
   }
+
+  async persist(genreEntity) {
+    const { tmdbID, name } = genreEntity;
+    const result = new this.model({ tmdbID, name });
+    await result.save();
+    genreEntity.id = result.id;
+    return genreEntity;
+  }
 }

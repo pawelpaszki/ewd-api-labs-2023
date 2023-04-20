@@ -27,7 +27,6 @@ export default class extends AccountRepository {
   async merge(accountEntity) {
     const { id, firstName, lastName, email, password, favourites } = accountEntity;
     await this.model.findByIdAndUpdate(id, { firstName, lastName, email, password, favourites });
-    console.log({ id, firstName, lastName, email, password, favourites });
     return accountEntity;
   }
 
