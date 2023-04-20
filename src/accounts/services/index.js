@@ -39,5 +39,13 @@ export default {
       account.favourites.push(movieId);
     }
     return await accountsRepository.merge(account);
+  },
+  verifyToken: async (token, { accountsRepository, tokenManager }) => {
+    const decoded = await tokenManager.decode(token);
+    const user = await accountsRepository.getByEmail(decoded.email);
+    if (!user) {
+      throw new Error('Bad token');
+    }
+    return user.email;
   }
 };
