@@ -12,7 +12,7 @@ export default (dependencies) => {
   };
   const find = async (request, response, next) => {
     //input
-    const query = request.query;
+    const query = request.url.substr(request.url.indexOf('?')+1);
     // Treatment
     const movies = await moviesService.find(query, dependencies);
     //output
