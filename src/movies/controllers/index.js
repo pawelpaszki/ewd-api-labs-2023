@@ -19,6 +19,16 @@ export default (dependencies) => {
     response.status(200).json(movies);
   };
 
+  const findSimilar = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    const query = request.url.substr(request.url.indexOf('?')+1);
+    // Treatment
+    const movies = await moviesService.findSimilar(movieId, query, dependencies);
+    //output
+    response.status(200).json(movies);
+  };
+
   const getUpcomingMovies = async (request, response, next) => {
     //input
     const query = request.query;
@@ -31,6 +41,7 @@ export default (dependencies) => {
   return {
     getMovie,
     find,
-    getUpcomingMovies
+    getUpcomingMovies,
+    findSimilar
   };
 };

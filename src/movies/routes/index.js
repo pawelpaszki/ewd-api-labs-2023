@@ -17,6 +17,9 @@ const createMoviesRouter = (dependencies) => {
   router.route('/')
     .get(moviesController.find);
 
+  router.route('/:id/similar')
+    .get(moviesController.findSimilar);
+
   router.route('/upcoming')
     .get(moviesController.getUpcomingMovies);
 
