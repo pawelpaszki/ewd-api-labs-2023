@@ -30,6 +30,15 @@ const createRouter = (dependencies) => {
 
   router.route('/:id/favourite_movies/:movie_id')
     .delete(accountsController.deleteFavouriteMovie);
+  
+  router.route('/:id/favourite_tv')
+    .post(accountsController.addFavouriteTv);
+    
+  router.route('/:id/favourite_tv')
+    .get(accountsController.getFavouriteTv);
+
+  router.route('/:id/favourite_tv/:movie_id')
+    .delete(accountsController.deleteFavouriteTv);
 
   return router;
 };

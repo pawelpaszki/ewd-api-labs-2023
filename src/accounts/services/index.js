@@ -40,12 +40,36 @@ export default {
     }
     return await accountsRepository.merge(account);
   },
+  // TODO - simplify and externalize
   deleteFavouriteMovie: async (accountId, movieId, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
     if (account.favouriteMovies.includes(movieId)) {
       for (var i = account.favouriteMovies.length; i--;) {
         if (account.favouriteMovies[i].toString() === movieId) {
           account.favouriteMovies.splice(i, 1);
+        }
+      }
+    }
+    return await accountsRepository.merge(account);
+  },
+  getFavouriteTv: async (accountId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    return account.favouriteTvSeries;
+  },
+  addFavouriteTv: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (!account.favouriteTvSeries.includes(movieId)) {
+      account.favouriteTvSeries.push(movieId);
+    }
+    return await accountsRepository.merge(account);
+  },
+  // TODO - simplify and externalize
+  deleteFavouriteTv: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account.favouriteTvSeries.includes(movieId)) {
+      for (var i = account.favouriteTvSeries.length; i--;) {
+        if (account.favouriteTvSeries[i].toString() === movieId) {
+          account.favouriteTvSeries.splice(i, 1);
         }
       }
     }
