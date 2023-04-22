@@ -6,6 +6,7 @@ import createGenresRouter from './src/genres/routes';
 import createTvSeriesRouter from './src/tvSeries/routes';
 import buildDependencies from './src/config/dependencies';
 import createMoviesRouter from './src/movies/routes';
+import createActorsRouter from './src/actors/routes';
 import db from './src/config/db';
 import errorHandler from './src/utils/ErrorHandler';
 import { genres } from "./src//genres/genresData";
@@ -30,6 +31,8 @@ app.use('/api/genres', createGenresRouter(dependencies));
 app.use('/api/accounts', createAccountsRouter(dependencies));
 
 app.use('/api/tv', createTvSeriesRouter(dependencies));
+
+app.use('/api/actors', createActorsRouter(dependencies));
 
 app.use(errorHandler);
 
