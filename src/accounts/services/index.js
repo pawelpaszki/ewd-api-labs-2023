@@ -29,14 +29,25 @@ export default {
     const account = new Account(id, firstName, lastName, email, password);
     return accountsRepository.merge(account);
   },
-  getFavourites: async (accountId, { accountsRepository }) => {
+  getFavouriteMovies: async (accountId, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    return account.favourites;
+    return account.favouriteMovies;
   },
-  addFavourite: async (accountId, movieId, { accountsRepository }) => {
+  addFavouriteMovie: async (accountId, movieId, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    if (!account.favourites.includes(movieId)) {
-      account.favourites.push(movieId);
+    if (!account.favouriteMovies.includes(movieId)) {
+      account.favouriteMovies.push(movieId);
+    }
+    return await accountsRepository.merge(account);
+  },
+  deleteFavouriteMovie: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account.favouriteMovies.includes(movieId)) {
+      for (var i = account.favouriteMovies.length; i--;) {
+        if (account.favouriteMovies[i].toString() === movieId) {
+          account.favouriteMovies.splice(i, 1);
+        }
+      }
     }
     return await accountsRepository.merge(account);
   },

@@ -47,21 +47,31 @@ export default (dependencies) => {
       response.status(404);
     }
   };
-  const addFavourite = async (request, response, next) => {
+  const addFavouriteMovie = async (request, response, next) => {
     try {
       const { movieId } = request.body;
       const id = request.params.id;
-      const account = await accountService.addFavourite(id, movieId, dependencies);
+      const account = await accountService.addFavouriteMovie(id, movieId, dependencies);
       response.status(200).json(account);
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
-  const getFavourites = async (request, response, next) => {
+  const getFavouriteMovies = async (request, response, next) => {
     try {
       const id = request.params.id;
-      const favourites = await accountService.getFavourites(id, dependencies);
-      response.status(200).json(favourites);
+      const favouriteMovies = await accountService.getFavouriteMovies(id, dependencies);
+      response.status(200).json(favouriteMovies);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
+  const deleteFavouriteMovie = async (request, response, next) => {
+    try {
+      const movieId = request.params.movie_id;
+      const id = request.params.id;
+      const account = await accountService.deleteFavouriteMovie(id, movieId, dependencies);
+      response.status(200).json(account);
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
@@ -90,8 +100,9 @@ export default (dependencies) => {
     getAccount,
     listAccounts,
     updateAccount,
-    addFavourite,
-    getFavourites,
+    addFavouriteMovie,
+    getFavouriteMovies,
+    deleteFavouriteMovie,
     verify
   };
 };

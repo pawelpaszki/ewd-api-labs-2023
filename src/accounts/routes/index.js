@@ -22,11 +22,14 @@ const createRouter = (dependencies) => {
   router.route('/security/token')
     .post(accountsController.authenticateAccount);
 
-  router.route('/:id/favourites')
-    .post(accountsController.addFavourite);
+  router.route('/:id/favourite_movies')
+    .post(accountsController.addFavouriteMovie);
     
-  router.route('/:id/favourites')
-    .get(accountsController.getFavourites);
+  router.route('/:id/favourite_movies')
+    .get(accountsController.getFavouriteMovies);
+
+  router.route('/:id/favourite_movies/:movie_id')
+    .delete(accountsController.deleteFavouriteMovie);
 
   return router;
 };

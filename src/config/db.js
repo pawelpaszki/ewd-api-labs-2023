@@ -19,7 +19,7 @@ export default {
       });
       connection.once('open', async () => {
         console.log(`database connected to ${connection.name} on ${connection.host}`);
-        //delete the existing  collections if in development mode
+        // delete the existing  collections if in development mode
         if (process.env.NODE_ENV == "development") {
 
           // Get all collections
