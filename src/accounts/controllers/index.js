@@ -50,6 +50,7 @@ export default (dependencies) => {
   const addFavouriteMovie = async (request, response, next) => {
     try {
       const { movieId } = request.body;
+      console.log(movieId);
       const id = request.params.id;
       const account = await accountService.addFavouriteMovie(id, movieId, dependencies);
       response.status(200).json(account);

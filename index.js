@@ -3,6 +3,7 @@ import express from 'express';
 // import createGenresRouter from './src/genres';
 import createAccountsRouter from './src/accounts/routes';
 import createGenresRouter from './src/genres/routes';
+import createTvSeriesRouter from './src/tvSeries/routes';
 import buildDependencies from './src/config/dependencies';
 import createMoviesRouter from './src/movies/routes';
 import db from './src/config/db';
@@ -27,6 +28,8 @@ app.use('/api/movies', createMoviesRouter(dependencies));
 app.use('/api/genres', createGenresRouter(dependencies));
 
 app.use('/api/accounts', createAccountsRouter(dependencies));
+
+app.use('/api/tv', createTvSeriesRouter(dependencies));
 
 app.use(errorHandler);
 
