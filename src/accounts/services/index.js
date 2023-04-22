@@ -8,7 +8,7 @@ export default {
       throw new Error('Bad credentials');
     }
     const token = tokenManager.generate({ email: account.email });
-    return token;
+    return { token: token, accountId: account.id };
   },
   registerAccount: async (firstName, lastName, email, password, { accountsRepository, authenticator }) => {
     password = await authenticator.encrypt(password);
