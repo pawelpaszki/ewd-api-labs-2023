@@ -11,6 +11,9 @@ const createMoviesRouter = (dependencies) => {
   router.route('/*')
     .all(accountsController.verify);
 
+  router.route('/upcoming')
+    .get(moviesController.getUpcomingMovies);
+
   router.route('/:id')
     .get(moviesController.getMovie);
 
@@ -19,9 +22,6 @@ const createMoviesRouter = (dependencies) => {
 
   router.route('/:id/similar')
     .get(moviesController.findSimilar);
-
-  router.route('/upcoming')
-    .get(moviesController.getUpcomingMovies);
 
   return router;
 };

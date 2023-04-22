@@ -31,7 +31,7 @@ export default (dependencies) => {
 
   const getUpcomingMovies = async (request, response, next) => {
     //input
-    const query = request.query;
+    const query = request.url.substr(request.url.indexOf('?')+1);
     // Treatment
     const movies = await moviesService.findUpcoming(query, dependencies);
     //output
