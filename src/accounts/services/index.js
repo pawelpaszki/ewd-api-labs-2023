@@ -75,6 +75,29 @@ export default {
     }
     return await accountsRepository.merge(account);
   },
+  getFavouriteActor: async (accountId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    return account.favouriteActors;
+  },
+  addFavouriteActor: async (accountId, actorId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (!account.favouriteActors.includes(actorId)) {
+      account.favouriteActors.push(actorId);
+    }
+    return await accountsRepository.merge(account);
+  },
+  // TODO - simplify and externalize
+  deleteFavouriteActor: async (accountId, actorId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account.favouriteActors.includes(actorId)) {
+      for (var i = account.favouriteActors.length; i--;) {
+        if (account.favouriteActors[i].toString() === actorId) {
+          account.favouriteActors.splice(i, 1);
+        }
+      }
+    }
+    return await accountsRepository.merge(account);
+  },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);

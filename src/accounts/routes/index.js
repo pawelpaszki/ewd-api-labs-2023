@@ -40,6 +40,15 @@ const createRouter = (dependencies) => {
   router.route('/:id/favourite_tv/:movie_id')
     .delete(accountsController.deleteFavouriteTv);
 
+  router.route('/:id/favourite_actors')
+    .post(accountsController.addFavouriteActor);
+    
+  router.route('/:id/favourite_actors')
+    .get(accountsController.getFavouriteActors);
+
+  router.route('/:id/favourite_actors/:actor_id')
+    .delete(accountsController.deleteFavouriteActor);
+
   return router;
 };
 export default createRouter;

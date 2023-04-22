@@ -108,6 +108,37 @@ export default (dependencies) => {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
+  const addFavouriteActor = async (request, response, next) => {
+    try {
+      const { actorId } = request.body;
+      console.log(actorId);
+      const id = request.params.id;
+      const account = await accountService.addFavouriteActor(id, actorId, dependencies);
+      response.status(200).json(account);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
+  const getFavouriteActors = async (request, response, next) => {
+    try {
+      const id = request.params.id;
+      const favouriteTv = await accountService.getFavouriteActor(id, dependencies);
+      console.log(favouriteTv);
+      response.status(200).json(favouriteTv);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
+  const deleteFavouriteActor = async (request, response, next) => {
+    try {
+      const movieId = request.params.actor_id;
+      const id = request.params.id;
+      const account = await accountService.deleteFavouriteActor(id, movieId, dependencies);
+      response.status(200).json(account);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
   const verify = async (request, response, next) => {
     try {
       // Input
@@ -138,6 +169,9 @@ export default (dependencies) => {
     addFavouriteTv,
     getFavouriteTv,
     deleteFavouriteTv,
+    addFavouriteActor,
+    getFavouriteActors,
+    deleteFavouriteActor,
     verify
   };
 };
