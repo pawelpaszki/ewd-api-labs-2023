@@ -23,31 +23,31 @@ const createRouter = (dependencies) => {
     .post(accountsController.authenticateAccount);
 
   router.route('/:id/favourite_movies')
-    .post(accountsController.addFavouriteMovie);
+    .post(accountsController.addToFavouriteCollection);
     
   router.route('/:id/favourite_movies')
-    .get(accountsController.getFavouriteMovies);
+    .get(accountsController.getFavouriteCollection);
 
-  router.route('/:id/favourite_movies/:movie_id')
-    .delete(accountsController.deleteFavouriteMovie);
+  router.route('/:id/favourite_movies/:resource_id')
+    .delete(accountsController.deleteFromFavouriteCollection);
   
   router.route('/:id/favourite_tv')
-    .post(accountsController.addFavouriteTv);
+    .post(accountsController.addToFavouriteCollection);
     
   router.route('/:id/favourite_tv')
-    .get(accountsController.getFavouriteTv);
+    .get(accountsController.getFavouriteCollection);
 
-  router.route('/:id/favourite_tv/:movie_id')
-    .delete(accountsController.deleteFavouriteTv);
+  router.route('/:id/favourite_tv/:resource_id')
+    .delete(accountsController.deleteFromFavouriteCollection);
 
   router.route('/:id/favourite_actors')
-    .post(accountsController.addFavouriteActor);
+    .post(accountsController.addToFavouriteCollection);
     
   router.route('/:id/favourite_actors')
-    .get(accountsController.getFavouriteActors);
+    .get(accountsController.getFavouriteCollection);
 
-  router.route('/:id/favourite_actors/:actor_id')
-    .delete(accountsController.deleteFavouriteActor);
+  router.route('/:id/favourite_actors/:resource_id')
+    .delete(accountsController.deleteFromFavouriteCollection);
 
   return router;
 };

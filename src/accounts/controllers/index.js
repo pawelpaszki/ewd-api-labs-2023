@@ -47,94 +47,68 @@ export default (dependencies) => {
       response.status(404);
     }
   };
-  const addFavouriteMovie = async (request, response, next) => {
+  const addToFavouriteCollection = async (request, response, next) => {
+    console.log("got here");
     try {
-      const { movieId } = request.body;
-      console.log(movieId);
-      const id = request.params.id;
-      const account = await accountService.addFavouriteMovie(id, movieId, dependencies);
-      response.status(200).json(account);
+      const accountId = request.params.id;
+      const url = request.url.toString();
+      const { id } = request.body;
+      console.log(id);
+      console.log(url);
+      if (url.includes("movies")) {
+        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteMovies", dependencies);
+        console.log(account);
+        response.status(200).json(account);
+      } else if (url.includes("tv")) {
+        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteTvSeries", dependencies);
+        response.status(200).json(account);
+      } else if (url.includes("actors")) {
+        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteActors", dependencies);
+        response.status(200).json(account);
+      } else {
+        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+      }
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
-  const getFavouriteMovies = async (request, response, next) => {
+  const getFavouriteCollection = async (request, response, next) => {
     try {
-      const id = request.params.id;
-      const favouriteMovies = await accountService.getFavouriteMovies(id, dependencies);
-      response.status(200).json(favouriteMovies);
+      const url = request.url.toString();
+      const accountId = request.params.id;
+      if (url.includes("movies")) {
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteMovies", dependencies);
+        response.status(200).json(favouriteCollection);
+      } else if (url.includes("tv")) {
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteTvSeries", dependencies);
+        response.status(200).json(favouriteCollection);
+      } else if (url.includes("actors")) {
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteActors", dependencies);
+        response.status(200).json(favouriteCollection);
+      } else {
+        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+      }
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
-  const deleteFavouriteMovie = async (request, response, next) => {
+  const deleteFromFavouriteCollection = async (request, response, next) => {
     try {
-      const movieId = request.params.movie_id;
-      const id = request.params.id;
-      const account = await accountService.deleteFavouriteMovie(id, movieId, dependencies);
-      response.status(200).json(account);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const addFavouriteTv = async (request, response, next) => {
-    try {
-      const { movieId } = request.body;
-      console.log(movieId);
-      const id = request.params.id;
-      const account = await accountService.addFavouriteTv(id, movieId, dependencies);
-      response.status(200).json(account);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const getFavouriteTv = async (request, response, next) => {
-    try {
-      const id = request.params.id;
-      const favouriteTv = await accountService.getFavouriteTv(id, dependencies);
-      console.log(favouriteTv);
-      response.status(200).json(favouriteTv);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const deleteFavouriteTv = async (request, response, next) => {
-    try {
-      const movieId = request.params.movie_id;
-      const id = request.params.id;
-      const account = await accountService.deleteFavouriteTv(id, movieId, dependencies);
-      response.status(200).json(account);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const addFavouriteActor = async (request, response, next) => {
-    try {
-      const { actorId } = request.body;
-      console.log(actorId);
-      const id = request.params.id;
-      const account = await accountService.addFavouriteActor(id, actorId, dependencies);
-      response.status(200).json(account);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const getFavouriteActors = async (request, response, next) => {
-    try {
-      const id = request.params.id;
-      const favouriteTv = await accountService.getFavouriteActor(id, dependencies);
-      console.log(favouriteTv);
-      response.status(200).json(favouriteTv);
-    } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
-    }
-  };
-  const deleteFavouriteActor = async (request, response, next) => {
-    try {
-      const movieId = request.params.actor_id;
-      const id = request.params.id;
-      const account = await accountService.deleteFavouriteActor(id, movieId, dependencies);
-      response.status(200).json(account);
+      const url = request.url.toString();
+      const accountId = request.params.id;
+      const collectionResourceId = request.params.resource_id;
+      if (url.includes("movies")) {
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteMovies", dependencies);
+        response.status(200).json(account);
+      } else if (url.includes("tv")) {
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteTvSeries", dependencies);
+        response.status(200).json(account);
+      } else if (url.includes("actors")) {
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteActors", dependencies);
+        response.status(200).json(account);
+      } else {
+        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+      }
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
@@ -163,15 +137,9 @@ export default (dependencies) => {
     getAccount,
     listAccounts,
     updateAccount,
-    addFavouriteMovie,
-    getFavouriteMovies,
-    deleteFavouriteMovie,
-    addFavouriteTv,
-    getFavouriteTv,
-    deleteFavouriteTv,
-    addFavouriteActor,
-    getFavouriteActors,
-    deleteFavouriteActor,
+    addToFavouriteCollection,
+    getFavouriteCollection,
+    deleteFromFavouriteCollection,
     verify
   };
 };

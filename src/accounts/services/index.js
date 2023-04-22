@@ -29,70 +29,25 @@ export default {
     const account = new Account(id, firstName, lastName, email, password);
     return accountsRepository.merge(account);
   },
-  getFavouriteMovies: async (accountId, { accountsRepository }) => {
+  addToFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    return account.favouriteMovies;
-  },
-  addFavouriteMovie: async (accountId, movieId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    if (!account.favouriteMovies.includes(movieId)) {
-      account.favouriteMovies.push(movieId);
+    console.log(account[collectionName]);
+    console.log(collectionResourceId);
+    if (!account[collectionName].includes(collectionResourceId)) {
+      account[collectionName].push(collectionResourceId);
     }
     return await accountsRepository.merge(account);
   },
-  // TODO - simplify and externalize
-  deleteFavouriteMovie: async (accountId, movieId, { accountsRepository }) => {
+  getFavouriteCollection: async (accountId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    if (account.favouriteMovies.includes(movieId)) {
-      for (var i = account.favouriteMovies.length; i--;) {
-        if (account.favouriteMovies[i].toString() === movieId) {
-          account.favouriteMovies.splice(i, 1);
-        }
-      }
-    }
-    return await accountsRepository.merge(account);
+    return account[collectionName];
   },
-  getFavouriteTv: async (accountId, { accountsRepository }) => {
+  deleteFromFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    return account.favouriteTvSeries;
-  },
-  addFavouriteTv: async (accountId, movieId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    if (!account.favouriteTvSeries.includes(movieId)) {
-      account.favouriteTvSeries.push(movieId);
-    }
-    return await accountsRepository.merge(account);
-  },
-  // TODO - simplify and externalize
-  deleteFavouriteTv: async (accountId, movieId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    if (account.favouriteTvSeries.includes(movieId)) {
-      for (var i = account.favouriteTvSeries.length; i--;) {
-        if (account.favouriteTvSeries[i].toString() === movieId) {
-          account.favouriteTvSeries.splice(i, 1);
-        }
-      }
-    }
-    return await accountsRepository.merge(account);
-  },
-  getFavouriteActor: async (accountId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    return account.favouriteActors;
-  },
-  addFavouriteActor: async (accountId, actorId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    if (!account.favouriteActors.includes(actorId)) {
-      account.favouriteActors.push(actorId);
-    }
-    return await accountsRepository.merge(account);
-  },
-  // TODO - simplify and externalize
-  deleteFavouriteActor: async (accountId, actorId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    if (account.favouriteActors.includes(actorId)) {
-      for (var i = account.favouriteActors.length; i--;) {
-        if (account.favouriteActors[i].toString() === actorId) {
-          account.favouriteActors.splice(i, 1);
+    if (account[collectionName].includes(collectionResourceId)) {
+      for (var i = account[collectionName].length; i--;) {
+        if (account[collectionName][i].toString() === collectionResourceId) {
+          account[collectionName].splice(i, 1);
         }
       }
     }
