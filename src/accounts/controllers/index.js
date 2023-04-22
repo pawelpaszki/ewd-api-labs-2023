@@ -2,6 +2,10 @@ import accountService from "../services";
 
 export default (dependencies) => {
 
+  const favouriteMoviesCollection = "favouriteMovies";
+  const favouriteTvSeriesCollection = "favouriteTvSeries";
+  const favouriteActorsCollection = "favouriteActors";
+
   const authenticateAccount = async (request, response, next) => {
     try {
       const { email, password } = request.body;
@@ -56,14 +60,14 @@ export default (dependencies) => {
       console.log(id);
       console.log(url);
       if (url.includes("movies")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteMovies", dependencies);
+        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteMoviesCollection, dependencies);
         console.log(account);
         response.status(200).json(account);
       } else if (url.includes("tv")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteTvSeries", dependencies);
+        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteTvSeriesCollection, dependencies);
         response.status(200).json(account);
       } else if (url.includes("actors")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, "favouriteActors", dependencies);
+        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteActorsCollection, dependencies);
         response.status(200).json(account);
       } else {
         next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
@@ -77,13 +81,13 @@ export default (dependencies) => {
       const url = request.url.toString();
       const accountId = request.params.id;
       if (url.includes("movies")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteMovies", dependencies);
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteMoviesCollection, dependencies);
         response.status(200).json(favouriteCollection);
       } else if (url.includes("tv")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteTvSeries", dependencies);
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteTvSeriesCollection, dependencies);
         response.status(200).json(favouriteCollection);
       } else if (url.includes("actors")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, "favouriteActors", dependencies);
+        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteActorsCollection, dependencies);
         response.status(200).json(favouriteCollection);
       } else {
         next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
@@ -98,13 +102,13 @@ export default (dependencies) => {
       const accountId = request.params.id;
       const collectionResourceId = request.params.resource_id;
       if (url.includes("movies")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteMovies", dependencies);
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteMoviesCollection, dependencies);
         response.status(200).json(account);
       } else if (url.includes("tv")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteTvSeries", dependencies);
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteTvSeriesCollection, dependencies);
         response.status(200).json(account);
       } else if (url.includes("actors")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, "favouriteActors", dependencies);
+        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteActorsCollection, dependencies);
         response.status(200).json(account);
       } else {
         next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
