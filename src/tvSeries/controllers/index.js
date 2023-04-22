@@ -19,8 +19,19 @@ export default (dependencies) => {
     response.status(200).json(tvSeries);
   };
 
+  const findSimilar = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    const query = request.url.substr(request.url.indexOf('?')+1);
+    // Treatment
+    const movies = await tvSeriesService.findSimilar(movieId, query, dependencies);
+    //output
+    response.status(200).json(movies);
+  };
+
   return {
     getTvSeries,
     find,
+    findSimilar
   };
 };
