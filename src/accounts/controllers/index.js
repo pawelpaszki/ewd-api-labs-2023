@@ -16,6 +16,23 @@ export default (dependencies) => {
     }
   };
 
+  const verify = async (request, response, next) => {
+    try {
+      // Input
+      const authHeader = request.headers.authorization;
+
+      // Treatment
+
+      const accessToken = authHeader.split(" ")[1];
+      const user = await accountService.verifyToken(accessToken, dependencies);
+
+      //output
+      next();
+    } catch (err) {
+      //Token Verification Failed
+      next(new Error(`Verification Failed ${err.message}`));
+    }
+  };
   const createAccount = async (request, response, next) => {
     // Input
     const { firstName, lastName, email, password } = request.body;
@@ -117,23 +134,55 @@ export default (dependencies) => {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
-  const verify = async (request, response, next) => {
-    try {
-      // Input
-      const authHeader = request.headers.authorization;
+  // TODO - update
 
-      // Treatment
-
-      const accessToken = authHeader.split(" ")[1];
-      const user = await accountService.verifyToken(accessToken, dependencies);
-
-      //output
-      next();
-    } catch (err) {
-      //Token Verification Failed
-      next(new Error(`Verification Failed ${err.message}`));
-    }
+  const addToFantasyMovies = async (request, response, next) => {
+    // Input
+    const accountId = request.params.id;
+    const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
+    // Treatment
+    const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
+    //output
+    response.status(201).json(account)
   };
+  // TODO - update
+  const getFantasyMovies = async (request, response, next) => {
+    // Input
+    const { firstName, lastName, email, password } = request.body;
+    // Treatment
+    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    //output
+    response.status(201).json(account)
+  };
+  // TODO - update
+  const getFantasyMovie = async (request, response, next) => {
+    // Input
+    const { firstName, lastName, email, password } = request.body;
+    // Treatment
+    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    //output
+    response.status(201).json(account)
+  };
+  // TODO - update
+  const deleteFromFantasyMovies = async (request, response, next) => {
+    // Input
+    const { firstName, lastName, email, password } = request.body;
+    // Treatment
+    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    //output
+    response.status(201).json(account)
+  };
+//   router.route('/:id/fantasy_movies')
+//   .post(accountsController.addToFantasyMovies);
+  
+// router.route('/:id/fantasy_movies')
+//   .get(accountsController.getFantasyMovies);
+
+// router.route('/:id/fantasy_movies/:movie_id')
+//   .get(accountsController.getFantasyMovie);
+
+// router.route('/:id/fantasy_movies/:movie_id')
+//   .delete(accountsController.deleteFromFantasyMovies);
 
   return {
     authenticateAccount,
@@ -144,6 +193,10 @@ export default (dependencies) => {
     addToFavouriteCollection,
     getFavouriteCollection,
     deleteFromFavouriteCollection,
+    addToFantasyMovies,
+    getFantasyMovies,
+    getFantasyMovie,
+    deleteFromFantasyMovies,
     verify
   };
 };

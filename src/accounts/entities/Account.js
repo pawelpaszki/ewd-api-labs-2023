@@ -7,7 +7,8 @@ export default class {
     password,
     favouriteMovies = [],
     favouriteTvSeries = [],
-    favouriteActors = []) {
+    favouriteActors = [],
+    fantasyMovies = []) {
       this.id = id;
       this.firstName = firstName;
       this.lastName = lastName;
@@ -16,5 +17,6 @@ export default class {
       this.favouriteMovies = favouriteMovies;
       this.favouriteTvSeries = favouriteTvSeries;
       this.favouriteActors = favouriteActors;
+      this.fantasyMovies = fantasyMovies;
   }
 }

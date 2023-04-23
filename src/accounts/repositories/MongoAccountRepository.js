@@ -6,6 +6,22 @@ export default class extends AccountRepository {
 
   constructor() {
     super();
+    const fantasyMovieCastSchema = new mongoose.Schema({
+      name: String,
+      roleName: String,
+      description: String,
+      // avatar
+    });
+    const fantasyMovieSchema = new mongoose.Schema({
+      title: String,
+      overview: String,
+      runtime: Number,
+      // moviePoster
+      productionCompanies: [String],
+      genres: [String],
+      releaseDate: String,
+      cast: [fantasyMovieCastSchema]
+    });
     const accountsSchema = new mongoose.Schema({
       firstName: String,
       lastName: String,
@@ -14,6 +30,7 @@ export default class extends AccountRepository {
       favouriteMovies: [Number],
       favouriteTvSeries: [Number],
       favouriteActors: [Number],
+      fantasyMovies: [fantasyMovieSchema]
     });
     this.model = mongoose.model('Account', accountsSchema);
   }
@@ -27,8 +44,8 @@ export default class extends AccountRepository {
   }
 
   async merge(accountEntity) {
-    const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors } = accountEntity;
-    await this.model.findByIdAndUpdate(id, { firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors });
+    const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies } = accountEntity;
+    await this.model.findByIdAndUpdate(id, { firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies });
     return accountEntity;
   }
 
@@ -38,19 +55,19 @@ export default class extends AccountRepository {
 
   async get(userId) {
     const result = await this.model.findById(userId);
-    const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors } = result;
-    return new Account(id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors);
+    const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies } = result;
+    return new Account(id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies);
   }
 
   async getByEmail(userEmail) {
     const result = await this.model.findOne({ email: userEmail });
-    return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favouriteMovies, result.favouriteTvSeries, result.favouriteActors);
+    return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favouriteMovies, result.favouriteTvSeries, result.favouriteActors, result.fantasyMovies);
   }
 
   async find() {
     const accounts = await this.model.find();
     return accounts.map((result) => {
-      return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favouriteMovies, result.favouriteTvSeries, result.favouriteActors);
+      return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favouriteMovies, result.favouriteTvSeries, result.favouriteActors, result.fantasyMovies);
     });
   }
 }

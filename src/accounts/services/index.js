@@ -53,6 +53,18 @@ export default {
     }
     return await accountsRepository.merge(account);
   },
+  addToFantasyMovies: async (accountId, title, overview, runtime, productionCompanies, genres, releaseDate, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    account.fantasyMovies.push({
+      title: title,
+      overview: overview,
+      runtime: runtime,
+      productionCompanies: productionCompanies,
+      genres: genres,
+      releaseDate: releaseDate
+    })
+    return await accountsRepository.merge(account);
+  },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);

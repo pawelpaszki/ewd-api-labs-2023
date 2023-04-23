@@ -49,6 +49,18 @@ const createRouter = (dependencies) => {
   router.route('/:id/favourite_actors/:resource_id')
     .delete(accountsController.deleteFromFavouriteCollection);
 
+  router.route('/:id/fantasy_movies')
+    .post(accountsController.addToFantasyMovies);
+    
+  router.route('/:id/fantasy_movies')
+    .get(accountsController.getFantasyMovies);
+  
+  router.route('/:id/fantasy_movies/:movie_id')
+    .get(accountsController.getFantasyMovie);
+  
+  router.route('/:id/fantasy_movies/:movie_id')
+    .delete(accountsController.deleteFromFantasyMovies);
+
   return router;
 };
 export default createRouter;
