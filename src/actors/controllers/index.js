@@ -27,9 +27,19 @@ export default (dependencies) => {
     response.status(200).json(actors);
   };
 
+  const getPersonImages = async (request, response, next) => {
+    //input
+    const personId = request.params.id;
+    // Treatment
+    const images = await actorsService.getPersonImages(personId, dependencies);
+    //output
+    response.status(200).json(images);
+  };
+
   return {
     getActor,
     find,
-    search
+    search,
+    getPersonImages
   };
 };

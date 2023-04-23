@@ -10,6 +10,9 @@ const createMoviesRouter = (dependencies) => {
 
   router.route('/*')
     .all(accountsController.verify);
+    
+  router.route('/:id/images')
+    .get(moviesController.getMovieImages);
 
   router.route('/upcoming')
     .get(moviesController.getUpcomingMovies);

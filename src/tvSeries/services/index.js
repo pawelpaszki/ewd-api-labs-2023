@@ -19,5 +19,10 @@ export default {
     );
     return response.data;
   },
-
+  getMovieImages: async (movieId) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/tv/${movieId}/images?api_key=${process.env.TMDB_KEY}`
+    );
+    return response.data;
+  },
 };

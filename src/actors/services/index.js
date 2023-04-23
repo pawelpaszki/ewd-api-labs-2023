@@ -19,5 +19,10 @@ export default {
     );
     return response.data;
   },
-
+  getPersonImages: async (personId) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/person/${personId}/images?api_key=${process.env.TMDB_KEY}`
+    );
+    return response.data;
+  },
 };

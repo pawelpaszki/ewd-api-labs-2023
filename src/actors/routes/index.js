@@ -17,6 +17,9 @@ const createActorsRouter = (dependencies) => {
   router.route('/search')
     .get(actorsController.search);
 
+  router.route('/:id/images')
+    .get(actorsController.getPersonImages);
+
   router.route('/:id')
     .get(actorsController.getActor);
 

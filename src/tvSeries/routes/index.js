@@ -17,6 +17,9 @@ const createTvSeriesRouter = (dependencies) => {
   router.route('/:id/similar')
     .get(tvSeriesController.findSimilar);
 
+  router.route('/:id/images')
+    .get(tvSeriesController.getMovieImages);
+
   router.route('/')
     .get(tvSeriesController.find);
 

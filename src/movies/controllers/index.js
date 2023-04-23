@@ -38,10 +38,21 @@ export default (dependencies) => {
     response.status(200).json(movies);
   };
 
+  const getMovieImages = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    console.log(movieId);
+    // Treatment
+    const images = await moviesService.getMovieImages(movieId, dependencies);
+    //output
+    response.status(200).json(images);
+  };
+
   return {
     getMovie,
     find,
     getUpcomingMovies,
-    findSimilar
+    findSimilar,
+    getMovieImages
   };
 };
