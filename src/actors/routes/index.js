@@ -11,11 +11,14 @@ const createActorsRouter = (dependencies) => {
   router.route('/*')
     .all(accountsController.verify);
 
-  router.route('/:id')
-    .get(actorsController.getActor);
-
   router.route('/')
     .get(actorsController.find);
+
+  router.route('/search')
+    .get(actorsController.search);
+
+  router.route('/:id')
+    .get(actorsController.getActor);
 
   return router;
 };

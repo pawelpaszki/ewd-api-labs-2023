@@ -18,9 +18,18 @@ export default (dependencies) => {
     //output
     response.status(200).json(actors);
   };
+  const search = async (request, response, next) => {
+    //input
+    const query = request.url.substr(request.url.indexOf('?')+1);
+    // Treatment
+    const actors = await actorsService.search(query, dependencies);
+    //output
+    response.status(200).json(actors);
+  };
 
   return {
     getActor,
-    find
+    find,
+    search
   };
 };
