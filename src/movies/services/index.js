@@ -31,4 +31,10 @@ export default {
     );
     return response.data;
   },
+  getMovieReviews: async(movieId) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${process.env.TMDB_KEY}`
+    );
+    return response.data;
+  },
 };
