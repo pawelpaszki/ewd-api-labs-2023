@@ -62,7 +62,7 @@ export default {
       productionCompanies: productionCompanies,
       genres: genres,
       releaseDate: releaseDate
-    })
+    });
     return await accountsRepository.merge(account);
   },
   getFantasyMovies: async (accountId, { accountsRepository }) => {
@@ -86,6 +86,20 @@ export default {
     for (var i = account.fantasyMovies.length; i--;) {
       if (account.fantasyMovies[i]._id.toString() === movieId) {
         account.fantasyMovies.splice(i, 1);
+        break;
+      }
+    }
+    return await accountsRepository.merge(account);
+  },
+  addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    for (var i = account.fantasyMovies.length - 1; i >= 0; i--) {
+      if (account.fantasyMovies[i]._id.toString() === movieId) {
+        account.fantasyMovies[i].cast.push({
+          name: name,
+          roleName: roleName,
+          description: description
+        })
         break;
       }
     }

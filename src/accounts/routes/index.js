@@ -57,6 +57,9 @@ const createRouter = (dependencies) => {
   
   router.route('/:id/fantasy_movies/:movie_id')
     .get(accountsController.getFantasyMovie);
+
+  router.route('/:id/fantasy_movies/:movie_id/cast')
+    .post(accountsController.addToFantasyMoviesCast);
   
   router.route('/:id/fantasy_movies/:movie_id')
     .delete(accountsController.deleteFromFantasyMovies);

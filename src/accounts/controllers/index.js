@@ -159,7 +159,7 @@ export default (dependencies) => {
     const movie = await accountService.getFantasyMovie(accountId, movieId, dependencies);
     //output
     if (movie !== undefined) {
-      response.status(201).json(movie)
+      response.status(201).json(movie);
     } else {
       response.status(404).send('Not found');
     }
@@ -171,8 +171,19 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
     //output
-    response.status(201).json(account)
+    response.status(201).json(account);
   };
+
+  const addToFantasyMoviesCast = async (request, response, next) => {
+    // Input
+    const accountId = request.params.id;
+    const movieId = request.params.movie_id;
+    const { name, roleName, description } = request.body;
+    // Treatment
+    const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
+    //output
+    response.status(201).json(account);
+  }
 
   return {
     authenticateAccount,
@@ -187,6 +198,7 @@ export default (dependencies) => {
     getFantasyMovies,
     getFantasyMovie,
     deleteFromFantasyMovies,
+    addToFantasyMoviesCast,
     verify
   };
 };
