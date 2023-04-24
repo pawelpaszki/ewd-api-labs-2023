@@ -16,7 +16,7 @@ export default (dependencies) => {
       if (err.toString().includes("404")) {
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
-        response.status(500).json({ message: "Failed to get movie" });
+        response.status(500).json({ message: "failed to get movie" });
       }
     }
   };
@@ -29,7 +29,7 @@ export default (dependencies) => {
       //output
       response.status(200).json(movies);
     } catch (err) {
-      response.status(500).json({ message: "Failed to find movies" });
+      response.status(500).json({ message: "failed to find movies" });
     }
   };
 
@@ -44,7 +44,7 @@ export default (dependencies) => {
       //output
       response.status(200).json(movies);
     } catch (err) {
-      response.status(500).json({ message: `Failed to find movies similar to movie with id: '${movieId}` });
+      response.status(500).json({ message: `failed to find movies similar to movie with id: '${movieId}` });
     }
   };
 
@@ -57,7 +57,7 @@ export default (dependencies) => {
       //output
       response.status(200).json(movies);
     } catch (err) {
-      response.status(500).json({ message: `Failed to get upcoming movies` });
+      response.status(500).json({ message: `failed to get upcoming movies` });
     }
   };
 
@@ -74,7 +74,7 @@ export default (dependencies) => {
       if (err.toString().includes("404")) {
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
-        response.status(500).json({ message: "Failed to get movie images" });
+        response.status(500).json({ message: "failed to get movie images" });
       }
     }
   };
@@ -92,7 +92,7 @@ export default (dependencies) => {
       if (err.toString().includes("404")) {
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
-        response.status(500).json({ message: "Failed to get movie reviews" });
+        response.status(500).json({ message: "failed to get movie reviews" });
       }
     }
   };
