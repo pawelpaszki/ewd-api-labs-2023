@@ -52,91 +52,113 @@ export default (dependencies) => {
       await validateParams(request);
       // Treatment
       const account = await accountService.getAccount(accountId, dependencies);
-      //output
-      response.status(200).json(account);
+      if (account !== undefined) {
+        //output
+        response.status(200).json(account);
+      } else {
+        //output
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
     } catch (error) {
-
+      response.status(500).json({ message: "Failed to get an account" });
     }
   };
   const listAccounts = async (request, response, next) => {
-    // Treatment
-    const accounts = await accountService.find(dependencies);
-    //output
-    response.status(200).json(accounts);
+    try {
+      // Treatment
+      const accounts = await accountService.find(dependencies);
+      //output
+      response.status(200).json(accounts);
+    } catch (error) {
+      response.status(500).json({ message: "Failed to list accounts" });
+    }
   };
   const updateAccount = async (request, response, next) => {
-    // Input
-    const id = request.params.id;
-    await validateParams(request);
-    const { firstName, lastName, email, password } = request.body;
-    // Treatment
-    const account = await accountService.getAccount(id, dependencies);
-    if (account !== undefined) {
-      const persistedAccount = await accountService.updateAccount(account.id, firstName, lastName, email, password, dependencies);
-      response.status(200).json(persistedAccount);
-    } else {
-      response.status(404);
+    try {
+      // Input
+      const accountId = request.params.id;
+      await validateParams(request);
+      const { firstName, lastName, email, password } = request.body;
+      // Treatment
+      const account = await accountService.getAccount(id, dependencies);
+      if (account !== undefined) {
+        const persistedAccount = await accountService.updateAccount(account.id, firstName, lastName, email, password, dependencies);
+        response.status(200).json(persistedAccount);
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (error) {
+      response.status(500).json({ message: "Failed to update accounts" });
     }
   };
   const addToFavouriteCollection = async (request, response, next) => {
     try {
+      let account = undefined;
       const accountId = request.params.id;
       await validateParams(request);
       const url = request.url.toString();
       const { id } = request.body;
       if (url.includes("movies")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteMoviesCollection, dependencies);
-        response.status(200).json(account);
+        account = await accountService.addToFavouriteCollection(accountId, id, favouriteMoviesCollection, dependencies);
       } else if (url.includes("tv")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteTvSeriesCollection, dependencies);
-        response.status(200).json(account);
+        account = await accountService.addToFavouriteCollection(accountId, id, favouriteTvSeriesCollection, dependencies);
       } else if (url.includes("actors")) {
-        const account = await accountService.addToFavouriteCollection(accountId, id, favouriteActorsCollection, dependencies);
+        account = await accountService.addToFavouriteCollection(accountId, id, favouriteActorsCollection, dependencies);
+      } else {
+        throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
+      }
+      if (account !== undefined) {
         response.status(200).json(account);
       } else {
-        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
+      next(new Error(err));
     }
   };
   const getFavouriteCollection = async (request, response, next) => {
     try {
+      let favouriteCollection = undefined;
       const url = request.url.toString();
       const accountId = request.params.id;
       await validateParams(request);
       if (url.includes("movies")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteMoviesCollection, dependencies);
-        response.status(200).json(favouriteCollection);
+        favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteMoviesCollection, dependencies);
       } else if (url.includes("tv")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteTvSeriesCollection, dependencies);
-        response.status(200).json(favouriteCollection);
+        favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteTvSeriesCollection, dependencies);
       } else if (url.includes("actors")) {
-        const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteActorsCollection, dependencies);
+        favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteActorsCollection, dependencies);
+      } else {
+        throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
+      }
+      if (favouriteCollection !== undefined) {
         response.status(200).json(favouriteCollection);
       } else {
-        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
+      next(new Error(err));
     }
   };
   const deleteFromFavouriteCollection = async (request, response, next) => {
     try {
+      let account = undefined;
       const url = request.url.toString();
       const accountId = request.params.id;
       const collectionResourceId = request.params.resource_id;
       if (url.includes("movies")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteMoviesCollection, dependencies);
-        response.status(200).json(account);
+        account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteMoviesCollection, dependencies);
       } else if (url.includes("tv")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteTvSeriesCollection, dependencies);
-        response.status(200).json(account);
+        account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteTvSeriesCollection, dependencies);
       } else if (url.includes("actors")) {
-        const account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteActorsCollection, dependencies);
-        response.status(200).json(account);
+        account = await accountService.deleteFromFavouriteCollection(accountId, collectionResourceId, favouriteActorsCollection, dependencies);
       } else {
-        next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
+        throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
+      }
+      if (account !== undefined) {
+        response.status(200).json();
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       next(err);
@@ -150,7 +172,11 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
     //output
-    response.status(201).json(account);
+    if (account !== undefined) {
+      response.status(201).json(account);
+    } else {
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    }
   };
   const getFantasyMovies = async (request, response, next) => {
     // Input
@@ -159,7 +185,11 @@ export default (dependencies) => {
     // Treatment
     const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
     //output
-    response.status(201).json(fantasyMovies);
+    if (fantasyMovies !== undefined) {
+      response.status(200).json(fantasyMovies);
+    } else {
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    }
   };
   const getFantasyMovie = async (request, response, next) => {
     // Input
@@ -167,12 +197,16 @@ export default (dependencies) => {
     const accountId = request.params.id;
     await validateParams(request);
     // Treatment
-    const movie = await accountService.getFantasyMovie(accountId, movieId, dependencies);
+    const { account, movie } = await accountService.getFantasyMovie(accountId, movieId, dependencies);
     //output
-    if (movie !== undefined) {
-      response.status(201).json(movie);
+    if (account !== undefined) {
+      if (movie !== undefined) {
+        response.status(200).json(movie);
+      } else {
+        response.status(404).json({ message: `movie with id: ${movieId} not found` });
+      }
     } else {
-      response.status(404).send('Not found');
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
     }
   };
   const deleteFromFantasyMovies = async (request, response, next) => {
@@ -183,7 +217,11 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
     //output
-    response.status(201).json(account);
+    if (account !== undefined) {
+      response.status(200).json();
+    } else {
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    }
   };
 
   const addToFantasyMoviesCast = async (request, response, next) => {
@@ -195,7 +233,11 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
     //output
-    response.status(201).json(account);
+    if (account !== undefined) {
+      response.status(201).json(account);
+    } else {
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    }
   }
 
   const deleteFromFantasyMoviesCast = async (request, response, next) => {
@@ -207,7 +249,11 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
     //output
-    response.status(201).json(account);
+    if (account !== undefined) {
+      response.status(200).json();
+    } else {
+      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    }
   };
 
   return {

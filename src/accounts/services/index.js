@@ -31,91 +31,127 @@ export default {
   },
   addToFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    if (!account[collectionName].includes(collectionResourceId)) {
-      account[collectionName].push(collectionResourceId);
+    if (account !== undefined) {
+      if (!account[collectionName].includes(collectionResourceId)) {
+        account[collectionName].push(collectionResourceId);
+      }
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
     }
-    return await accountsRepository.merge(account);
   },
   getFavouriteCollection: async (accountId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    return account[collectionName];
+    if (account !== undefined) {
+      return account[collectionName];
+    } else {
+      return undefined;
+    }
   },
   deleteFromFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    if (account[collectionName].includes(collectionResourceId)) {
-      for (var i = account[collectionName].length; i--;) {
-        if (account[collectionName][i].toString() === collectionResourceId) {
-          account[collectionName].splice(i, 1);
-        }
-      }
-    }
-    return await accountsRepository.merge(account);
-  },
-  addToFantasyMovies: async (accountId, title, overview, runtime, productionCompanies, genres, releaseDate, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    account.fantasyMovies.push({
-      title: title,
-      overview: overview,
-      runtime: runtime,
-      productionCompanies: productionCompanies,
-      genres: genres,
-      releaseDate: releaseDate
-    });
-    return await accountsRepository.merge(account);
-  },
-  getFantasyMovies: async (accountId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    return account.fantasyMovies;
-  },
-  getFantasyMovie: async (accountId, movieId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    let m = undefined;
-    account.fantasyMovies.every(movie => {
-      if (movie._id.toString() === movieId) {
-        m = movie;
-        return false; // "break"
-      }
-      return true // must return true if doesn't break
-    });
-    return m;
-  },
-  deleteFromFantasyMovies: async (accountId, movieId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    for (var i = account.fantasyMovies.length; i--;) {
-      if (account.fantasyMovies[i]._id.toString() === movieId) {
-        account.fantasyMovies.splice(i, 1);
-        break;
-      }
-    }
-    return await accountsRepository.merge(account);
-  },
-  addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    for (var i = account.fantasyMovies.length - 1; i >= 0; i--) {
-      if (account.fantasyMovies[i]._id.toString() === movieId) {
-        account.fantasyMovies[i].cast.push({
-          name: name,
-          roleName: roleName,
-          description: description
-        })
-        break;
-      }
-    }
-    return await accountsRepository.merge(account);
-  },
-  deleteFromFantasyMoviesCast: async (accountId, movieId, castId, { accountsRepository }) => {
-    const account = await accountsRepository.get(accountId);
-    for (var i = account.fantasyMovies.length; i--;) {
-      if (account.fantasyMovies[i]._id.toString() === movieId) {
-        for (var j = account.fantasyMovies[i].cast.length; j--;) {
-          if (account.fantasyMovies[i].cast[j]._id.toString() === castId) {
-            account.fantasyMovies[i].cast.splice(j, 1);
-            break;
+    if (account !== undefined) {
+      if (account[collectionName].includes(collectionResourceId)) {
+        for (var i = account[collectionName].length; i--;) {
+          if (account[collectionName][i].toString() === collectionResourceId) {
+            account[collectionName].splice(i, 1);
           }
         }
       }
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
     }
-    return await accountsRepository.merge(account);
+  },
+  addToFantasyMovies: async (accountId, title, overview, runtime, productionCompanies, genres, releaseDate, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      account.fantasyMovies.push({
+        title: title,
+        overview: overview,
+        runtime: runtime,
+        productionCompanies: productionCompanies,
+        genres: genres,
+        releaseDate: releaseDate
+      });
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
+    }
+  },
+  getFantasyMovies: async (accountId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      return account.fantasyMovies;
+    } else {
+      return undefined;
+    }
+  },
+  getFantasyMovie: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      let m = undefined;
+      account.fantasyMovies.every(movie => {
+        if (movie._id.toString() === movieId) {
+          m = movie;
+          return false; // "break"
+        }
+        return true // must return true if doesn't break
+      });
+      return account, m;
+    } else {
+      return undefined, undefined;
+    }
+  },
+  deleteFromFantasyMovies: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      for (var i = account.fantasyMovies.length; i--;) {
+        if (account.fantasyMovies[i]._id.toString() === movieId) {
+          account.fantasyMovies.splice(i, 1);
+          break;
+        }
+      }
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
+    }
+  },
+  addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      for (var i = account.fantasyMovies.length - 1; i >= 0; i--) {
+        if (account.fantasyMovies[i]._id.toString() === movieId) {
+          account.fantasyMovies[i].cast.push({
+            name: name,
+            roleName: roleName,
+            description: description
+          })
+          break;
+        }
+      }
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
+    }
+  },
+  deleteFromFantasyMoviesCast: async (accountId, movieId, castId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      for (var i = account.fantasyMovies.length; i--;) {
+        if (account.fantasyMovies[i]._id.toString() === movieId) {
+          for (var j = account.fantasyMovies[i].cast.length; j--;) {
+            if (account.fantasyMovies[i].cast[j]._id.toString() === castId) {
+              account.fantasyMovies[i].cast.splice(j, 1);
+              break;
+            }
+          }
+        }
+      }
+      return await accountsRepository.merge(account);
+    } else {
+      return undefined;
+    }
   },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);

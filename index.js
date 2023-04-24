@@ -25,7 +25,6 @@ app.use(express.json());
 
 app.use('/api/movies', createMoviesRouter(dependencies));
 
-// app.use('/api/genres', genresRouter);
 app.use('/api/genres', createGenresRouter(dependencies));
 
 app.use('/api/accounts', createAccountsRouter(dependencies));

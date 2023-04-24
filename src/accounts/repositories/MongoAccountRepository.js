@@ -55,8 +55,12 @@ export default class extends AccountRepository {
 
   async get(userId) {
     const result = await this.model.findById(userId);
-    const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies } = result;
-    return new Account(id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies);
+    if (result !== null) {
+      const { id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies } = result;
+      return new Account(id, firstName, lastName, email, password, favouriteMovies, favouriteTvSeries, favouriteActors, fantasyMovies);
+    } else {
+      return undefined;
+    }
   }
 
   async getByEmail(userEmail) {
