@@ -134,8 +134,6 @@ export default (dependencies) => {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
-  // TODO - update
-
   const addToFantasyMovies = async (request, response, next) => {
     // Input
     const accountId = request.params.id;
@@ -143,16 +141,15 @@ export default (dependencies) => {
     // Treatment
     const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
     //output
-    response.status(201).json(account)
+    response.status(201).json(account);
   };
-  // TODO - update
   const getFantasyMovies = async (request, response, next) => {
     // Input
-    const { firstName, lastName, email, password } = request.body;
+    const accountId = request.params.id;
     // Treatment
-    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
     //output
-    response.status(201).json(account)
+    response.status(201).json(fantasyMovies);
   };
   // TODO - update
   const getFantasyMovie = async (request, response, next) => {
