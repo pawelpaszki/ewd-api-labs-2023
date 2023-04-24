@@ -35,6 +35,8 @@
     "joi": "^17.9.1",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
-    "uniqid": "^5.4.0"
+    "swagger-ui-express": "^4.6.2",
+    "uniqid": "^5.4.0",
+    "yamljs": "^0.3.0"
   }
 }

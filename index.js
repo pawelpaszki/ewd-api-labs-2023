@@ -10,6 +10,9 @@ import createActorsRouter from './src/actors/routes';
 import db from './src/config/db';
 import errorHandler from './src/utils/ErrorHandler';
 import { genres } from "./src//genres/genresData";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+const swaggerDocument = YAML.load('./swagger.yaml')
 
 dotenv.config();
 db.init();
@@ -32,6 +35,8 @@ app.use('/api/accounts', createAccountsRouter(dependencies));
 app.use('/api/tv', createTvSeriesRouter(dependencies));
 
 app.use('/api/actors', createActorsRouter(dependencies));
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
 
