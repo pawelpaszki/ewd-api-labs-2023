@@ -1,10 +1,12 @@
 import genreService from "../services";
+import { validateParams } from "../../utils/paramsValidator";
 
 export default (dependencies) => {
 
   const getGenre = async (request, response, next) => {
     //input
-    const id = request.params.id;
+    const id = request.params.genre_id;
+    validateParams(request);
     // Treatment
     const genre = await genreService.getGenre(id, dependencies);
     //output

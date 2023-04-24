@@ -1,4 +1,5 @@
 import accountService from "../services";
+import { validateParams } from "../../utils/paramsValidator";
 
 export default (dependencies) => {
 
@@ -22,7 +23,6 @@ export default (dependencies) => {
       const authHeader = request.headers.authorization;
 
       // Treatment
-
       const accessToken = authHeader.split(" ")[1];
       const user = await accountService.verifyToken(accessToken, dependencies);
 
@@ -30,24 +30,33 @@ export default (dependencies) => {
       next();
     } catch (err) {
       //Token Verification Failed
-      next(new Error(`Verification Failed ${err.message}`));
+      response.status(401).json({ message: "Failed to verify requester identity" });
     }
   };
   const createAccount = async (request, response, next) => {
-    // Input
-    const { firstName, lastName, email, password } = request.body;
-    // Treatment
-    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
-    //output
-    response.status(201).json(account)
+    try {
+      // Input
+      const { firstName, lastName, email, password } = request.body;
+      // Treatment
+      const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+      //output
+      response.status(201).json(account);
+    } catch (e) {
+      response.status(500).json({ message: "Failed to create account" });
+    }
   };
   const getAccount = async (request, response, next) => {
-    //input
-    const accountId = request.params.id;
-    // Treatment
-    const account = await accountService.getAccount(accountId, dependencies);
-    //output
-    response.status(200).json(account);
+    try {
+      //input
+      const accountId = request.params.id;
+      await validateParams(request);
+      // Treatment
+      const account = await accountService.getAccount(accountId, dependencies);
+      //output
+      response.status(200).json(account);
+    } catch (error) {
+
+    }
   };
   const listAccounts = async (request, response, next) => {
     // Treatment
@@ -58,6 +67,7 @@ export default (dependencies) => {
   const updateAccount = async (request, response, next) => {
     // Input
     const id = request.params.id;
+    await validateParams(request);
     const { firstName, lastName, email, password } = request.body;
     // Treatment
     const account = await accountService.getAccount(id, dependencies);
@@ -69,16 +79,13 @@ export default (dependencies) => {
     }
   };
   const addToFavouriteCollection = async (request, response, next) => {
-    console.log("got here");
     try {
       const accountId = request.params.id;
+      await validateParams(request);
       const url = request.url.toString();
       const { id } = request.body;
-      console.log(id);
-      console.log(url);
       if (url.includes("movies")) {
         const account = await accountService.addToFavouriteCollection(accountId, id, favouriteMoviesCollection, dependencies);
-        console.log(account);
         response.status(200).json(account);
       } else if (url.includes("tv")) {
         const account = await accountService.addToFavouriteCollection(accountId, id, favouriteTvSeriesCollection, dependencies);
@@ -97,6 +104,7 @@ export default (dependencies) => {
     try {
       const url = request.url.toString();
       const accountId = request.params.id;
+      await validateParams(request);
       if (url.includes("movies")) {
         const favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteMoviesCollection, dependencies);
         response.status(200).json(favouriteCollection);
@@ -131,12 +139,13 @@ export default (dependencies) => {
         next(new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`));
       }
     } catch (err) {
-      next(new Error(`Invalid Data ${err.message}`));
+      next(err);
     }
   };
   const addToFantasyMovies = async (request, response, next) => {
     // Input
     const accountId = request.params.id;
+    await validateParams(request);
     const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
     // Treatment
     const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
@@ -146,6 +155,7 @@ export default (dependencies) => {
   const getFantasyMovies = async (request, response, next) => {
     // Input
     const accountId = request.params.id;
+    await validateParams(request);
     // Treatment
     const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
     //output
@@ -155,6 +165,7 @@ export default (dependencies) => {
     // Input
     const movieId = request.params.movie_id;
     const accountId = request.params.id;
+    await validateParams(request);
     // Treatment
     const movie = await accountService.getFantasyMovie(accountId, movieId, dependencies);
     //output
@@ -168,6 +179,7 @@ export default (dependencies) => {
     // Input
     const accountId = request.params.id;
     const movieId = request.params.movie_id;
+    await validateParams(request);
     // Treatment
     const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
     //output
@@ -178,18 +190,20 @@ export default (dependencies) => {
     // Input
     const accountId = request.params.id;
     const movieId = request.params.movie_id;
+    await validateParams(request);
     const { name, roleName, description } = request.body;
     // Treatment
     const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
     //output
     response.status(201).json(account);
   }
-  
+
   const deleteFromFantasyMoviesCast = async (request, response, next) => {
     // Input
     const accountId = request.params.id;
     const movieId = request.params.movie_id;
     const castId = request.params.cast_id;
+    await validateParams(request);
     // Treatment
     const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
     //output

@@ -1,10 +1,12 @@
 import tvSeriesService from "./../services";
+import { validateParams } from "../../utils/paramsValidator";
 
 export default (dependencies) => {
 
   const getTvSeries = async (request, response, next) => {
     //input
-    const movieId = request.params.id;
+    const movieId = request.params.resource_id;
+    validateParams(request);
     // Treatment
     const tvSeries = await tvSeriesService.getTvSeries(movieId, dependencies);
     //output
@@ -21,7 +23,8 @@ export default (dependencies) => {
 
   const findSimilar = async (request, response, next) => {
     //input
-    const movieId = request.params.id;
+    const movieId = request.params.resource_id;
+    validateParams(request);
     const query = request.url.substr(request.url.indexOf('?')+1);
     // Treatment
     const movies = await tvSeriesService.findSimilar(movieId, query, dependencies);
@@ -31,8 +34,8 @@ export default (dependencies) => {
 
   const getMovieImages = async (request, response, next) => {
     //input
-    const movieId = request.params.id;
-    console.log(movieId);
+    const movieId = request.params.resource_id;
+    validateParams(request);
     // Treatment
     const images = await tvSeriesService.getMovieImages(movieId, dependencies);
     //output

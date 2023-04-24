@@ -9,7 +9,7 @@ const createRouter = (dependencies) => {
   router.route('/')
     .get(genresController.listGenres);
 
-  router.route('/:id')
+  router.route('/:genre_id')
     .get(genresController.getGenre);
 
   return router;

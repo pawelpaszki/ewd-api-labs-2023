@@ -31,8 +31,6 @@ export default {
   },
   addToFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
-    console.log(account[collectionName]);
-    console.log(collectionResourceId);
     if (!account[collectionName].includes(collectionResourceId)) {
       account[collectionName].push(collectionResourceId);
     }

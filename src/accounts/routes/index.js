@@ -7,6 +7,7 @@ const createRouter = (dependencies) => {
   const router = express.Router();
   // load controller with dependencies
   const accountsController = AccountsController(dependencies);
+
   router.route('/')
     .post(validationController.validateAccount, accountsController.createAccount);
 

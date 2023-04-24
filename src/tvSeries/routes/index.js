@@ -11,13 +11,13 @@ const createTvSeriesRouter = (dependencies) => {
   router.route('/*')
     .all(accountsController.verify);
 
-  router.route('/:id')
+  router.route('/:resource_id')
     .get(tvSeriesController.getTvSeries);
 
-  router.route('/:id/similar')
+  router.route('/:resource_id/similar')
     .get(tvSeriesController.findSimilar);
 
-  router.route('/:id/images')
+  router.route('/:resource_id/images')
     .get(tvSeriesController.getMovieImages);
 
   router.route('/')

@@ -11,22 +11,22 @@ const createMoviesRouter = (dependencies) => {
   router.route('/*')
     .all(accountsController.verify);
 
-  router.route('/:id/images')
+  router.route('/:resource_id/images')
     .get(moviesController.getMovieImages);
 
-  router.route('/:id/reviews')
+  router.route('/:resource_id/reviews')
     .get(moviesController.getMovieReviews);
 
   router.route('/upcoming')
     .get(moviesController.getUpcomingMovies);
 
-  router.route('/:id')
+  router.route('/:resource_id')
     .get(moviesController.getMovie);
 
   router.route('/')
     .get(moviesController.find);
 
-  router.route('/:id/similar')
+  router.route('/:resource_id/similar')
     .get(moviesController.findSimilar);
 
   return router;
