@@ -151,14 +151,18 @@ export default (dependencies) => {
     //output
     response.status(201).json(fantasyMovies);
   };
-  // TODO - update
   const getFantasyMovie = async (request, response, next) => {
     // Input
-    const { firstName, lastName, email, password } = request.body;
+    const movieId = request.params.movie_id;
+    const accountId = request.params.id;
     // Treatment
-    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    const movie = await accountService.getFantasyMovie(accountId, movieId, dependencies);
     //output
-    response.status(201).json(account)
+    if (movie !== undefined) {
+      response.status(201).json(movie)
+    } else {
+      response.status(404).send('Not found');
+    }
   };
   // TODO - update
   const deleteFromFantasyMovies = async (request, response, next) => {
@@ -169,17 +173,17 @@ export default (dependencies) => {
     //output
     response.status(201).json(account)
   };
-//   router.route('/:id/fantasy_movies')
-//   .post(accountsController.addToFantasyMovies);
-  
-// router.route('/:id/fantasy_movies')
-//   .get(accountsController.getFantasyMovies);
+  //   router.route('/:id/fantasy_movies')
+  //   .post(accountsController.addToFantasyMovies);
 
-// router.route('/:id/fantasy_movies/:movie_id')
-//   .get(accountsController.getFantasyMovie);
+  // router.route('/:id/fantasy_movies')
+  //   .get(accountsController.getFantasyMovies);
 
-// router.route('/:id/fantasy_movies/:movie_id')
-//   .delete(accountsController.deleteFromFantasyMovies);
+  // router.route('/:id/fantasy_movies/:movie_id')
+  //   .get(accountsController.getFantasyMovie);
+
+  // router.route('/:id/fantasy_movies/:movie_id')
+  //   .delete(accountsController.deleteFromFantasyMovies);
 
   return {
     authenticateAccount,

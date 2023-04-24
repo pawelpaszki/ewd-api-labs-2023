@@ -69,6 +69,18 @@ export default {
     const account = await accountsRepository.get(accountId);
     return account.fantasyMovies;
   },
+  getFantasyMovie: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    let m = undefined;
+    account.fantasyMovies.every(movie => {
+      if (movie._id.toString() === movieId) {
+        m = movie;
+        return false; // "break"
+      }
+      return true // must return true if doesn't break
+    });
+    return m;
+  },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);
