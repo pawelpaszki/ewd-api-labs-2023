@@ -164,26 +164,15 @@ export default (dependencies) => {
       response.status(404).send('Not found');
     }
   };
-  // TODO - update
   const deleteFromFantasyMovies = async (request, response, next) => {
     // Input
-    const { firstName, lastName, email, password } = request.body;
+    const accountId = request.params.id;
+    const movieId = request.params.movie_id;
     // Treatment
-    const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
+    const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
     //output
     response.status(201).json(account)
   };
-  //   router.route('/:id/fantasy_movies')
-  //   .post(accountsController.addToFantasyMovies);
-
-  // router.route('/:id/fantasy_movies')
-  //   .get(accountsController.getFantasyMovies);
-
-  // router.route('/:id/fantasy_movies/:movie_id')
-  //   .get(accountsController.getFantasyMovie);
-
-  // router.route('/:id/fantasy_movies/:movie_id')
-  //   .delete(accountsController.deleteFromFantasyMovies);
 
   return {
     authenticateAccount,

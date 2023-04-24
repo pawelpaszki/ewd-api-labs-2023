@@ -81,6 +81,16 @@ export default {
     });
     return m;
   },
+  deleteFromFantasyMovies: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    for (var i = account.fantasyMovies.length; i--;) {
+      if (account.fantasyMovies[i]._id.toString() === movieId) {
+        account.fantasyMovies.splice(i, 1);
+        break;
+      }
+    }
+    return await accountsRepository.merge(account);
+  },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);
