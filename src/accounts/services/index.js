@@ -105,6 +105,20 @@ export default {
     }
     return await accountsRepository.merge(account);
   },
+  deleteFromFantasyMoviesCast: async (accountId, movieId, castId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    for (var i = account.fantasyMovies.length; i--;) {
+      if (account.fantasyMovies[i]._id.toString() === movieId) {
+        for (var j = account.fantasyMovies[i].cast.length; j--;) {
+          if (account.fantasyMovies[i].cast[j]._id.toString() === castId) {
+            account.fantasyMovies[i].cast.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+    return await accountsRepository.merge(account);
+  },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);

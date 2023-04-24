@@ -184,6 +184,17 @@ export default (dependencies) => {
     //output
     response.status(201).json(account);
   }
+  
+  const deleteFromFantasyMoviesCast = async (request, response, next) => {
+    // Input
+    const accountId = request.params.id;
+    const movieId = request.params.movie_id;
+    const castId = request.params.cast_id;
+    // Treatment
+    const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
+    //output
+    response.status(201).json(account);
+  };
 
   return {
     authenticateAccount,
@@ -199,6 +210,7 @@ export default (dependencies) => {
     getFantasyMovie,
     deleteFromFantasyMovies,
     addToFantasyMoviesCast,
+    deleteFromFantasyMoviesCast,
     verify
   };
 };

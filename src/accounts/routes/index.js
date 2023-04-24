@@ -64,6 +64,9 @@ const createRouter = (dependencies) => {
   router.route('/:id/fantasy_movies/:movie_id')
     .delete(accountsController.deleteFromFantasyMovies);
 
+  router.route('/:id/fantasy_movies/:movie_id/cast/:cast_id')
+    .delete(accountsController.deleteFromFantasyMoviesCast);
+
   return router;
 };
 export default createRouter;
