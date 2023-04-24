@@ -113,7 +113,7 @@ export default (dependencies) => {
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
-      next(new Error(err));
+      response.status(500).json({ message: "Failed to add to favourite collection" });
     }
   };
   const getFavouriteCollection = async (request, response, next) => {
@@ -137,7 +137,7 @@ export default (dependencies) => {
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
-      next(new Error(err));
+      response.status(500).json({ message: "Failed to get favourite collection" });
     }
   };
   const deleteFromFavouriteCollection = async (request, response, next) => {
@@ -161,98 +161,122 @@ export default (dependencies) => {
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
-      next(err);
+      response.status(500).json({ message: "Failed to delete from favourite collection" });
     }
   };
   const addToFantasyMovies = async (request, response, next) => {
-    // Input
-    const accountId = request.params.id;
-    await validateParams(request);
-    const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
-    // Treatment
-    const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
-    //output
-    if (account !== undefined) {
-      response.status(201).json(account);
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    try {
+      // Input
+      const accountId = request.params.id;
+      await validateParams(request);
+      const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
+      // Treatment
+      const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
+      //output
+      if (account !== undefined) {
+        response.status(201).json(account);
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (err) {
+      response.status(500).json({ message: "Failed to add to fantasy movies" });
     }
   };
   const getFantasyMovies = async (request, response, next) => {
-    // Input
-    const accountId = request.params.id;
-    await validateParams(request);
-    // Treatment
-    const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
-    //output
-    if (fantasyMovies !== undefined) {
-      response.status(200).json(fantasyMovies);
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    try {
+      // Input
+      const accountId = request.params.id;
+      await validateParams(request);
+      // Treatment
+      const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
+      //output
+      if (fantasyMovies !== undefined) {
+        response.status(200).json(fantasyMovies);
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (err) {
+      response.status(500).json({ message: "Failed to get fantasy movies" });
     }
   };
   const getFantasyMovie = async (request, response, next) => {
-    // Input
-    const movieId = request.params.movie_id;
-    const accountId = request.params.id;
-    await validateParams(request);
-    // Treatment
-    const { account, movie } = await accountService.getFantasyMovie(accountId, movieId, dependencies);
-    //output
-    if (account !== undefined) {
-      if (movie !== undefined) {
-        response.status(200).json(movie);
+    try {
+      // Input
+      const movieId = request.params.movie_id;
+      const accountId = request.params.id;
+      await validateParams(request);
+      // Treatment
+      const { account, movie } = await accountService.getFantasyMovie(accountId, movieId, dependencies);
+      //output
+      if (account !== undefined) {
+        if (movie !== undefined) {
+          response.status(200).json(movie);
+        } else {
+          response.status(404).json({ message: `movie with id: ${movieId} not found` });
+        }
       } else {
-        response.status(404).json({ message: `movie with id: ${movieId} not found` });
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    } catch (err) {
+      response.status(500).json({ message: "Failed to get fantasy movie" });
     }
   };
   const deleteFromFantasyMovies = async (request, response, next) => {
-    // Input
-    const accountId = request.params.id;
-    const movieId = request.params.movie_id;
-    await validateParams(request);
-    // Treatment
-    const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
-    //output
-    if (account !== undefined) {
-      response.status(200).json();
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    try {
+      // Input
+      const accountId = request.params.id;
+      const movieId = request.params.movie_id;
+      await validateParams(request);
+      // Treatment
+      const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
+      //output
+      if (account !== undefined) {
+        response.status(200).json();
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (err) {
+      response.status(500).json({ message: "Failed to delete from fantasy movies" });
     }
   };
 
   const addToFantasyMoviesCast = async (request, response, next) => {
-    // Input
-    const accountId = request.params.id;
-    const movieId = request.params.movie_id;
-    await validateParams(request);
-    const { name, roleName, description } = request.body;
-    // Treatment
-    const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
-    //output
-    if (account !== undefined) {
-      response.status(201).json(account);
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    try {
+      // Input
+      const accountId = request.params.id;
+      const movieId = request.params.movie_id;
+      await validateParams(request);
+      const { name, roleName, description } = request.body;
+      // Treatment
+      const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
+      //output
+      if (account !== undefined) {
+        response.status(201).json(account);
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (err) {
+      response.status(500).json({ message: "Failed to add cast to fantasy movies" });
     }
   }
 
   const deleteFromFantasyMoviesCast = async (request, response, next) => {
-    // Input
-    const accountId = request.params.id;
-    const movieId = request.params.movie_id;
-    const castId = request.params.cast_id;
-    await validateParams(request);
-    // Treatment
-    const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
-    //output
-    if (account !== undefined) {
-      response.status(200).json();
-    } else {
-      response.status(404).json({ message: `account with id: ${accountId} not found` });
+    try {
+      // Input
+      const accountId = request.params.id;
+      const movieId = request.params.movie_id;
+      const castId = request.params.cast_id;
+      await validateParams(request);
+      // Treatment
+      const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
+      //output
+      if (account !== undefined) {
+        response.status(200).json();
+      } else {
+        response.status(404).json({ message: `account with id: ${accountId} not found` });
+      }
+    } catch (err) {
+      response.status(500).json({ message: "Failed to delete cast from fantasy movies" });
     }
   };
 
