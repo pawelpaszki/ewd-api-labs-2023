@@ -8,8 +8,8 @@ const createMoviesRouter = (dependencies) => {
   const moviesController = MoviesController(dependencies);
   const accountsController = AccountsController(dependencies);
 
-  // router.route('/*')
-  //   .all(accountsController.verify);
+  router.route('/*')
+    .all(accountsController.verify);
 
   router.route('/:resource_id/images')
     .get(moviesController.getMovieImages);

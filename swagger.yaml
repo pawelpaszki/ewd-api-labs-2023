@@ -73,7 +73,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountList'
               examples:
-                AccountCreationExample:
+                AccountExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when creating an account
@@ -107,7 +107,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                AccountCreationExample:
+                AccountExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when retrieving an account by ID
@@ -148,7 +148,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                AccountCreationExample:
+                AccountUpdateExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when retrieving an account by ID
@@ -249,7 +249,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to add to favourite movies
@@ -289,7 +289,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to get favourite movies
@@ -324,7 +324,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete from favourite movies
@@ -362,7 +362,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountPayload'
               examples:
-                AccountCreationExample:
+                CreationExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when authenticating account
@@ -376,7 +376,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to add to favourite tv series
@@ -416,7 +416,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to get favourite tv series
@@ -451,7 +451,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete from favourite tv series
@@ -489,7 +489,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountPayload'
               examples:
-                AccountCreationExample:
+                CreationExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when authenticating account
@@ -503,7 +503,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to add to favourite actors
@@ -543,7 +543,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to get favourite actors
@@ -578,7 +578,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete from favourite actors
@@ -616,7 +616,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountPayload'
               examples:
-                AccountCreationExample:
+                CreationExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when creating an account
@@ -630,7 +630,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to create fantasy movie
@@ -654,7 +654,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FantasyMoviePayload'
               examples:
-                AccountCreationExample:
+                ListExample:
                   $ref: '#/components/examples/FantasyMoviePayloadExample'
         "401":
           description: Validation error when attempting to list fantasy movies
@@ -668,7 +668,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to get fantasy movies
@@ -705,7 +705,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete from fantasy movies
@@ -732,7 +732,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FantasyMoviePayload'
               examples:
-                AccountCreationExample:
+                SuccessfulGetExample:
                   $ref: '#/components/examples/FantasyMoviePayloadExample'
         "401":
           description: Validation error when attempting to get fantasy movie
@@ -746,7 +746,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to get fantasy movie
@@ -784,28 +784,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountPayload'
               examples:
-                AccountCreationExample:
+                CastAdditionExample:
                   $ref: '#/components/examples/AccountCreationExample'
         "401":
           description: Validation error when adding cast to fantasy movie
           content:
             application/json:
               examples:
-                401AccountCreationExample:
+                401Example:
                   $ref: '#/components/examples/401AccountCreationExample'
         "404":
           description: Account not found
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to create fantasy movie cast
           content:
             application/json:
               examples:
-                500AccountCreationExample:
+                500Example:
                   $ref: '#/components/examples/GenericErrorExample'
   /api/accounts/{id}/fantasy_movies/{movie_id}/cast/{cast_id}:
     delete:
@@ -834,7 +834,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete member from favourite movies
@@ -859,7 +859,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenreList'
               examples:
-                AccountCreationExample:
+                GenreListExample:
                   $ref: '#/components/examples/GenreListExample'
         "401":
           description: Validation error when attempting to retrieve Genre
@@ -909,7 +909,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404GenreNotFoundExample'
         "500":
           description: Unable to get genre
@@ -980,10 +980,10 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404MovieNotFoundExample'
         "500":
-          description: Unable get movie
+          description: Unable to get movie
           content:
             application/json:
               examples:
@@ -1020,7 +1020,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404MovieNotFoundExample'
         "500":
           description: Unable to list similar movies
@@ -1047,7 +1047,7 @@ paths:
           content:
             application/json:
               examples:
-                MovieListExample:
+                MovieImagesExample:
                   $ref: '#/components/examples/MovieImagesExample'
         "401":
           description: Validation error when attempting to retrieve movie images
@@ -1061,7 +1061,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404MovieNotFoundExample'
         "500":
           description: Unable to get movie images
@@ -1087,7 +1087,7 @@ paths:
           content:
             application/json:
               examples:
-                MovieListExample:
+                MovieReviewsExample:
                   $ref: '#/components/examples/MovieReviewsExample'
         "401":
           description: Validation error when attempting to retrieve movie reviews
@@ -1101,7 +1101,7 @@ paths:
           content:
             application/json:
               examples:
-                401Example:
+                404Example:
                   $ref: '#/components/examples/404MovieNotFoundExample'
         "500":
           description: Unable to get movie reviews
@@ -1144,11 +1144,186 @@ paths:
       security:
       - BEARER: []
 
+### Tv series endpoints
+  /api/tv:
+    get:
+      tags:
+      - tv series
+      parameters:
+      - $ref: "#/components/parameters/query_tv"
+      description: List tv series
+      operationId: listTvSeries
+      responses:
+        "200":
+          description: Successfully list tv series
+          content:
+            application/json:
+              examples:
+                TvSeriesListExample:
+                  $ref: '#/components/examples/TvSeriesListExample'
+        "401":
+          description: Validation error when attempting to retrieve tv series
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/tv/resource_id:
+    get:
+      tags:
+      - tv series
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get tv series by ID
+      operationId: getTvSeriesByID
+      responses:
+        "200":
+          description: Successfully retrieved tv series by ID
+          content:
+            application/json:
+              examples:
+                TvSeriesExample:
+                  $ref: '#/components/examples/TvSeriesExample'
+        "401":
+          description: Validation error when attempting to retrieve tv series
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Tv series not found
+          content:
+            application/json:
+              examples:
+                403Example:
+                  $ref: '#/components/examples/404TvSeriesNotFoundExample'
+        "500":
+          description: Unable to get tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/tv/:resource_id/similar:
+    get:
+      tags:
+      - tv series
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get similar tv series
+      operationId: getSimilarTvSeries
+      responses:
+        "200":
+          description: Successfully retrieved tv series similar to tv series by ID
+          content:
+            application/json:
+              examples:
+                TvSeriesListExample:
+                  $ref: '#/components/examples/TvSeriesListExample'
+        "401":
+          description: Validation error when attempting to retrieve tv series
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Tv series not found
+          content:
+            application/json:
+              examples:
+                404Example:
+                  $ref: '#/components/examples/TvSeriesImagesExample'
+        "500":
+          description: Unable to list similar tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
+
+  /api/tv/:resource_id/images:
+    get:
+      tags:
+      - tv series
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get tv series images
+      operationId: getTvSeriesImages
+      responses:
+        "200":
+          description: Successfully retrieved tv series images
+          content:
+            application/json:
+              examples:
+                TvSeriesImagesExample:
+                  $ref: '#/components/examples/TvSeriesImagesExample'
+        "401":
+          description: Validation error when attempting to retrieve tv series images
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Tv series not found
+          content:
+            application/json:
+              examples:
+                404Example:
+                  $ref: '#/components/examples/404TvSeriesNotFoundExample'
+        "500":
+          description: Unable to get tv series images
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
 components:
   parameters:
+    query_tv:
+      description: |
+        Tv series search criteria.
+
+        See this website for all available queries https://developers.themoviedb.org/3/discover/tv-discover
+
+        Note. By default the following query parameters are set: 
+        - language=en-US
+        - include_adult=false
+        - include_video=false
+
+        Note. If the query is invalid, an error is returned.
+      explode: true
+      name: query_tv
+      in: query
+      required: false
+      examples:
+        query:
+          value: "&language=en-US&include_adult=false&include_video=false"
+      schema:
+        type: string
+      style: form
     query:
       description: |
-        Search criteria.
+        Movies search criteria.
 
         See this website for all available queries https://developers.themoviedb.org/3/discover/movie-discover
 
@@ -1237,6 +1412,9 @@ components:
     404MovieNotFoundExample:
       value:
         "message": "movie with id: 12345 not found"
+    404TvSeriesNotFoundExample:
+      value:
+        "message": "tv series with id: 12345 not found"
     401AccountAuthenticationExample:
       value:
         "message": "Unauthorised"
@@ -1291,6 +1469,109 @@ components:
     ResourceCreateBodyExample:
       value:
         "id": "6447c3eb02fae8cac719672f"
+    TvSeriesImagesExample:
+      value: |
+        {
+            "backdrops": [
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 1080,
+                    "iso_639_1": "ar",
+                    "file_path": "/wJmcuxa0C4AERmA9mejxm9qRYDj.jpg",
+                    "vote_average": 5.312,
+                    "vote_count": 1,
+                    "width": 1920
+                },
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 1080,
+                    "iso_639_1": null,
+                    "file_path": "/kMo3EtW3DhY23lbhe4TFxWBZs0e.jpg",
+                    "vote_average": 5.312,
+                    "vote_count": 1,
+                    "width": 1920
+                },
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 1080,
+                    "iso_639_1": "en",
+                    "file_path": "/63DJiq5uhVXwJFL4nf49r0uyJjL.jpg",
+                    "vote_average": 5.246,
+                    "vote_count": 2,
+                    "width": 1920
+                }
+            ]
+        }
+    TvSeriesListExample:
+      value: |
+        {
+            "page": 1,
+            "results": [
+                {
+                    "backdrop_path": "/wJmcuxa0C4AERmA9mejxm9qRYDj.jpg",
+                    "first_air_date": "2022-06-06",
+                    "genre_ids": [
+                        80,
+                        9648
+                    ],
+                    "id": 203504,
+                    "name": "Aashiqana",
+                    "origin_country": [
+                        "IN"
+                    ],
+                    "original_language": "hi",
+                    "original_name": "आशिकाना",
+                    "overview": "A serial killer sparks the story of uptight Yashvardhan and feisty Chikki. Plagued by misunderstandings, how far do they have to go to nab the murderer?",
+                    "popularity": 2636.52,
+                    "poster_path": "/1skNvUMTKi9IH0Qv9rf0Piw0MPy.jpg",
+                    "vote_average": 6.6,
+                    "vote_count": 7
+                },
+                {
+                    "backdrop_path": "/xGKTgJlqCkq6tAK2sOTdULh7YaX.jpg",
+                    "first_air_date": "2022-10-10",
+                    "genre_ids": [
+                        10766,
+                        18,
+                        35
+                    ],
+                    "id": 204370,
+                    "name": "The Path",
+                    "origin_country": [
+                        "BR"
+                    ],
+                    "original_language": "pt",
+                    "original_name": "Travessia",
+                    "overview": "After having her life course changed by a fake image and losing her childhood sweetheart to greed and power, Brisa, a strong woman, will struggle to rebuild her journey, raise her son, rediscover true love, and discover the truth about her origin.",
+                    "popularity": 2577.077,
+                    "poster_path": "/raDj1xSVzBenwI87arenZY6eHmz.jpg",
+                    "vote_average": 5.1,
+                    "vote_count": 14
+                }
+            ]
+        }
+    TvSeriesExample:
+      value: |
+        {
+            "backdrop_path": "/wJmcuxa0C4AERmA9mejxm9qRYDj.jpg",
+            "first_air_date": "2022-06-06",
+            "genre_ids": [
+                80,
+                9648
+            ],
+            "id": 203504,
+            "name": "Aashiqana",
+            "origin_country": [
+                "IN"
+            ],
+            "original_language": "hi",
+            "original_name": "आशिकाना",
+            "overview": "A serial killer sparks the story of uptight Yashvardhan and feisty Chikki. Plagued by misunderstandings, how far do they have to go to nab the murderer?",
+            "popularity": 2636.52,
+            "poster_path": "/1skNvUMTKi9IH0Qv9rf0Piw0MPy.jpg",
+            "vote_average": 6.6,
+            "vote_count": 7
+        }
     MovieExample:
       value: |
         {
