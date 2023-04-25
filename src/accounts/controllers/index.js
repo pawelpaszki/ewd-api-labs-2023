@@ -1,5 +1,6 @@
 import accountService from "../services";
 import { validateParams } from "../../utils/paramsValidator";
+import logger from "../../utils/logger";
 
 export default (dependencies) => {
 
@@ -11,6 +12,7 @@ export default (dependencies) => {
     try {
       const { email, password } = request.body;
       const { token, accountId } = await accountService.authenticate(email, password, dependencies);
+      logger.info({method: "post", url: "/api/accounts/security/token", status: 200, accountId: accountId});
       response.status(200).json({ token: `BEARER ${token}`, accountId: accountId });
     } catch (error) {
       response.status(401).json({ message: 'Unauthorised' });

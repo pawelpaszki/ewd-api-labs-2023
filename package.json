@@ -37,6 +37,7 @@
     "mongoose": "^7.0.3",
     "swagger-ui-express": "^4.6.2",
     "uniqid": "^5.4.0",
+    "winston": "^3.8.2",
     "yamljs": "^0.3.0"
   }
 }
