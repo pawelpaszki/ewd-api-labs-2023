@@ -1,23 +1,435 @@
 openapi: 3.0.0
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in HTML.
-  version: 0.1.9
-consumes:
-  - application/json
-produces:
-  - application/json
+  title: TMDB proxy API
+  description: TMDB movies, tv series and people management API
+  version: 0.1.0
+tags:
+  - name: tv-series
+    description: TMDB Tv series related endpoints
+  - name: movies
+    description: TMDB movies related endpoints
+  - name: genres
+    description: TMDB genres related endpoints
+  - name: account
+    description: Account related endpoints (account management, favourite collections, etc)
+servers:
+  - url: http://localhost:8080
+    description: localhost
 paths:
-  /api/users:
-    get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+  /api/accounts:
+    post:
+      tags:
+      - account
+      description: Create an account
+      operationId: createAccount
+      requestBody:
+        description: Account request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPayload'
+            examples:
+              AccountRequestExample:
+                $ref: '#/components/examples/AccountRequestExample'
       responses:
-        '200':    # status code
-          description: A JSON array of user names
+        "201":
+          description: Account successfully created
           content:
             application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+              schema:
+                $ref: '#/components/schemas/AccountPayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when creating an account
+          content:
+            application/json:
+              examples:
+                401AccountCreationExample:
+                  $ref: '#/components/examples/401AccountCreationExample'
+        "500":
+          description: Unable to create an account
+          content:
+            application/json:
+              examples:
+                500AccountCreationExample:
+                  $ref: '#/components/examples/500AccountCreationExample'
+    get:
+      tags:
+      - account
+      description: List accounts
+      operationId: listAccounts
+      responses:
+        "200":
+          description: Successfully list accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountList'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when creating an account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to create an account
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/accounts/{id}:
+    parameters:
+    - $ref: "#/components/parameters/id"
+    get:
+      tags:
+      - account
+      description: Get account by ID
+      operationId: getAccount
+      responses:
+        "200":
+          description: Successfully retrieve account by ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when retrieving an account by ID
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to get an account
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+    put:
+      tags:
+      - account
+      description: Update account by ID
+      operationId: updateAccount
+      requestBody:
+        description: Account request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPayload'
+            examples:
+              AccountRequestExample:
+                $ref: '#/components/examples/AccountRequestExample'
+      responses:
+        "200":
+          description: Successfully updated account by ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when retrieving an account by ID
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to get an account
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  # /api/accounts  post createAccount
+
+  # /api/accounts  get  listAccounts     
+
+  # /api/accounts/{id} get     getAccount
+
+  # /api/accounts/{id}     put    updateAccount
+
+  # /api/accounts/security/token        post     authenticateAccount
+
+  # /api/accounts/{id}/favourite_movies    post             addToFavouriteCollection
+    
+  # /api/accounts/{id}/favourite_movies    get             getFavouriteCollection
+
+  # /api/accounts/{id}/favourite_movies/{resource_id}    delete             deleteFromFavouriteCollection
+  
+  # /api/accounts/{id}/favourite_tv    post             addToFavouriteCollection
+    
+  # /api/accounts/{id}/favourite_tv    get             getFavouriteCollection
+
+  # /api/accounts/{id}/favourite_tv/{resource_id}    delete             deleteFromFavouriteCollection
+
+  # /api/accounts/{id}/favourite_actors    post             addToFavouriteCollection
+    
+  # /api/accounts/{id}/favourite_actors    get             getFavouriteCollection
+
+  # /api/accounts/{id}/favourite_actors/{resource_id}    delete             deleteFromFavouriteCollection
+
+  # /api/accounts/{id}/fantasy_movies    post             addToFantasyMovies
+    
+  # /api/accounts/{id}/fantasy_movies    get             getFantasyMovies
+  
+  # /api/accounts/{id}/fantasy_movies/{movie_id}    get             getFantasyMovie
+
+  # /api/accounts/{id}/fantasy_movies/{movie_id}/cast    post             addToFantasyMoviesCast
+  
+  # /api/accounts/{id}/fantasy_movies/{movie_id}    delete             deleteFromFantasyMovies
+
+  # /api/accounts/{id}/fantasy_movies/{movie_id}/cast/{cast_id}           delete   accountsController.deleteFromFantasyMoviesCast
+
+components:
+  parameters:
+    id:
+      name: id
+      description: The ID of a record
+      schema:
+        type: string
+      in: path
+      required: true
+  securitySchemes:
+    BEARER:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  examples:
+    AccountRequestExample:
+      value:
+        firstName: John
+        lastName: Doe
+        email: validemail@gmail.com
+        password: Password1%
+    AccountCreationExample:
+      value:
+        "id": "6447c3eb02fae8cac719672f"
+        "firstName": "John"
+        "lastName": "Doe"
+        "email": "validemail@gmail.com"
+        "password": "$2a$10$YFxmsGkV./.ENDp7.in9xO53QNicTqlkZC0I3S0TWJU6dbGC2DgAb"
+        "favouriteMovies": []
+        "favouriteTvSeries": []
+        "favouriteActors": []
+        "fantasyMovies": []
+    401AccountCreationExample:
+      value:
+        "error": "Error: Invalid Data \"email\" is required"
+    500AccountCreationExample:
+      value:
+        "message": "Failed to create account"
+    401AccountVerificationExample:
+      value:
+        "message": "Failed to verify requester identity"
+    GenericErrorExample:
+      value:
+        "message": "Failed to perform operation"
+
+  schemas:
+    GenericError:
+      - type: string
+        properties:
+          message:
+            type: string
+    AccountVerificationError:
+      - type: string
+        properties:
+          message:
+            type: string
+    AccountList:
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/Account"
+    Account:
+      - type: object
+        required:
+          - id
+          - firstName
+          - lastName
+          - email
+          - password
+        properties:
+          id:
+            description: Account unique identifier (generated by repository, e.g. mongoose database)
+            type: string
+          firstName:
+            description: Account first name. Has to have length between 1 and 30 characters (both incl)
+            type: string
+          lastName:
+            description: Account last name. Has to have length between 1 and 30 characters (both incl)
+            type: string
+          email:
+            description: Account email. Has to have valid email address format
+            type: string
+          password:
+            description: Account password. Has to have length between 7 and 20 characters (both incl). At least one special character, lowercase and uppercase letter and a digit
+            type: string
+          favouriteMovies:
+            description: array of TMDB movie IDs 
+            type: array
+            items:
+              type: integer
+          favouriteTvSeries:
+            description: array of TMDB tv series IDs 
+            type: array
+            items:
+              type: integer
+          favouriteActors:
+            description: array of TMDB people's IDs 
+            type: array
+            items:
+              type: integer
+          fantasyMovies:
+            description: collection of custom fantasy movies
+            type: array
+            items:
+              $ref: "#/components/schemas/FantasyMovie"
+    FantasyMovie:
+      - type: object
+        required:
+          - _id
+          - title
+          - runtime
+          - productionCompanies
+          - genres
+          - releaseDate
+        properties:
+          _id:
+            description: FantasyMovie unique identifier (generated by repository, e.g. mongoose database)
+            type: string
+          title:
+            description: FantasyMovie title
+            type: string
+          runtime:
+            description: FantasyMovie runtime in minutes (between 1 and 600 - both incl)
+            type: integer
+          productionCompanies:
+            type: array
+            description: array of FantasyMovie production companies
+            items:
+              type: string
+          genres:
+            type: array
+            description: array of FantasyMovie genres
+            items:
+              type: string
+          releaseDate:
+            type: string
+            description: valid string format release date of the FantasyMovie
+          cast:
+            description: collection of cast of the FantasyMovie
+            type: array
+            items:
+              $ref: "#/components/schemas/FantasyMovieCast"
+    FantasyMovieCast:
+      - type: object
+        required:
+          - _id
+          - name
+          - roleName
+          - description
+        properties:
+          _id:
+            description: FantasyMovieCast unique identifier (generated by repository, e.g. mongoose database)
+            type: string
+          name:
+            description: name of a person of the FantasyMovieCast
+            type: string
+          roleName:
+            description: role name of a person of the FantasyMovieCast
+            type: string
+          description:
+            description: FantasyMovieCast description
+            type: string
+    AccountPayload:
+      description: Schema for the request body sent to /api/accounts POST when creating an account
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+      type: object
+      properties:
+        firstName:
+          description: Account first name. Has to have length between 1 and 30 characters (both incl)
+          type: string
+        lastName:
+          description: Account last name. Has to have length between 1 and 30 characters (both incl)
+          type: string
+        email:
+          description: Account email. Has to have valid email address format
+          type: string
+        password:
+          description: Account password. Has to have length between 7 and 20 characters (both incl). At least one special character, lowercase and uppercase letter and a digit
+          type: string
+    FantasyMoviePayload:
+      description: Schema for the request body sent to /api/accounts/{id}/fantasy_movies POST when creating a fantasy movie
+      type: object
+      required:
+        - title
+        - runtime
+        - productionCompanies
+        - genres
+        - releaseDate
+      properties:
+        title:
+          description: FantasyMovie title
+          type: string
+        runtime:
+          description: FantasyMovie runtime in minutes (between 1 and 600 - both incl)
+          type: integer
+        productionCompanies:
+          type: array
+          description: array of FantasyMovie production companies
+          items:
+            type: string
+        genres:
+          type: array
+          description: array of FantasyMovie genres
+          items:
+            type: string
+        releaseDate:
+          type: string
+          description: valid string format release date of the FantasyMovie
+    FantasyMovieCastPayload:
+      description: Schema for the request body sent to /api/accounts/{id}/fantasy_movies/{movie_id}/cast when adding a cast member to fantasy movie
+      type: object
+      required:
+        - name
+        - roleName
+        - description
+      properties:
+        name:
+          description: name of a person of the FantasyMovieCast
+          type: string
+        roleName:
+          description: role name of a person of the FantasyMovieCast
+          type: string
+        description:
+          description: FantasyMovieCast description
+          type: string
