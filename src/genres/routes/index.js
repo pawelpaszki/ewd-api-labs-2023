@@ -1,11 +1,16 @@
 import express from 'express';
 import GenresController from '../controllers';
+import AccountsController from '../../accounts/controllers';
 
 const createRouter = (dependencies) => {
   const router = express.Router();
   // load controller with dependencies
   const genresController = GenresController(dependencies);
-  
+  const accountsController = AccountsController(dependencies);
+
+  router.route('/*')
+    .all(accountsController.verify);
+
   router.route('/')
     .get(genresController.listGenres);
 

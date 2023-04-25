@@ -98,9 +98,9 @@ export default {
         }
         return true // must return true if doesn't break
       });
-      return account, m;
+      return { account: account, movie: m };
     } else {
-      return undefined, undefined;
+      return { account: undefined, movie: undefined };
     }
   },
   deleteFromFantasyMovies: async (accountId, movieId, { accountsRepository }) => {
