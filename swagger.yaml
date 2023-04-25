@@ -4,6 +4,8 @@ info:
   description: TMDB movies, tv series and people management API
   version: 0.1.0
 tags:
+  - name: actors
+    description: TMDB actors related endpoints
   - name: tv series
     description: TMDB Tv series related endpoints
   - name: movies
@@ -917,10 +919,255 @@ paths:
                 GenericErrorExample:
                   $ref: '#/components/examples/GenericErrorExample'
 
+### Movies endpoints
+  /api/movies:
+    get:
+      tags:
+      - movies
+      parameters:
+      - $ref: "#/components/parameters/query"
+      description: List movies
+      operationId: listMovies
+      responses:
+        "200":
+          description: Successfully list Movies
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/MovieListExample'
+        "401":
+          description: Validation error when attempting to retrieve movies
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/movies/:resource_id:
+    get:
+      tags:
+      - movies
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get movie
+      operationId: getMovie
+      responses:
+        "200":
+          description: Successfully retrieved movie by ID
+          content:
+            application/json:
+              examples:
+                MovieExample:
+                  $ref: '#/components/examples/MovieExample'
+        "401":
+          description: Validation error when attempting to retrieve movies
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Movie not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404MovieNotFoundExample'
+        "500":
+          description: Unable get movie
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
 
+  /api/movies/:resource_id/similar:
+    get:
+      tags:
+      - movies
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get similar movies
+      operationId: getSimilarMovies
+      responses:
+        "200":
+          description: Successfully retrieved movies similar to movie by ID
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/MovieListExample'
+        "401":
+          description: Validation error when attempting to retrieve movies
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Movie not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404MovieNotFoundExample'
+        "500":
+          description: Unable to list similar movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
+
+  /api/movies/:resource_id/images:
+    get:
+      tags:
+      - movies
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get movie images
+      operationId: getMovieImages
+      responses:
+        "200":
+          description: Successfully retrieved movie images
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/MovieImagesExample'
+        "401":
+          description: Validation error when attempting to retrieve movie images
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Movie not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404MovieNotFoundExample'
+        "500":
+          description: Unable to get movie images
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
+  /api/movies/:resource_id/reviews:
+    get:
+      tags:
+      - movies
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get movie reviews
+      operationId: getMovieReviews
+      responses:
+        "200":
+          description: Successfully retrieved movie reviews
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/MovieReviewsExample'
+        "401":
+          description: Validation error when attempting to retrieve movie reviews
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Movie not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404MovieNotFoundExample'
+        "500":
+          description: Unable to get movie reviews
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
+  /api/movies/upcoming:
+    get:
+      tags:
+      - movies
+      description: List upcoming movies
+      operationId: listUpcomingMovies
+      responses:
+        "200":
+          description: Successfully list upcoming movies
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/MovieListExample'
+        "401":
+          description: Validation error when attempting to retrieve upcoming movies
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list upcoming movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
 
 components:
   parameters:
+    query:
+      description: |
+        Search criteria.
+
+        See this website for all available queries https://developers.themoviedb.org/3/discover/movie-discover
+
+        Note. By default the following query parameters are set: 
+        - language=en-US
+        - include_adult=false
+        - include_video=false
+
+        Note. If the query is invalid, an error is returned.
+      explode: true
+      name: query
+      in: query
+      required: false
+      examples:
+        query:
+          value: "&language=en-US&include_adult=false&include_video=false"
+      schema:
+        type: string
+      style: form
     id:
       name: id
       description: The ID of a record
@@ -987,6 +1234,9 @@ components:
     404GenreNotFoundExample:
       value:
         "message": "genre with id: 12345 not found"
+    404MovieNotFoundExample:
+      value:
+        "message": "movie with id: 12345 not found"
     401AccountAuthenticationExample:
       value:
         "message": "Unauthorised"
@@ -1041,6 +1291,148 @@ components:
     ResourceCreateBodyExample:
       value:
         "id": "6447c3eb02fae8cac719672f"
+    MovieExample:
+      value: |
+        {
+            "adult": false,
+            "backdrop_path": "/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg",
+            "genre_ids": [
+                28,
+                12,
+                878
+            ],
+            "id": 640146,
+            "original_language": "en",
+            "original_title": "Ant-Man and the Wasp: Quantumania",
+            "overview": "Super-Hero partners Scott Lang and Hope van Dyne, along with with Hope's parents Janet van Dyne and Hank Pym, and Scott's daughter Cassie Lang, find themselves exploring the Quantum Realm, interacting with strange new creatures and embarking on an adventure that will push them beyond the limits of what they thought possible.",
+            "popularity": 12579.923,
+            "poster_path": "/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg",
+            "release_date": "2023-02-15",
+            "title": "Ant-Man and the Wasp: Quantumania",
+            "video": false,
+            "vote_average": 6.5,
+            "vote_count": 1741
+        }
+    MovieListExample:
+      value: |
+        {
+            "page": 1,
+            "results": [
+                {
+                    "adult": false,
+                    "backdrop_path": "/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg",
+                    "genre_ids": [
+                        28,
+                        12,
+                        878
+                    ],
+                    "id": 640146,
+                    "original_language": "en",
+                    "original_title": "Ant-Man and the Wasp: Quantumania",
+                    "overview": "Super-Hero partners Scott Lang and Hope van Dyne, along with with Hope's parents Janet van Dyne and Hank Pym, and Scott's daughter Cassie Lang, find themselves exploring the Quantum Realm, interacting with strange new creatures and embarking on an adventure that will push them beyond the limits of what they thought possible.",
+                    "popularity": 12579.923,
+                    "poster_path": "/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg",
+                    "release_date": "2023-02-15",
+                    "title": "Ant-Man and the Wasp: Quantumania",
+                    "video": false,
+                    "vote_average": 6.5,
+                    "vote_count": 1741
+                },
+                {
+                    "adult": false,
+                    "backdrop_path": "/lWqjXgut48IK5f5IRbDBAoO2Epp.jpg",
+                    "genre_ids": [
+                        16,
+                        12,
+                        10751,
+                        14,
+                        35
+                    ],
+                    "id": 502356,
+                    "original_language": "en",
+                    "original_title": "The Super Mario Bros. Movie",
+                    "overview": "While working underground to fix a water main, Brooklyn plumbers—and brothers—Mario and Luigi are transported down a mysterious pipe and wander into a magical new world. But when the brothers are separated, Mario embarks on an epic quest to find Luigi.",
+                    "popularity": 10478.582,
+                    "poster_path": "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg",
+                    "release_date": "2023-04-05",
+                    "title": "The Super Mario Bros. Movie",
+                    "video": false,
+                    "vote_average": 7.5,
+                    "vote_count": 1344
+                }
+            ],
+            "total_pages": 37991,
+            "total_results": 759816
+        }
+    MovieImagesExample:
+      value: |
+        {
+            "backdrops": [
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 2160,
+                    "iso_639_1": null,
+                    "file_path": "/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg",
+                    "vote_average": 5.392,
+                    "vote_count": 8,
+                    "width": 3840
+                },
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 2160,
+                    "iso_639_1": null,
+                    "file_path": "/3CxUndGhUcZdt1Zggjdb2HkLLQX.jpg",
+                    "vote_average": 5.384,
+                    "vote_count": 2,
+                    "width": 3840
+                },
+                {
+                    "aspect_ratio": 1.778,
+                    "height": 2160,
+                    "iso_639_1": "en",
+                    "file_path": "/xCa7gIEAIy66S2LSaME90QJEWHm.jpg",
+                    "vote_average": 5.318,
+                    "vote_count": 3,
+                    "width": 3840
+                }
+            ]
+        }
+    MovieReviewsExample:
+      value: |
+        {
+            "id": 640146,
+            "page": 1,
+            "results": [
+                {
+                    "author": "rawatk",
+                    "author_details": {
+                        "name": "",
+                        "username": "rawatk",
+                        "avatar_path": null,
+                        "rating": null
+                    },
+                    "content": "In general, the Ant-Man films have been well received by critics and audiences alike, with the films' unique blend of humor, action, and heart, as well as the performances of the cast members, widely praised. particular Paul Rudd as the titular Ant-Man So \"Ant-Man 3\" is likely to be eagerly awaited by Marvel fans and moviegoers in general.\r\n\r\nYou can find the full review at https://aarcflick.blogspot.com/2022/12/ant-man-and-wasp-quantumania-2023-movie.html",
+                    "created_at": "2023-02-15T14:25:24.555Z",
+                    "id": "63eceb548e8702009ec2466f",
+                    "updated_at": "2023-02-15T15:39:39.059Z",
+                    "url": "https://www.themoviedb.org/review/63eceb548e8702009ec2466f"
+                },
+                {
+                    "author": "garethmb",
+                    "author_details": {
+                        "name": "",
+                        "username": "garethmb",
+                        "avatar_path": "/https://secure.gravatar.com/avatar/3593437cbd05cebe0a4ee753965a8ad1.jpg",
+                        "rating": null
+                    },
+                    "content": "Life for Scott Lang (Paul Rudd) is good. He is basking in the recognition\r\n\r\nand fame that has come with his work with the Avengers and saving half the\r\n\r\nuniverse from Thanos and has even become a best-selling author.\r\n\r\nHe has a successful relationship with Hope (Evangeline Lilly) who has\r\ntaken her father’s company to new heights and they have managed to blend\r\ntheir personal and professional lives and enjoy a very happy life.\r\n\r\nScott does worry about his daughter Cassie (Kathryn Newton) as he lost\r\nseveral years with her during the Blip and she is an activist who has been\r\narrested for her efforts including a hysterical prank on the police with\r\nPym technology.\r\n\r\nCassie is constantly on her father for not doing more as she feels that he\r\nis more focused on the past battles with the Avengers and not the day to\r\nday struggles people are facing. Over dinner, she tells Hope and her dad as\r\nwell as Hank (Michael Douglas), and Janet (Michelle Pfeiffer), whom she\r\nstudied Hank’s journals while they were in the Blip and has developed a\r\nQuantum beacon which can map the Quantum Realm without having to venture\r\nto the sub-atomic relay where until recently nobody had been able to\r\nreturn from.\r\n\r\nThis news sends Janet into a panic during a demonstration and the four are\r\nsoon sucked into the realm and discover a diverse and thriving ecosystem\r\nas well as an abundance of strange and dangerous creatures.\r\n\r\nJanet is clearly hiding something and is frantic that they must leave but\r\ntheir party has been scattered and they soon learn that she fears and\r\nindividual known as Kang (Jonathan Majors).\r\nWhile she was trapped in the realm for thirty years, Janet encountered\r\nKing and helped him regain his power source but in doing so, learned he\r\nwas a banished conquerer who can manipulate time, space, and the\r\nmultiverse.\r\n\r\nHer actions to trap Kang and lead a resistance to the vast empire he\r\ncreated has set the stage as Janet has now returned to see what has\r\ndeveloped and Kang will stop at nothing to regain his power source to\r\nescape and wreck his wrath on trillions.\r\n\r\nNaturally, it is up to Scott, Hope, and the team to find a way to fight the\r\nevil and powerful Kang to save the day.\r\n\r\nThe film is a darker tale than people might expect from an Ant-man movie\r\nbut in kicking off Phase 5 of the Marvel Cinematic Universe, the movie is\r\na visual splendor filled with amazing visuals, landscapes, and characters.\r\n\r\nThe film takes a bit of time to get to the action but when it arrives it\r\ndelivers and the performance of Majors as Kang is captivating it will\r\nbe interesting to see where the storyline evolves over the next series of\r\nfilms leading up to “The Avengers: The Kang Dynasty” and beyond.\r\n\r\n“Ant-man and the Wasp: Quantumania may not break loads of new ground in\r\nterms of a Marvel film but Director Peyton Reed knows the characters well\r\nand delivers a story that should resonate with the fans and the strong\r\ncast and addition of Majors along with the great visuals make this\r\nanother winner for Marvel.\r\n\r\n4 stars out of 5",
+                    "created_at": "2023-02-16T01:33:54.605Z",
+                    "id": "63ed8802699fb7009e3dd88b",
+                    "updated_at": "2023-02-16T01:33:54.695Z",
+                    "url": "https://www.themoviedb.org/review/63ed8802699fb7009e3dd88b"
+                }
+            ]
+        }
 
   schemas:
     SecurityToken:
