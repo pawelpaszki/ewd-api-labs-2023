@@ -162,6 +162,174 @@ paths:
                   $ref: '#/components/examples/GenericErrorExample'
       security:
       - BEARER: []
+
+  /api/accounts/security/token:
+    post:
+      tags:
+      - account
+      description: authenticate account
+      operationId: authenticateAccount
+      requestBody:
+        description: email/ password combination
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationPayload'
+            examples:
+              AuthenticationPayloadExample:
+                $ref: '#/components/examples/AuthenticationPayloadExample'
+      responses:
+        "200":
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityToken'
+              examples:
+                SecurityTokenExample:
+                  $ref: '#/components/examples/SecurityTokenExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "500":
+          description: Unable to authenticate account
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/favourite_movies:
+    post:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: add favourite movie
+      operationId: addFavouriteMovie
+      requestBody:
+        description: id of a resource to add to favourite movies
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCreateBody'
+            examples:
+              AuthenticationPayloadExample:
+                $ref: '#/components/examples/ResourceCreateBodyExample'
+      responses:
+        "200":
+          description: Successfully added to favourite movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to add to favourite movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+    get:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: get favourite movies
+      operationId: getFavouriteMovies
+      responses:
+        "200":
+          description: Successfully retrieved favourite movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteTmdbResources'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/FavouriteMoviesExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to get favourite movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/favourite_movies/{resource_id}:
+    delete:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/resource_id"
+      tags:
+      - account
+      description: delete from favourite movies
+      operationId: deleteFromFavouriteMovies
+      responses:
+        "200":
+          description: Successfully deleted favourite movie
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to delete from favourite movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+
   # /api/accounts  post createAccount
 
   # /api/accounts  get  listAccounts     
@@ -211,12 +379,32 @@ components:
         type: string
       in: path
       required: true
+    resource_id:
+      name: resource_id
+      description: The ID of a TMDB record
+      schema:
+        type: string
+      in: path
+      required: true
   securitySchemes:
     BEARER:
       type: http
       scheme: bearer
       bearerFormat: JWT
   examples:
+    FavouriteMoviesExample:
+      value:
+        favouriteMovies: [12345, 334565]
+    404AccountNotFoundExample:
+      value:
+        "message": "account with id: {accountId} not found"
+    401AccountAuthenticationExample:
+      value:
+        "message": "Unauthorised"
+    AuthenticationPayloadExample:
+      value:
+        email: validemail@gmail.com
+        password: Password1%
     AccountRequestExample:
       value:
         firstName: John
@@ -246,12 +434,42 @@ components:
     GenericErrorExample:
       value:
         "message": "Failed to perform operation"
+    SecurityTokenExample:
+      value:
+        "BEARER $2a$10$YFxmsGkV./.ENDp7.in9xO53QNicTqlkZC0I3S0TWJU6dbGC2DgAb"
+    ResourceCreateBodyExample:
+      value:
+        "id": "6447c3eb02fae8cac719672f"
 
   schemas:
+    SecurityToken:
+      - type: object
+        properties:
+          BEARER:
+            type: string
     GenericError:
-      - type: string
+      - type: object
         properties:
           message:
+            type: string
+    FavouriteTmdbResources:
+      - type: array
+        items:
+          type: integer
+    ResourceCreateBody:
+      - type: object
+        properties:
+          id:
+            description: Resource id
+            type: integer
+    AuthenticationPayload:
+      - type: object
+        properties:
+          email:
+            description: Account email. Has to have valid email address format
+            type: string
+          password:
+            description: Account password. Has to have length between 7 and 20 characters (both incl). At least one special character, lowercase and uppercase letter and a digit
             type: string
     AccountVerificationError:
       - type: string
