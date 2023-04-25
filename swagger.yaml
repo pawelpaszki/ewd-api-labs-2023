@@ -271,7 +271,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FavouriteTmdbResources'
               examples:
-                AccountCreationExample:
+                FavouriteMoviesExample:
                   $ref: '#/components/examples/FavouriteMoviesExample'
         "401":
           description: Validation error when authenticating account
@@ -324,6 +324,260 @@ paths:
                   $ref: '#/components/examples/404AccountNotFoundExample'
         "500":
           description: Unable to delete from favourite movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+
+  /api/accounts/{id}/favourite_tv:
+    post:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: add favourite tv series
+      operationId: addFavouriteTvSeries
+      requestBody:
+        description: id of a resource to add to favourite tv series
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCreateBody'
+            examples:
+              AuthenticationPayloadExample:
+                $ref: '#/components/examples/ResourceCreateBodyExample'
+      responses:
+        "200":
+          description: Successfully added to favourite tv series
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to add to favourite tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+    get:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: get favourite tv series
+      operationId: getFavouriteTvSeries
+      responses:
+        "200":
+          description: Successfully retrieved favourite tv series
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteTmdbResources'
+              examples:
+                FavouriteTvSeriesExample:
+                  $ref: '#/components/examples/FavouriteTvSeriesExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to get favourite tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/favourite_tv/{resource_id}:
+    delete:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/resource_id"
+      tags:
+      - account
+      description: delete from favourite tv series
+      operationId: deleteFromFavouriteTvSeries
+      responses:
+        "200":
+          description: Successfully deleted favourite tv series
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to delete from favourite tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+
+  /api/accounts/{id}/favourite_actors:
+    post:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: add favourite actor
+      operationId: addFavouriteActor
+      requestBody:
+        description: id of a resource to add to favourite actors
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCreateBody'
+            examples:
+              AuthenticationPayloadExample:
+                $ref: '#/components/examples/ResourceCreateBodyExample'
+      responses:
+        "200":
+          description: Successfully added to favourite actors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to add to favourite actors
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+    get:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      tags:
+      - account
+      description: get favourite actors
+      operationId: getFavouriteActors
+      responses:
+        "200":
+          description: Successfully retrieved favourite actors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteTmdbResources'
+              examples:
+                FavouriteActorsExample:
+                  $ref: '#/components/examples/FavouriteActorsExample'
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to get favourite actors
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/favourite_actors/{resource_id}:
+    delete:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/resource_id"
+      tags:
+      - account
+      description: delete from favourite actors
+      operationId: deleteFromFavouriteTvSeries
+      responses:
+        "200":
+          description: Successfully deleted favourite actors
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to delete from favourite actors
           content:
             application/json:
               examples:
@@ -395,6 +649,12 @@ components:
     FavouriteMoviesExample:
       value:
         favouriteMovies: [12345, 334565]
+    FavouriteTvSeriesExample:
+      value:
+        favouriteTvSeries: [12345, 334565]
+    FavouriteActorsExample:
+      value:
+        favouriteActors: [12345, 334565]
     404AccountNotFoundExample:
       value:
         "message": "account with id: {accountId} not found"
