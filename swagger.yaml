@@ -1297,8 +1297,172 @@ paths:
       security:
       - BEARER: []
 
+### Actors endpoints
+  /api/actors:
+    get:
+      tags:
+      - actors
+      description: List popular people
+      operationId: listActors
+      responses:
+        "200":
+          description: Successfully list actors
+          content:
+            application/json:
+              examples:
+                ActorsListExample:
+                  $ref: '#/components/examples/ActorsListExample'
+        "401":
+          description: Validation error when attempting to retrieve actors
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list actors
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/actors/search:
+    get:
+      tags:
+      - actors
+      parameters:
+      - $ref: "#/components/parameters/query_actors"
+      description: Search popular people
+      operationId: searchActors
+      responses:
+        "200":
+          description: Successfully list actors search result
+          content:
+            application/json:
+              examples:
+                ActorsSearchExample:
+                  $ref: '#/components/examples/ActorsListExample'
+        "401":
+          description: Validation error when attempting to search actors
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to process actors search result
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/actors/:id:
+    get:
+      tags:
+      - actors
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get actor by ID
+      operationId: getActorByID
+      responses:
+        "200":
+          description: Successfully retrieved actor by ID
+          content:
+            application/json:
+              examples:
+                ActorExample:
+                  $ref: '#/components/examples/ActorExample'
+        "401":
+          description: Validation error when attempting to retrieve actor
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Actor not found
+          content:
+            application/json:
+              examples:
+                404Example:
+                  $ref: '#/components/examples/404ActorNotFoundExample'
+        "500":
+          description: Unable to get ator
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/actors/:id/images:
+    get:
+      tags:
+      - actors
+      parameters:
+      - $ref: "#/components/parameters/resource_id"
+      description: get actor images
+      operationId: getActorImages
+      responses:
+        "200":
+          description: Successfully retrieved actor images
+          content:
+            application/json:
+              examples:
+                ActorImagesExample:
+                  $ref: '#/components/examples/ActorImagesExample'
+        "401":
+          description: Validation error when attempting to retrieve actor images
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Actor not found
+          content:
+            application/json:
+              examples:
+                404Example:
+                  $ref: '#/components/examples/404ActorNotFoundExample'
+        "500":
+          description: Unable to get actor images
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+
 components:
   parameters:
+    query_actors:
+      description: |
+        Popular people search criteria.
+
+        See this website for all available queries https://developers.themoviedb.org/3/search/search-people
+
+        Note. By default the following query parameters are set: 
+        - language=en-US
+        - include_adult=false
+        - include_video=false
+
+        Note. If the query is invalid, an error is returned.
+      explode: true
+      name: query_actors
+      in: query
+      required: false
+      examples:
+        query:
+          value: "&language=en-US&include_adult=false&include_video=false"
+      schema:
+        type: string
+      style: form
     query_tv:
       description: |
         Tv series search criteria.
@@ -1415,6 +1579,9 @@ components:
     404TvSeriesNotFoundExample:
       value:
         "message": "tv series with id: 12345 not found"
+    404ActorNotFoundExample:
+      value:
+        "message": "actor with id: 12345 not found"
     401AccountAuthenticationExample:
       value:
         "message": "Unauthorised"
@@ -1469,6 +1636,258 @@ components:
     ResourceCreateBodyExample:
       value:
         "id": "6447c3eb02fae8cac719672f"
+    ActorImagesExample:
+      value: |
+        {
+            "id": 224513,
+            "profiles": [
+                {
+                    "aspect_ratio": 0.667,
+                    "height": 819,
+                    "iso_639_1": null,
+                    "file_path": "/3vxvsmYLTf4jnr163SUlBIw51ee.jpg",
+                    "vote_average": 5.372,
+                    "vote_count": 82,
+                    "width": 546
+                },
+                {
+                    "aspect_ratio": 0.667,
+                    "height": 900,
+                    "iso_639_1": null,
+                    "file_path": "/14uxt0jH28J9zn4vNQNTae3Bmr7.jpg",
+                    "vote_average": 5.348,
+                    "vote_count": 159,
+                    "width": 600
+                },
+                {
+                    "aspect_ratio": 0.667,
+                    "height": 840,
+                    "iso_639_1": null,
+                    "file_path": "/vkoSSVrGxFYvtr2uUdz99ENXF1v.jpg",
+                    "vote_average": 5.334,
+                    "vote_count": 42,
+                    "width": 560
+                }
+            ]
+        }
+    ActorExample:
+      value: |
+        {
+            "adult": false,
+            "gender": 1,
+            "id": 224513,
+            "known_for": [
+                {
+                    "adult": false,
+                    "backdrop_path": "/ilRyazdMJwN05exqhwK4tMKBYZs.jpg",
+                    "genre_ids": [
+                        878,
+                        18
+                    ],
+                    "id": 335984,
+                    "media_type": "movie",
+                    "original_language": "en",
+                    "original_title": "Blade Runner 2049",
+                    "overview": "Thirty years after the events of the first film, a new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what's left of society into chaos. K's discovery leads him on a quest to find Rick Deckard, a former LAPD blade runner who has been missing for 30 years.",
+                    "poster_path": "/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+                    "release_date": "2017-10-04",
+                    "title": "Blade Runner 2049",
+                    "video": false,
+                    "vote_average": 7.5,
+                    "vote_count": 11766
+                },
+                {
+                    "adult": false,
+                    "backdrop_path": "/4HWAQu28e2yaWrtupFPGFkdNU7V.jpg",
+                    "genre_ids": [
+                        35,
+                        80,
+                        9648
+                    ],
+                    "id": 546554,
+                    "media_type": "movie",
+                    "original_language": "en",
+                    "original_title": "Knives Out",
+                    "overview": "When renowned crime novelist Harlan Thrombey is found dead at his estate just after his 85th birthday, the inquisitive and debonair Detective Benoit Blanc is mysteriously enlisted to investigate. From Harlan's dysfunctional family to his devoted staff, Blanc sifts through a web of red herrings and self-serving lies to uncover the truth behind Harlan's untimely death.",
+                    "poster_path": "/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+                    "release_date": "2019-11-27",
+                    "title": "Knives Out",
+                    "video": false,
+                    "vote_average": 7.9,
+                    "vote_count": 10621
+                },
+                {
+                    "adult": false,
+                    "backdrop_path": "/3Mnbw4gOYz5BNZB9PhZ2cyBSQum.jpg",
+                    "genre_ids": [
+                        35,
+                        80,
+                        18
+                    ],
+                    "id": 308266,
+                    "media_type": "movie",
+                    "original_language": "en",
+                    "original_title": "War Dogs",
+                    "overview": "Based on the true story of two young men, David Packouz and Efraim Diveroli, who won a $300 million contract from the Pentagon to arm America's allies in Afghanistan.",
+                    "poster_path": "/uH9qGH5XS1iZXCSb3tgu40dxQoh.jpg",
+                    "release_date": "2016-08-17",
+                    "title": "War Dogs",
+                    "video": false,
+                    "vote_average": 6.9,
+                    "vote_count": 4319
+                }
+            ],
+            "known_for_department": "Acting",
+            "name": "Ana de Armas",
+            "popularity": 352.507,
+            "profile_path": "/3vxvsmYLTf4jnr163SUlBIw51ee.jpg"
+        }
+    ActorsListExample:
+      value: |
+        {
+            "page": 1,
+            "results": [
+                {
+                    "adult": false,
+                    "gender": 1,
+                    "id": 224513,
+                    "known_for": [
+                        {
+                            "adult": false,
+                            "backdrop_path": "/ilRyazdMJwN05exqhwK4tMKBYZs.jpg",
+                            "genre_ids": [
+                                878,
+                                18
+                            ],
+                            "id": 335984,
+                            "media_type": "movie",
+                            "original_language": "en",
+                            "original_title": "Blade Runner 2049",
+                            "overview": "Thirty years after the events of the first film, a new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what's left of society into chaos. K's discovery leads him on a quest to find Rick Deckard, a former LAPD blade runner who has been missing for 30 years.",
+                            "poster_path": "/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+                            "release_date": "2017-10-04",
+                            "title": "Blade Runner 2049",
+                            "video": false,
+                            "vote_average": 7.5,
+                            "vote_count": 11766
+                        },
+                        {
+                            "adult": false,
+                            "backdrop_path": "/4HWAQu28e2yaWrtupFPGFkdNU7V.jpg",
+                            "genre_ids": [
+                                35,
+                                80,
+                                9648
+                            ],
+                            "id": 546554,
+                            "media_type": "movie",
+                            "original_language": "en",
+                            "original_title": "Knives Out",
+                            "overview": "When renowned crime novelist Harlan Thrombey is found dead at his estate just after his 85th birthday, the inquisitive and debonair Detective Benoit Blanc is mysteriously enlisted to investigate. From Harlan's dysfunctional family to his devoted staff, Blanc sifts through a web of red herrings and self-serving lies to uncover the truth behind Harlan's untimely death.",
+                            "poster_path": "/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+                            "release_date": "2019-11-27",
+                            "title": "Knives Out",
+                            "video": false,
+                            "vote_average": 7.9,
+                            "vote_count": 10621
+                        },
+                        {
+                            "adult": false,
+                            "backdrop_path": "/3Mnbw4gOYz5BNZB9PhZ2cyBSQum.jpg",
+                            "genre_ids": [
+                                35,
+                                80,
+                                18
+                            ],
+                            "id": 308266,
+                            "media_type": "movie",
+                            "original_language": "en",
+                            "original_title": "War Dogs",
+                            "overview": "Based on the true story of two young men, David Packouz and Efraim Diveroli, who won a $300 million contract from the Pentagon to arm America's allies in Afghanistan.",
+                            "poster_path": "/uH9qGH5XS1iZXCSb3tgu40dxQoh.jpg",
+                            "release_date": "2016-08-17",
+                            "title": "War Dogs",
+                            "video": false,
+                            "vote_average": 6.9,
+                            "vote_count": 4319
+                        }
+                    ],
+                    "known_for_department": "Acting",
+                    "name": "Ana de Armas",
+                    "popularity": 352.507,
+                    "profile_path": "/3vxvsmYLTf4jnr163SUlBIw51ee.jpg"
+                },
+                {
+                    "adult": false,
+                    "gender": 2,
+                    "id": 58021,
+                    "known_for": [
+                        {
+                            "adult": false,
+                            "backdrop_path": "/6UDep1cxHQqrNFhSW4ZNQLW3Alr.jpg",
+                            "genre_ids": [
+                                18,
+                                36,
+                                10749
+                            ],
+                            "id": 9453,
+                            "media_type": "movie",
+                            "original_language": "en",
+                            "original_title": "Caligola",
+                            "overview": "The perversion behind imperial Rome, the epic story of Rome's mad Emporer. All the details of his cruel, bizarre reign are revealed right here: His unholy sexual passion for his sister, his marriage to Rome's most infamous prostitute, his fiendishly inventive means of disposing those who would oppose him, and more.",
+                            "poster_path": "/4N4l873TVreuaR4FVpvaL2gfQ0N.jpg",
+                            "release_date": "1979-08-14",
+                            "title": "Caligula",
+                            "video": false,
+                            "vote_average": 6,
+                            "vote_count": 657
+                        },
+                        {
+                            "adult": false,
+                            "backdrop_path": "/iHDermFVn4DiShm5cvUK0f0rW2A.jpg",
+                            "genre_ids": [
+                                18,
+                                10749
+                            ],
+                            "id": 28468,
+                            "media_type": "movie",
+                            "original_language": "it",
+                            "original_title": "La chiave",
+                            "overview": "Art professor Nino Rolfe attempts to break down his wife Teresa's conventional modesty. Noticing her affection for their daughter's fiancé, Nino instigates her sexual interest in him - setting off a chain of unexpected events and emotional complications...",
+                            "poster_path": "/e6g2geNLgFzMbriH6EvSJZD78nx.jpg",
+                            "release_date": "1983-10-19",
+                            "title": "The Key",
+                            "video": false,
+                            "vote_average": 6,
+                            "vote_count": 339
+                        },
+                        {
+                            "adult": false,
+                            "backdrop_path": "/9CkI4VsYF8qJWfZpPqwZnBctb3M.jpg",
+                            "genre_ids": [
+                                18
+                            ],
+                            "id": 50270,
+                            "media_type": "movie",
+                            "original_language": "it",
+                            "original_title": "Paprika",
+                            "overview": "A young country girl comes to town and works in a brothel in order to help her fiance get the money to start his own business. \"Paprika\" is the name given to her by the madam.",
+                            "poster_path": "/jwlo74haG1XNmp5IdSJ5Gy3KuIm.jpg",
+                            "release_date": "1991-02-13",
+                            "title": "Paprika",
+                            "video": false,
+                            "vote_average": 7.1,
+                            "vote_count": 333
+                        }
+                    ],
+                    "known_for_department": "Directing",
+                    "name": "Tinto Brass",
+                    "popularity": 258.135,
+                    "profile_path": "/adQ1j2FQ1FZ67hlZVhsUnALM4G4.jpg"
+                }
+            ]
+        }
+
     TvSeriesImagesExample:
       value: |
         {
