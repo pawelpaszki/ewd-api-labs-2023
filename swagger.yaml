@@ -586,6 +586,8 @@ paths:
 
   /api/accounts/{id}/fantasy_movies:
     post:
+      security:
+      - BEARER: []
       parameters:
       - $ref: "#/components/parameters/id"
       tags:
@@ -593,7 +595,7 @@ paths:
       description: Create fantasy movie record
       operationId: createFantasyMovie
       requestBody:
-        description: Account request
+        description: Fantasy movie request
         required: true
         content:
           application/json:
@@ -673,14 +675,170 @@ paths:
                   $ref: '#/components/examples/GenericErrorExample'
       security:
       - BEARER: []
-  
-  # /api/accounts/{id}/fantasy_movies/{movie_id}    get             getFantasyMovie
-
-  # /api/accounts/{id}/fantasy_movies/{movie_id}/cast    post             addToFantasyMoviesCast
-  
-  # /api/accounts/{id}/fantasy_movies/{movie_id}    delete             deleteFromFantasyMovies
-
-  # /api/accounts/{id}/fantasy_movies/{movie_id}/cast/{cast_id}           delete   accountsController.deleteFromFantasyMoviesCast
+  /api/accounts/{id}/fantasy_movies/{movie_id}:
+    delete:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/movie_id"
+      tags:
+      - account
+      description: delete from fantasy movies
+      operationId: deleteFromFantasyMovies
+      responses:
+        "200":
+          description: Successfully deleted fantasy movie
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to delete from fantasy movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+    get:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/movie_id"
+      tags:
+      - account
+      description: get fantasy movie
+      operationId: getFantasyMovie
+      responses:
+        "200":
+          description: Successfully retrieve fantasy movie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FantasyMoviePayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/FantasyMoviePayloadExample'
+        "401":
+          description: Validation error when attempting to get fantasy movie
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to get fantasy movie
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/fantasy_movies/{movie_id}/cast:
+    post:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/movie_id"
+      tags:
+      - account
+      description: Create fantasy movie cast record
+      operationId: createFantasyMovieCast
+      requestBody:
+        description: fantasy movie cast payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FantasyMovieCastPayload'
+            examples:
+              FantasyMovieCastPayloadExample:
+                $ref: '#/components/examples/FantasyMovieCastPayloadExample'
+      responses:
+        "201":
+          description: Fantasy movie cast member successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayload'
+              examples:
+                AccountCreationExample:
+                  $ref: '#/components/examples/AccountCreationExample'
+        "401":
+          description: Validation error when adding cast to fantasy movie
+          content:
+            application/json:
+              examples:
+                401AccountCreationExample:
+                  $ref: '#/components/examples/401AccountCreationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to create fantasy movie cast
+          content:
+            application/json:
+              examples:
+                500AccountCreationExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+  /api/accounts/{id}/fantasy_movies/{movie_id}/cast/{cast_id}:
+    delete:
+      security:
+      - BEARER: []
+      parameters:
+      - $ref: "#/components/parameters/id"
+      - $ref: "#/components/parameters/resource_id"
+      - $ref: "#/components/parameters/cast_id"
+      tags:
+      - account
+      description: delete cast member from favourite movie
+      operationId: deleteCastFromFavouriteMovies
+      responses:
+        "200":
+          description: Successfully deleted cast member from favourite movie
+        "401":
+          description: Validation error when authenticating account
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountAuthenticationExample'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/404AccountNotFoundExample'
+        "500":
+          description: Unable to delete member from favourite movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
 
 components:
   parameters:
@@ -694,6 +852,20 @@ components:
     resource_id:
       name: resource_id
       description: The ID of a TMDB record
+      schema:
+        type: string
+      in: path
+      required: true
+    movie_id:
+      name: movie_id
+      description: The ID of a fantasy movie record
+      schema:
+        type: string
+      in: path
+      required: true
+    cast_id:
+      name: cast_id
+      description: The ID of a fantasy movie cast record
       schema:
         type: string
       in: path
@@ -735,7 +907,12 @@ components:
         runtime: 
         productionCompanies: 
         genres: 
-        releaseDate: Tue 25 Apr 2022 15:17:53 UTC
+        releaseDate: "Tue 25 Apr 2022 15:17:53 UTC"
+    FantasyMovieCastPayloadExample:
+      value:
+        name: John Doe
+        roleName: John Wick
+        description: single living middle aged man taking vengeance on bad people
     AccountCreationExample:
       value:
         "id": "6447c3eb02fae8cac719672f"
