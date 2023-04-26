@@ -8,9 +8,6 @@ const createLogsRouter = (dependencies) => {
 
   router.route("/*").all(logsController.verify);
 
-  router.route('/')
-    .get(logsController.getLogs);
-
   router.route('/analytics')
     .get(logsController.getLogsAnalytics);
 

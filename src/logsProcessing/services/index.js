@@ -1,11 +1,8 @@
-import axios from 'axios';
+import { getLogsAnalytics } from "../../utils/logProcessor";
 
 export default {
-  getLogs: async () => {
-    return {};
-  },
-  getLogsAnalytics: async (query) => {
-    return {};
+  getLogsAnalytics: async () => {
+    return getLogsAnalytics();
   },
   verifyToken: async (token, { tokenManager }) => {
     const decoded = await tokenManager.decodeLogs(token);

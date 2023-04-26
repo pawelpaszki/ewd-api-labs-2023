@@ -13,19 +13,8 @@ export default (dependencies) => {
       await logsProcessingService.verifyToken(accessToken, dependencies);
       next();
     } catch (err) {
-      console.log(err);
       //Token Verification Failed
       response.status(401).json({ message: "Failed to verify requester identity" });
-    }
-  };
-  const getLogs = async (request, response, next) => {
-    try {
-      // Treatment
-      const logs = await logsProcessingService.getLogs(dependencies);
-      //output
-      response.status(200).json(logs);
-    } catch (err) {
-      response.status(500).json({ message: "failed to get logs" });
     }
   };
   const getLogsAnalytics = async (request, response, next) => {
@@ -40,7 +29,6 @@ export default (dependencies) => {
   };
 
   return {
-    getLogs,
     getLogsAnalytics,
     verify
   };
