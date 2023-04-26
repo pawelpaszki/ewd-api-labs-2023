@@ -24,6 +24,17 @@ const port = process.env.PORT;
 //.. Add this after db.init();
 const dependencies = buildDependencies();
 
+console.log(`Seeding genres to database`);
+(async () => {
+  try {
+    for (let index = 0; index < genres.genres.length; index++) {
+      await dependencies.genresRepository.persist({tmdbID: genres.genres[index].id, name: genres.genres[index].name});
+    }
+  } catch (e) {
+    console.log(e);
+  }
+})();
+
 app.use(express.json());
 
 app.use('/api/movies', createMoviesRouter(dependencies));
@@ -39,17 +50,6 @@ app.use('/api/actors', createActorsRouter(dependencies));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
-
-console.log(`Seeding genres to database`);
-(async () => {
-  try {
-    for (let index = 0; index < genres.genres.length; index++) {
-      await dependencies.genresRepository.persist({tmdbID: genres.genres[index].id, name: genres.genres[index].name});
-    }
-  } catch (e) {
-    console.log(e);
-  }
-})();
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);

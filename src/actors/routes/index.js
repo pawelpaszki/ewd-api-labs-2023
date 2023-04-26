@@ -17,10 +17,10 @@ const createActorsRouter = (dependencies) => {
   router.route('/search')
     .get(actorsController.search);
 
-  router.route('/:id/images')
+  router.route('/:resource_id/images')
     .get(actorsController.getPersonImages);
 
-  router.route('/:id')
+  router.route('/:resource_id')
     .get(actorsController.getActor);
 
   return router;

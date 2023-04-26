@@ -1,5 +1,6 @@
 import moviesService from "./../services";
 import { validateParams } from "../../utils/paramsValidator";
+import { processAndPersistLogs } from "../../utils/logProcessor";
 
 export default (dependencies) => {
 
@@ -11,11 +12,14 @@ export default (dependencies) => {
       // Treatment
       const movie = await moviesService.getMovie(movieId, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movie);
     } catch (err) {
       if (err.toString().includes("404")) {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
+        processAndPersistLogs("error", request, 500, "");
         response.status(500).json({ message: "failed to get movie" });
       }
     }
@@ -27,8 +31,10 @@ export default (dependencies) => {
       // Treatment
       const movies = await moviesService.find(query, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movies);
     } catch (err) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "failed to find movies" });
     }
   };
@@ -42,8 +48,10 @@ export default (dependencies) => {
       // Treatment
       const movies = await moviesService.findSimilar(movieId, query, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movies);
     } catch (err) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: `failed to find movies similar to movie with id: '${movieId}` });
     }
   };
@@ -55,8 +63,10 @@ export default (dependencies) => {
       // Treatment
       const movies = await moviesService.findUpcoming(query, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movies);
     } catch (err) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: `failed to get upcoming movies` });
     }
   };
@@ -69,11 +79,14 @@ export default (dependencies) => {
       // Treatment
       const images = await moviesService.getMovieImages(movieId, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(images);
     } catch (err) {
       if (err.toString().includes("404")) {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
+        processAndPersistLogs("error", request, 500, "");
         response.status(500).json({ message: "failed to get movie images" });
       }
     }
@@ -87,11 +100,14 @@ export default (dependencies) => {
       // Treatment
       const images = await moviesService.getMovieReviews(movieId, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(images);
     } catch (err) {
       if (err.toString().includes("404")) {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `movie with id: '${movieId}' not found` });
       } else {
+        processAndPersistLogs("error", request, 500, "");
         response.status(500).json({ message: "failed to get movie reviews" });
       }
     }

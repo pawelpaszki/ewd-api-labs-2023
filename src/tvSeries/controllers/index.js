@@ -1,5 +1,6 @@
 import tvSeriesService from "./../services";
 import { validateParams } from "../../utils/paramsValidator";
+import { processAndPersistLogs } from "../../utils/logProcessor";
 
 export default (dependencies) => {
 
@@ -11,11 +12,14 @@ export default (dependencies) => {
       // Treatment
       const tvSeries = await tvSeriesService.getTvSeries(movieId, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(tvSeries);
     } catch (err) {
       if (err.toString().includes("404")) {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `tv series with id: '${movieId}' not found` });
       } else {
+        processAndPersistLogs("error", request, 500, "");
         response.status(500).json({ message: "failed to get tv series" });
       }
     }
@@ -27,8 +31,10 @@ export default (dependencies) => {
       // Treatment
       const tvSeries = await tvSeriesService.find(query, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(tvSeries);
     } catch (err) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "failed to find tv series" });
     }
   };
@@ -44,8 +50,10 @@ export default (dependencies) => {
       // Treatment
       const movies = await tvSeriesService.findSimilar(movieId, query, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movies);
     } catch (err) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: `failed to find tv series similar to movie with id: '${movieId}` });
     }
   };
@@ -58,11 +66,14 @@ export default (dependencies) => {
       // Treatment
       const images = await tvSeriesService.getMovieImages(movieId, dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(images);
     } catch (err) {
       if (err.toString().includes("404")) {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `tv series with id: '${movieId}' not found` });
       } else {
+        processAndPersistLogs("error", request, 500, "");
         response.status(500).json({ message: "failed to get tv series images" });
       }
     }

@@ -42,5 +42,4 @@ async function validateParams(request) {
   }
 }
 
-// add the code below
 module.exports = { validateParams };

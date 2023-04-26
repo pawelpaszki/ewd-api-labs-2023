@@ -1,6 +1,6 @@
 import accountService from "../services";
 import { validateParams } from "../../utils/paramsValidator";
-import logger from "../../utils/logger";
+import { processAndPersistLogs } from "../../utils/logProcessor";
 
 export default (dependencies) => {
 
@@ -12,9 +12,10 @@ export default (dependencies) => {
     try {
       const { email, password } = request.body;
       const { token, accountId } = await accountService.authenticate(email, password, dependencies);
-      logger.info({method: "post", url: "/api/accounts/security/token", status: 200, accountId: accountId});
+      processAndPersistLogs("info", request, 200, accountId);
       response.status(200).json({ token: `BEARER ${token}`, accountId: accountId });
     } catch (error) {
+      processAndPersistLogs("error", request, 401, "");
       response.status(401).json({ message: 'Unauthorised' });
     }
   };
@@ -31,6 +32,7 @@ export default (dependencies) => {
       //output
       next();
     } catch (err) {
+      processAndPersistLogs("error", request, 401, "");
       //Token Verification Failed
       response.status(401).json({ message: "Failed to verify requester identity" });
     }
@@ -42,8 +44,10 @@ export default (dependencies) => {
       // Treatment
       const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
       //output
+      processAndPersistLogs("info", request, 201, "");
       response.status(201).json(account);
     } catch (e) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "Failed to create account" });
     }
   };
@@ -56,12 +60,15 @@ export default (dependencies) => {
       const account = await accountService.getAccount(accountId, dependencies);
       if (account !== undefined) {
         //output
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json(account);
       } else {
         //output
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (error) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "Failed to get an account" });
     }
   };
@@ -70,8 +77,10 @@ export default (dependencies) => {
       // Treatment
       const accounts = await accountService.find(dependencies);
       //output
+      processAndPersistLogs("info", request, 200, "");
       response.status(200).json(accounts);
     } catch (error) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "Failed to list accounts" });
     }
   };
@@ -85,11 +94,14 @@ export default (dependencies) => {
       const account = await accountService.getAccount(id, dependencies);
       if (account !== undefined) {
         const persistedAccount = await accountService.updateAccount(account.id, firstName, lastName, email, password, dependencies);
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json(persistedAccount);
       } else {
+        processAndPersistLogs("error", request, 404, "");
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (error) {
+      processAndPersistLogs("error", request, 500, "");
       response.status(500).json({ message: "Failed to update accounts" });
     }
   };
@@ -110,11 +122,14 @@ export default (dependencies) => {
         throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
       }
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json(account);
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to add to favourite collection" });
     }
   };
@@ -134,11 +149,14 @@ export default (dependencies) => {
         throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
       }
       if (favouriteCollection !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json(favouriteCollection);
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to get favourite collection" });
     }
   };
@@ -158,11 +176,14 @@ export default (dependencies) => {
         throw new Error(`Invalid collection ${url.substr(request.url.indexOf('/') + 1)}`);
       }
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json();
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to delete from favourite collection" });
     }
   };
@@ -176,11 +197,14 @@ export default (dependencies) => {
       const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
       //output
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 201, accountId);
         response.status(201).json(account);
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to add to fantasy movies" });
     }
   };
@@ -193,11 +217,14 @@ export default (dependencies) => {
       const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
       //output
       if (fantasyMovies !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json(fantasyMovies);
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to get fantasy movies" });
     }
   };
@@ -212,14 +239,18 @@ export default (dependencies) => {
       //output
       if (account !== undefined) {
         if (movie !== undefined) {
+          processAndPersistLogs("info", request, 200, accountId);
           response.status(200).json(movie);
         } else {
+          processAndPersistLogs("error", request, 404, accountId);
           response.status(404).json({ message: `movie with id: ${movieId} not found` });
         }
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to get fantasy movie" });
     }
   };
@@ -233,11 +264,14 @@ export default (dependencies) => {
       const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
       //output
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json();
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to delete from fantasy movies" });
     }
   };
@@ -253,11 +287,14 @@ export default (dependencies) => {
       const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
       //output
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(201).json(account);
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to add cast to fantasy movies" });
     }
   }
@@ -273,11 +310,14 @@ export default (dependencies) => {
       const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
       //output
       if (account !== undefined) {
+        processAndPersistLogs("info", request, 200, accountId);
         response.status(200).json();
       } else {
+        processAndPersistLogs("error", request, 404, accountId);
         response.status(404).json({ message: `account with id: ${accountId} not found` });
       }
     } catch (err) {
+      processAndPersistLogs("error", request, 500, request.params.id);
       response.status(500).json({ message: "Failed to delete cast from fantasy movies" });
     }
   };
