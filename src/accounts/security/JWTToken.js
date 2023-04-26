@@ -11,4 +11,7 @@ export default class extends TokenManager {
   decode(accessToken) {
     return jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
   }
+  decodeLogs(accessToken) {
+    return jwt.verify(accessToken, process.env.LOGS_SECRET_KEY);
+  }
 }

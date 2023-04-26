@@ -1,12 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
-// import createGenresRouter from './src/genres';
 import createAccountsRouter from './src/accounts/routes';
 import createGenresRouter from './src/genres/routes';
 import createTvSeriesRouter from './src/tvSeries/routes';
 import buildDependencies from './src/config/dependencies';
 import createMoviesRouter from './src/movies/routes';
 import createActorsRouter from './src/actors/routes';
+import createLogsRouter from './src/logsProcessing/routes';
 import db from './src/config/db';
 import errorHandler from './src/utils/ErrorHandler';
 import { genres } from "./src//genres/genresData";
@@ -48,6 +48,8 @@ app.use('/api/tv', createTvSeriesRouter(dependencies));
 app.use('/api/actors', createActorsRouter(dependencies));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/logs', createLogsRouter(dependencies));
 
 app.use(errorHandler);
 
