@@ -131,7 +131,569 @@
 		},
 		{
 			"name": "Actors",
-			"item": []
+			"item": [
+				{
+					"name": "Get Actors: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Actors: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Actors: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Actors: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Actors: Test actors data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  pm.expect(jsonData.page).to.be.a(\"number\");",
+									"  pm.expect(jsonData.results).to.be.an(\"array\").length.lessThan(21);",
+									"  anActor=jsonData.results[0]",
+									"  pm.expect(anActor).to.have.property(\"id\");",
+									"  pm.expect(anActor).to.have.property(\"name\");",
+									"  pm.collectionVariables.set(\"actorId\",anActor.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actors: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Actors: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search Actors: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Search Actors: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Search Actors: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Search Actors: Test actors data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  pm.expect(jsonData.page).to.be.a(\"number\");",
+									"  pm.expect(jsonData.results).to.be.an(\"array\").length.lessThan(21);",
+									"  anActor=jsonData.results[0]",
+									"  pm.expect(anActor).to.have.property(\"id\");",
+									"  pm.expect(anActor).to.have.property(\"name\");",
+									"  pm.collectionVariables.set(\"actorId\",anActor.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/search?query=\"jason\"",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "\"jason\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Actors: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/search?query=\"jason\"",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "\"jason\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor by ID: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/{{actorId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"{{actorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor by ID: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Actor: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Actor: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Actor: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Actor: Test actor data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  anActor=jsonData",
+									"  pm.expect(anActor).to.have.property(\"id\");",
+									"  pm.expect(anActor).to.have.property(\"name\");",
+									"  pm.expect(anActor).to.have.property(\"gender\");",
+									"  pm.expect(anActor).to.have.property(\"biography\");",
+									"  pm.expect(anActor).to.have.property(\"also_known_as\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/{{actorId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"{{actorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor by ID: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/9999999",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"9999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor images: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Actor images: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Actor images: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Actor images: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Actor images: Test actor images data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  anActor=jsonData.profiles[0]",
+									"  pm.expect(anActor).to.have.property(\"aspect_ratio\");",
+									"  pm.expect(anActor).to.have.property(\"file_path\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/{{actorId}}/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"{{actorId}}",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor images: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/{{movieId}}/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"{{movieId}}",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Actor images: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/actors/9999999/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								"9999999",
+								"images"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Genres",
@@ -1245,7 +1807,614 @@
 		},
 		{
 			"name": "Tv Series",
-			"item": []
+			"item": [
+				{
+					"name": "Get Tv Series: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Tv Series: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Tv Series: Test tv series data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  pm.expect(jsonData.page).to.be.a(\"number\");",
+									"  pm.expect(jsonData.results).to.be.an(\"array\").length.lessThan(21);",
+									"  aTv=jsonData.results[0]",
+									"  pm.expect(aTv).to.have.property(\"id\");",
+									"  pm.expect(aTv).to.have.property(\"name\");",
+									"  pm.collectionVariables.set(\"tvId\",aTv.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series by ID: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/{{tvId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"{{tvId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series by ID: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Tv Series: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Tv Series: Test Tv Series data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  aTv=jsonData",
+									"  pm.expect(aTv).to.have.property(\"id\");",
+									"  pm.expect(aTv).to.have.property(\"name\");",
+									"  pm.expect(aTv).to.have.property(\"overview\");",
+									"  pm.expect(aTv).to.have.property(\"first_air_date\");",
+									"  pm.expect(aTv).to.have.property(\"original_name\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/{{tvId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"{{tvId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series by ID: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/9999999",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"9999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series similar: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/9999999/similar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"9999999",
+								"similar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series similar: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Tv Series similar: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series similar: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series similar: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Tv Series similar: Test similar movie data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  pm.expect(jsonData.page).to.be.a(\"number\");",
+									"  pm.expect(jsonData.results).to.be.an(\"array\").length.lessThan(21);",
+									"  aTv=jsonData.results[0]",
+									"  pm.expect(aTv).to.have.property(\"id\");",
+									"  pm.expect(aTv).to.have.property(\"name\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/100088/similar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"100088",
+								"similar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series similar: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/{{tvId}}/similar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"{{tvId}}",
+								"similar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series images: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Tv Series images: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series images: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Tv Series images: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Tv Series images: Test movie images data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  aTv=jsonData.backdrops[0]",
+									"  pm.expect(aTv).to.have.property(\"aspect_ratio\");",
+									"  pm.expect(aTv).to.have.property(\"file_path\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/{{tvId}}/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"{{tvId}}",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series images: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/{{tvId}}/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"{{tvId}}",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tv Series images: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tv/9999999/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"9999999",
+								"images"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -1311,6 +2480,14 @@
 		},
 		{
 			"key": "movieId",
+			"value": ""
+		},
+		{
+			"key": "actorId",
+			"value": ""
+		},
+		{
+			"key": "tvId",
 			"value": ""
 		}
 	]
