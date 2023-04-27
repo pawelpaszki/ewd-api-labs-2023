@@ -21,7 +21,7 @@ export default (dependencies) => {
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to get genre" });
+      response.status(500).json({ error: "Failed to get genre" });
     }
   };
   const listGenres = async (request, response, next) => {
@@ -33,7 +33,7 @@ export default (dependencies) => {
       response.status(200).json(genres);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to list genres" });
+      response.status(500).json({ error: "Failed to list genres" });
     }
   };
 

@@ -17,10 +17,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `actor with id: '${actorId}' not found` });
+        response.status(404).json({ error: `actor with id: '${actorId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get actor" });
+        response.status(500).json({ error: "failed to get actor" });
       }
     }
   };
@@ -35,7 +35,7 @@ export default (dependencies) => {
       response.status(200).json(actors);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "failed to find actors" });
+      response.status(500).json({ error: "failed to find actors" });
     }
   };
   const search = async (request, response, next) => {
@@ -49,7 +49,7 @@ export default (dependencies) => {
       response.status(200).json(actors);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "failed to search for actors" });
+      response.status(500).json({ error: "failed to search for actors" });
     }
   };
 
@@ -65,7 +65,7 @@ export default (dependencies) => {
       response.status(200).json(images);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "failed to get actor images" });
+      response.status(500).json({ error: "failed to get actor images" });
     }
   };
 

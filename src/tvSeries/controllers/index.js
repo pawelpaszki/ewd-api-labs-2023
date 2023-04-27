@@ -17,10 +17,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `tv series with id: '${movieId}' not found` });
+        response.status(404).json({ error: `tv series with id: '${movieId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get tv series" });
+        response.status(500).json({ error: "failed to get tv series" });
       }
     }
   };
@@ -35,7 +35,7 @@ export default (dependencies) => {
       response.status(200).json(tvSeries);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "failed to find tv series" });
+      response.status(500).json({ error: "failed to find tv series" });
     }
   };
 
@@ -54,7 +54,7 @@ export default (dependencies) => {
       response.status(200).json(movies);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: `failed to find tv series similar to movie with id: '${movieId}` });
+      response.status(500).json({ error: `failed to find tv series similar to movie with id: '${movieId}` });
     }
   };
 
@@ -71,10 +71,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `tv series with id: '${movieId}' not found` });
+        response.status(404).json({ error: `tv series with id: '${movieId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get tv series images" });
+        response.status(500).json({ error: "failed to get tv series images" });
       }
     }
   };

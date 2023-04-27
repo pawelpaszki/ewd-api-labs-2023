@@ -1569,22 +1569,22 @@ components:
         favouriteActors: [12345, 334565]
     404AccountNotFoundExample:
       value:
-        "message": "account with id: {accountId} not found"
+        "error": "account with id: {accountId} not found"
     404GenreNotFoundExample:
       value:
-        "message": "genre with id: 12345 not found"
+        "error": "genre with id: 12345 not found"
     404MovieNotFoundExample:
       value:
-        "message": "movie with id: 12345 not found"
+        "error": "movie with id: 12345 not found"
     404TvSeriesNotFoundExample:
       value:
-        "message": "tv series with id: 12345 not found"
+        "error": "tv series with id: 12345 not found"
     404ActorNotFoundExample:
       value:
-        "message": "actor with id: 12345 not found"
+        "error": "actor with id: 12345 not found"
     401AccountAuthenticationExample:
       value:
-        "message": "Unauthorised"
+        "error": "Unauthorised"
     AuthenticationPayloadExample:
       value:
         email: validemail@gmail.com
@@ -1623,13 +1623,13 @@ components:
         "error": "Error: Invalid Data \"email\" is required"
     500AccountCreationExample:
       value:
-        "message": "Failed to create account"
+        "error": "Failed to create account"
     401AccountVerificationExample:
       value:
-        "message": "Failed to verify requester identity"
+        "error": "Failed to verify requester identity"
     GenericErrorExample:
       value:
-        "message": "Failed to perform operation"
+        "error": "Failed to perform operation"
     SecurityTokenExample:
       value:
         "BEARER $2a$10$YFxmsGkV./.ENDp7.in9xO53QNicTqlkZC0I3S0TWJU6dbGC2DgAb"
@@ -2143,7 +2143,7 @@ components:
     GenericError:
       - type: object
         properties:
-          message:
+          error:
             type: string
     FavouriteTmdbResources:
       - type: array
@@ -2167,7 +2167,7 @@ components:
     AccountVerificationError:
       - type: string
         properties:
-          message:
+          error:
             type: string
     GenreList:
       - type: object

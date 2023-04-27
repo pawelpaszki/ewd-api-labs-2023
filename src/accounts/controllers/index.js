@@ -15,8 +15,9 @@ export default (dependencies) => {
       processAndPersistLogs("info", request, 200, accountId);
       response.status(200).json({ token: `BEARER ${token}`, accountId: accountId });
     } catch (error) {
+      console.log(error);
       processAndPersistLogs("error", request, 401, "");
-      response.status(401).json({ message: 'Unauthorised' });
+      response.status(401).json({ error: 'Unauthorised' });
     }
   };
 
@@ -34,7 +35,7 @@ export default (dependencies) => {
     } catch (err) {
       processAndPersistLogs("error", request, 401, "");
       //Token Verification Failed
-      response.status(401).json({ message: "Failed to verify requester identity" });
+      response.status(401).json({ error: "Failed to verify requester identity" });
     }
   };
   const createAccount = async (request, response, next) => {
@@ -48,7 +49,7 @@ export default (dependencies) => {
       response.status(201).json(account);
     } catch (e) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to create account" });
+      response.status(500).json({ error: "Failed to create account" });
     }
   };
   const getAccount = async (request, response, next) => {
@@ -65,11 +66,11 @@ export default (dependencies) => {
       } else {
         //output
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (error) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to get an account" });
+      response.status(500).json({ error: "Failed to get an account" });
     }
   };
   const listAccounts = async (request, response, next) => {
@@ -81,7 +82,7 @@ export default (dependencies) => {
       response.status(200).json(accounts);
     } catch (error) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to list accounts" });
+      response.status(500).json({ error: "Failed to list accounts" });
     }
   };
   const updateAccount = async (request, response, next) => {
@@ -98,11 +99,11 @@ export default (dependencies) => {
         response.status(200).json(persistedAccount);
       } else {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (error) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "Failed to update accounts" });
+      response.status(500).json({ error: "Failed to update accounts" });
     }
   };
   const addToFavouriteCollection = async (request, response, next) => {
@@ -126,11 +127,11 @@ export default (dependencies) => {
         response.status(200).json(account);
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to add to favourite collection" });
+      response.status(500).json({ error: "Failed to add to favourite collection" });
     }
   };
   const getFavouriteCollection = async (request, response, next) => {
@@ -153,11 +154,11 @@ export default (dependencies) => {
         response.status(200).json(favouriteCollection);
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to get favourite collection" });
+      response.status(500).json({ error: "Failed to get favourite collection" });
     }
   };
   const deleteFromFavouriteCollection = async (request, response, next) => {
@@ -180,11 +181,11 @@ export default (dependencies) => {
         response.status(200).json();
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to delete from favourite collection" });
+      response.status(500).json({ error: "Failed to delete from favourite collection" });
     }
   };
   const addToFantasyMovies = async (request, response, next) => {
@@ -201,11 +202,11 @@ export default (dependencies) => {
         response.status(201).json(account);
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to add to fantasy movies" });
+      response.status(500).json({ error: "Failed to add to fantasy movies" });
     }
   };
   const getFantasyMovies = async (request, response, next) => {
@@ -221,11 +222,11 @@ export default (dependencies) => {
         response.status(200).json(fantasyMovies);
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to get fantasy movies" });
+      response.status(500).json({ error: "Failed to get fantasy movies" });
     }
   };
   const getFantasyMovie = async (request, response, next) => {
@@ -243,15 +244,15 @@ export default (dependencies) => {
           response.status(200).json(movie);
         } else {
           processAndPersistLogs("error", request, 404, accountId);
-          response.status(404).json({ message: `movie with id: ${movieId} not found` });
+          response.status(404).json({ error: `movie with id: ${movieId} not found` });
         }
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to get fantasy movie" });
+      response.status(500).json({ error: "Failed to get fantasy movie" });
     }
   };
   const deleteFromFantasyMovies = async (request, response, next) => {
@@ -268,11 +269,11 @@ export default (dependencies) => {
         response.status(200).json();
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to delete from fantasy movies" });
+      response.status(500).json({ error: "Failed to delete from fantasy movies" });
     }
   };
 
@@ -291,11 +292,11 @@ export default (dependencies) => {
         response.status(201).json(account);
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to add cast to fantasy movies" });
+      response.status(500).json({ error: "Failed to add cast to fantasy movies" });
     }
   }
 
@@ -314,11 +315,11 @@ export default (dependencies) => {
         response.status(200).json();
       } else {
         processAndPersistLogs("error", request, 404, accountId);
-        response.status(404).json({ message: `account with id: ${accountId} not found` });
+        response.status(404).json({ error: `account with id: ${accountId} not found` });
       }
     } catch (err) {
       processAndPersistLogs("error", request, 500, request.params.id);
-      response.status(500).json({ message: "Failed to delete cast from fantasy movies" });
+      response.status(500).json({ error: "Failed to delete cast from fantasy movies" });
     }
   };
 

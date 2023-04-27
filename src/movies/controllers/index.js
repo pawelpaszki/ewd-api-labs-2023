@@ -17,10 +17,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `movie with id: '${movieId}' not found` });
+        response.status(404).json({ error: `movie with id: '${movieId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get movie" });
+        response.status(500).json({ error: "failed to get movie" });
       }
     }
   };
@@ -35,7 +35,7 @@ export default (dependencies) => {
       response.status(200).json(movies);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: "failed to find movies" });
+      response.status(500).json({ error: "failed to find movies" });
     }
   };
 
@@ -52,7 +52,7 @@ export default (dependencies) => {
       response.status(200).json(movies);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: `failed to find movies similar to movie with id: '${movieId}` });
+      response.status(500).json({ error: `failed to find movies similar to movie with id: '${movieId}` });
     }
   };
 
@@ -67,7 +67,7 @@ export default (dependencies) => {
       response.status(200).json(movies);
     } catch (err) {
       processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ message: `failed to get upcoming movies` });
+      response.status(500).json({ error: `failed to get upcoming movies` });
     }
   };
 
@@ -84,10 +84,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `movie with id: '${movieId}' not found` });
+        response.status(404).json({ error: `movie with id: '${movieId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get movie images" });
+        response.status(500).json({ error: "failed to get movie images" });
       }
     }
   };
@@ -105,10 +105,10 @@ export default (dependencies) => {
     } catch (err) {
       if (err.toString().includes("404")) {
         processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ message: `movie with id: '${movieId}' not found` });
+        response.status(404).json({ error: `movie with id: '${movieId}' not found` });
       } else {
         processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ message: "failed to get movie reviews" });
+        response.status(500).json({ error: "failed to get movie reviews" });
       }
     }
   };

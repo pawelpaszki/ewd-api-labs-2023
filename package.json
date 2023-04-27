@@ -4,7 +4,8 @@
   "description": "ewd labs 2023",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js",
+    "test": "newman run ./tests/movies_collection.json -e ./tests/movies_environment.json --reporters htmlextra,cli --reporter-htmlextra-export ./tests/reports/report.html"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,8 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "newman": "^5.3.2",
+    "newman-reporter-htmlextra": "^1.22.11",
     "nodemon": "^2.0.21"
   },
   "dependencies": {
