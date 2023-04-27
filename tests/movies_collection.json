@@ -16,10 +16,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
-									"// pm.collectionVariables.set(\"lastName\",pm.variables.replaceIn('{{$randomLastName}}'))",
-									"// pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))",
-									"// pm.collectionVariables.set(\"password\",\"Password1%\")"
+									"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
+									"pm.collectionVariables.set(\"lastName\",pm.variables.replaceIn('{{$randomLastName}}'))",
+									"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}').toLowerCase())",
+									"pm.collectionVariables.set(\"password\",\"Password1%\")"
 								],
 								"type": "text/javascript"
 							}
@@ -122,6 +122,1271 @@
 								"accounts",
 								"security",
 								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Accounts: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Accounts: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Accounts: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Accounts: Test accounts data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"array\");",
+									"  anAccount=jsonData[0]",
+									"  pm.expect(anAccount).to.have.property(\"id\");",
+									"  pm.expect(anAccount).to.have.property(\"firstName\");",
+									"  pm.expect(anAccount).to.have.property(\"lastName\");",
+									"  pm.expect(anAccount).to.have.property(\"email\");",
+									"  pm.expect(anAccount).to.have.property(\"password\");",
+									"  pm.collectionVariables.set(\"accountId\",anAccount.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account by ID: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account by ID: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Account: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Account: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Account: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Account: Test account data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  anAccount=jsonData",
+									"  pm.expect(anAccount).to.have.property(\"id\");",
+									"  pm.expect(anAccount).to.have.property(\"firstName\");",
+									"  pm.expect(anAccount).to.have.property(\"lastName\");",
+									"  pm.expect(anAccount).to.have.property(\"email\");",
+									"  pm.expect(anAccount).to.have.property(\"password\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account by ID: not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/dk39dk39dk39",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"dk39dk39dk39"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite movies: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Accounts favourite movies: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite movies: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite movies: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Accounts favourite movies: Test account data of response\", () => {",
+									"  favouriteMovies=jsonData",
+									"  pm.expect(favouriteMovies).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite movies: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite movies: account not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/dk39dk39dk39/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"dk39dk39dk39",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite movies: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"640146\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite movies: invalid id format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite movies: valid format and token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add to Accounts favourite movies: Successful Response\",()=>pm.response.to.have.status(200))",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Add Account: Response Object contains correct properties\",()=>{",
+									"    pm.expect(jsonData).to.be.an(\"Object\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");",
+									"    pm.collectionVariables.set(\"favouriteMovieId\",jsonData.favouriteMovies[0]);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"640146\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite movies: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies/{{favouriteMovieId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies",
+								"{{favouriteMovieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite movies: success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add to Accounts favourite movies: Successful Response\",()=>pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_movies/{{favouriteMovieId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_movies",
+								"{{favouriteMovieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite tv series: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite tv series: account not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/dk39dk39dk39/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"dk39dk39dk39",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite tv series: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Accounts favourite tv series: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite tv series: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite tv series: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Accounts favourite tv series: Test account data of response\", () => {",
+									"  favouriteTv=jsonData",
+									"  pm.expect(favouriteTv).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite tv series: valid format and token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add to Accounts favourite movies: Successful Response\",()=>pm.response.to.have.status(200))",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Add Account: Response Object contains correct properties\",()=>{",
+									"    pm.expect(jsonData).to.be.an(\"Object\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");",
+									"    pm.collectionVariables.set(\"favouriteTvId\",jsonData.favouriteTvSeries[0]);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"82856\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite tv series: invalid id format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite tv series: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"640146\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite tv series: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv/{{favouriteTvId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv",
+								"{{favouriteTvId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite tv series: success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete from Account favourite movies: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_tv/{{favouriteTvId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_tv",
+								"{{favouriteTvId}}"
 							]
 						}
 					},
@@ -484,7 +1749,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -646,7 +1911,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -1266,7 +2531,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -1593,7 +2858,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -1649,7 +2914,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -2040,7 +3305,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -2095,7 +3360,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -2367,7 +3632,7 @@
 								"exec": [
 									"  const jsonData = pm.response.json();",
 									"",
-									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
@@ -2488,6 +3753,22 @@
 		},
 		{
 			"key": "tvId",
+			"value": ""
+		},
+		{
+			"key": "accountId",
+			"value": ""
+		},
+		{
+			"key": "updatedLastName",
+			"value": ""
+		},
+		{
+			"key": "favouriteMovieId",
+			"value": ""
+		},
+		{
+			"key": "favouriteTvId",
 			"value": ""
 		}
 	]
