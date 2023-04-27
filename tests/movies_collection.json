@@ -854,7 +854,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Add to Accounts favourite movies: Successful Response\",()=>pm.response.to.have.status(200))"
+									"pm.test(\"Delete from Accounts favourite movies: Successful Response\",()=>pm.response.to.have.status(200))"
 								],
 								"type": "text/javascript"
 							}
@@ -1387,6 +1387,498 @@
 								"{{accountId}}",
 								"favourite_tv",
 								"{{favouriteTvId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite actors: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Accounts favourite actors: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite actors: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Accounts favourite actors: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Accounts favourite actors: Test account data of response\", () => {",
+									"  favouriteActors=jsonData",
+									"  pm.expect(favouriteActors).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite actors: account not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Not Found: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(404);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/dk39dk39dk39/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"dk39dk39dk39",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts favourite actors: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite actors: valid format and token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add to Accounts favourite actors: Successful Response\",()=>pm.response.to.have.status(200))",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Add Account: Response Object contains correct properties\",()=>{",
+									"    pm.expect(jsonData).to.be.an(\"Object\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");",
+									"    pm.collectionVariables.set(\"favouriteActorId\",jsonData.favouriteMovies[0]);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"640146\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite actors: invalid id format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Accounts favourite actors: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"640146\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite actors: success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete from Accounts favourite actors: Successful Response\",()=>pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors/{{favouriteActorId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors",
+								"{{favouriteActorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Accounts favourite actors: invalid token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"  ",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/accounts/{{accountId}}/favourite_actors/{{favouriteActorId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"favourite_actors",
+								"{{favouriteActorId}}"
 							]
 						}
 					},
@@ -3769,6 +4261,10 @@
 		},
 		{
 			"key": "favouriteTvId",
+			"value": ""
+		},
+		{
+			"key": "favouriteActorId",
 			"value": ""
 		}
 	]
