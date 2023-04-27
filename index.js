@@ -31,7 +31,7 @@ console.log(`Seeding genres to database`);
       await dependencies.genresRepository.persist({tmdbID: genres.genres[index].id, name: genres.genres[index].name});
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 })();
 

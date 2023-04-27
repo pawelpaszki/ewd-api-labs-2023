@@ -15,7 +15,6 @@ export default (dependencies) => {
       processAndPersistLogs("info", request, 200, accountId);
       response.status(200).json({ token: `BEARER ${token}`, accountId: accountId });
     } catch (error) {
-      console.log(error);
       processAndPersistLogs("error", request, 401, "");
       response.status(401).json({ error: 'Unauthorised' });
     }
