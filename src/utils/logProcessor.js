@@ -43,19 +43,31 @@ function getLogsAnalytics() {
       }
       if (!analytics.requestsCount.has(log.message.url)) {
         let stats = new Array();
-        stats.push({ method: log.message.method, count: 1 });
+        if (log.level === "info") {
+          stats.push({ method: log.message.method, successCount: 1, failureCount: 0 });
+        } else {
+          stats.push({ method: log.message.method, successCount: 0, failureCount: 1 });
+        }
         analytics.requestsCount.set(log.message.url, { "stats": stats });
       } else {
         let stats = analytics.requestsCount.get(log.message.url).stats;
         let endpointFound = false;
         stats.forEach(el => {
           if (el.method === log.message.method) {
-            el.count = el.count + 1;
+            if (log.level === "info") {
+              el.successCount = el.successCount + 1;
+            } else {
+              el.failureCount = el.failureCount + 1;
+            }
             endpointFound = true;
           }
         });
         if (!endpointFound) {
-          stats.push({ method: log.message.method, count: 1 });
+          if (log.level === "info") {
+            stats.push({ method: log.message.method, successCount: 1, failureCount: 0 });
+          } else {
+            stats.push({ method: log.message.method, successCount: 0, failureCount: 1 });
+          }
         }
         analytics.requestsCount.set(log.message.url, { "stats": stats });
       }
