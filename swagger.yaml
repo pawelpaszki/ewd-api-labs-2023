@@ -669,7 +669,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404AccountNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get fantasy movies
           content:
@@ -706,7 +706,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404AccountNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to delete from fantasy movies
           content:
@@ -747,7 +747,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404AccountNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get fantasy movie
           content:
@@ -799,7 +799,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404AccountNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to create fantasy movie cast
           content:
@@ -835,7 +835,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404AccountNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to delete member from favourite movies
           content:
@@ -910,7 +910,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404GenreNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get genre
           content:
@@ -981,7 +981,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404MovieNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get movie
           content:
@@ -1021,7 +1021,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404MovieNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to list similar movies
           content:
@@ -1062,7 +1062,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404MovieNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get movie images
           content:
@@ -1102,7 +1102,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404MovieNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get movie reviews
           content:
@@ -1206,7 +1206,7 @@ paths:
             application/json:
               examples:
                 403Example:
-                  $ref: '#/components/examples/404TvSeriesNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get tv series
           content:
@@ -1286,7 +1286,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404TvSeriesNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get tv series images
           content:
@@ -1389,7 +1389,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404ActorNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get ator
           content:
@@ -1428,7 +1428,7 @@ paths:
             application/json:
               examples:
                 404Example:
-                  $ref: '#/components/examples/404ActorNotFoundExample'
+                  $ref: '#/components/examples/404ResourceNotFoundExample'
         "500":
           description: Unable to get actor images
           content:
@@ -1569,19 +1569,10 @@ components:
         favouriteActors: [12345, 334565]
     404AccountNotFoundExample:
       value:
-        "error": "account with id: {accountId} not found"
-    404GenreNotFoundExample:
+        "error": "account not found"
+    404ResourceNotFoundExample:
       value:
-        "error": "genre with id: 12345 not found"
-    404MovieNotFoundExample:
-      value:
-        "error": "movie with id: 12345 not found"
-    404TvSeriesNotFoundExample:
-      value:
-        "error": "tv series with id: 12345 not found"
-    404ActorNotFoundExample:
-      value:
-        "error": "actor with id: 12345 not found"
+        "error": "resource not found"
     401AccountAuthenticationExample:
       value:
         "error": "Unauthorised"

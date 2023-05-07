@@ -1,11 +1,12 @@
 import Account from "../entities/Account";
+const CustomError = require('../../utils/errors/custom-error');
 
 export default {
   authenticate: async (email, password, { accountsRepository, authenticator, tokenManager }) => {
     const account = await accountsRepository.getByEmail(email);
     const result = await authenticator.compare(password, account.password);
     if (!result) {
-      throw new Error('Bad credentials');
+      throw new CustomError('UNAUTHORIZED', "");
     }
     const token = tokenManager.generate({ email: account.email });
     return { token: token, accountId: account.id };
@@ -15,8 +16,12 @@ export default {
     const account = new Account(undefined, firstName, lastName, email, password);
     return accountsRepository.persist(account);
   },
-  getAccount: (accountId, { accountsRepository }) => {
-    return accountsRepository.get(accountId);
+  getAccount: async (accountId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    if (account !== undefined) {
+      return account;
+    }
+    throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
   },
   find: ({ accountsRepository }) => {
     return accountsRepository.find();
@@ -37,7 +42,7 @@ export default {
       }
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   getFavouriteCollection: async (accountId, collectionName, { accountsRepository }) => {
@@ -45,7 +50,7 @@ export default {
     if (account !== undefined) {
       return account[collectionName];
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   deleteFromFavouriteCollection: async (accountId, collectionResourceId, collectionName, { accountsRepository }) => {
@@ -60,7 +65,7 @@ export default {
       }
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   addToFantasyMovies: async (accountId, title, overview, runtime, productionCompanies, genres, releaseDate, { accountsRepository }) => {
@@ -76,7 +81,7 @@ export default {
       });
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   getFantasyMovies: async (accountId, { accountsRepository }) => {
@@ -84,7 +89,7 @@ export default {
     if (account !== undefined) {
       return account.fantasyMovies;
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   getFantasyMovie: async (accountId, movieId, { accountsRepository }) => {
@@ -98,9 +103,13 @@ export default {
         }
         return true // must return true if doesn't break
       });
-      return { account: account, movie: m };
+      if (m !== undefined) {
+        return { account: account, movie: m };
+      } else {
+        throw new CustomError('RESOURCE_NOT_FOUND', accountId);
+      }
     } else {
-      return { account: undefined, movie: undefined };
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   deleteFromFantasyMovies: async (accountId, movieId, { accountsRepository }) => {
@@ -114,7 +123,7 @@ export default {
       }
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, { accountsRepository }) => {
@@ -132,7 +141,7 @@ export default {
       }
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   deleteFromFantasyMoviesCast: async (accountId, movieId, castId, { accountsRepository }) => {
@@ -150,15 +159,16 @@ export default {
       }
       return await accountsRepository.merge(account);
     } else {
-      return undefined;
+      throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
   verifyToken: async (token, { accountsRepository, tokenManager }) => {
-    const decoded = await tokenManager.decode(token);
-    const user = await accountsRepository.getByEmail(decoded.email);
-    if (!user) {
-      throw new Error('Bad token');
+    try {
+      const decoded = await tokenManager.decode(token);
+      const user = await accountsRepository.getByEmail(decoded.email);
+      return user.email;
+    } catch (error) {
+      throw new CustomError("BAD_TOKEN", "");
     }
-    return user.email;
   }
 };

@@ -8,7 +8,7 @@ import createMoviesRouter from './src/movies/routes';
 import createActorsRouter from './src/actors/routes';
 import createLogsRouter from './src/logsProcessing/routes';
 import db from './src/config/db';
-import errorHandler from './src/utils/ErrorHandler';
+import errorHandler from './src/utils/errors/handler.js';
 import { genres } from "./src//genres/genresData";
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';

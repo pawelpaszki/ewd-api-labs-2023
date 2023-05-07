@@ -1,11 +1,20 @@
 import axios from 'axios';
+import CustomError from '../../utils/errors/custom-error';
 
 export default {
   getTvSeries: async (movieId) => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/tv/${movieId}?api_key=${process.env.TMDB_KEY}`
-    );
-    return response.data;
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/tv/${movieId}?api_key=${process.env.TMDB_KEY}`
+      );
+      return response.data;
+    } catch (error) {
+      if (error.toString().includes("404")) {
+        throw new CustomError('RESOURCE_NOT_FOUND', "");
+      } else {
+        throw new CustomError('INTERNAL_ERROR', "");
+      }
+    }
   },
   find: async (query) => {
     const response = await axios.get(
@@ -20,9 +29,17 @@ export default {
     return response.data;
   },
   getMovieImages: async (movieId) => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/tv/${movieId}/images?api_key=${process.env.TMDB_KEY}`
-    );
-    return response.data;
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/tv/${movieId}/images?api_key=${process.env.TMDB_KEY}`
+      );
+      return response.data;
+    } catch (error) {
+      if (error.toString().includes("404")) {
+        throw new CustomError('RESOURCE_NOT_FOUND', "");
+      } else {
+        throw new CustomError('INTERNAL_ERROR', "");
+      }
+    }
   },
 };

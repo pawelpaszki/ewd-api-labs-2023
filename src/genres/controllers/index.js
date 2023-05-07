@@ -12,16 +12,10 @@ export default (dependencies) => {
       // Treatment
       const genre = await genreService.getGenre(id, dependencies);
       //output
-      if (genre !== undefined) {
-        processAndPersistLogs("info", request, 200, "");
-        response.status(200).json(genre);
-      } else {
-        processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({});
-      }
-    } catch (err) {
-      processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ error: "Failed to get genre" });
+      processAndPersistLogs("info", request, 200, "");
+      response.status(200).json(genre);
+    } catch (error) {
+      next(error);
     }
   };
   const listGenres = async (request, response, next) => {
@@ -31,9 +25,8 @@ export default (dependencies) => {
       //output
       processAndPersistLogs("info", request, 200, "");
       response.status(200).json(genres);
-    } catch (err) {
-      processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ error: "Failed to list genres" });
+    } catch (error) {
+      next(error);
     }
   };
 

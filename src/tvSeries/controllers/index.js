@@ -14,14 +14,8 @@ export default (dependencies) => {
       //output
       processAndPersistLogs("info", request, 200, "");
       response.status(200).json(tvSeries);
-    } catch (err) {
-      if (err.toString().includes("404")) {
-        processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ error: `tv series with id: '${movieId}' not found` });
-      } else {
-        processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ error: "failed to get tv series" });
-      }
+    } catch (error) {
+      next(error);
     }
   };
   const find = async (request, response, next) => {
@@ -33,9 +27,8 @@ export default (dependencies) => {
       //output
       processAndPersistLogs("info", request, 200, "");
       response.status(200).json(tvSeries);
-    } catch (err) {
-      processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ error: "failed to find tv series" });
+    } catch (error) {
+      next(error);
     }
   };
 
@@ -52,9 +45,8 @@ export default (dependencies) => {
       //output
       processAndPersistLogs("info", request, 200, "");
       response.status(200).json(movies);
-    } catch (err) {
-      processAndPersistLogs("error", request, 500, "");
-      response.status(500).json({ error: `failed to find tv series similar to movie with id: '${movieId}` });
+    } catch (error) {
+      next(error);
     }
   };
 
@@ -68,14 +60,8 @@ export default (dependencies) => {
       //output
       processAndPersistLogs("info", request, 200, "");
       response.status(200).json(images);
-    } catch (err) {
-      if (err.toString().includes("404")) {
-        processAndPersistLogs("error", request, 404, "");
-        response.status(404).json({ error: `tv series with id: '${movieId}' not found` });
-      } else {
-        processAndPersistLogs("error", request, 500, "");
-        response.status(500).json({ error: "failed to get tv series images" });
-      }
+    } catch (error) {
+      next(error);
     }
   };
 
