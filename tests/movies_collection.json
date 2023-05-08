@@ -3731,6 +3731,129 @@
 					"response": []
 				},
 				{
+					"name": "Get Recommended Movies: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(401);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favouriteMovies\": [868759]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/movies/recommended",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies",
+								"recommended"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recommended Movies: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Recommended Movies: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Recommended Movies: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Recommended Movies: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Recommended Movies: Test movie data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"array\")",
+									"  aMovie=jsonData[0]",
+									"  pm.expect(aMovie).to.have.property(\"id\");",
+									"  pm.expect(aMovie).to.have.property(\"title\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favouriteMovies\": [868759]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/movies/recommended",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies",
+								"recommended"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Upcoming Movies: invalid token",
 					"event": [
 						{
@@ -4606,6 +4729,129 @@
 							"path": [
 								"api",
 								"tv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recommended Tv Series: invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  const jsonData = pm.response.json();",
+									"",
+									"  pm.test(\"Invalid Token: Correct Response\", function () {",
+									"     pm.expect(pm.response.code).to.equal(401);",
+									"     pm.expect(jsonData).to.be.an(\"object\");",
+									"     pm.expect(jsonData).to.have.property(\"error\");",
+									"  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "bad_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favouriteMovies\": [100088]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/tv/recommended",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"recommended"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recommended Tv Series: valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get Recommended Tv series: Status code is 200\",  ()=> {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get Recommended Tv series: Content-Type is correct\", function () {",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');",
+									"});",
+									"",
+									"pm.test(\"Get Recommended Tv series: Response time is less than 400ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Get Recommended Tv series: Test movie data of response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"array\")",
+									"  aMovie=jsonData[0]",
+									"  pm.expect(aMovie).to.have.property(\"id\");",
+									"  pm.expect(aMovie).to.have.property(\"original_name\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favouriteMovies\": [100088]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/tv/recommended",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tv",
+								"recommended"
 							]
 						}
 					},
