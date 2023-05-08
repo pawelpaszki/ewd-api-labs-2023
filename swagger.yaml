@@ -952,6 +952,46 @@ paths:
                   $ref: '#/components/examples/GenericErrorExample'
       security:
       - BEARER: []
+  /api/movies/recommended:
+    post:
+      tags:
+      - movies
+      description: List recommended movies
+      operationId: listRecommendedMovies
+      requestBody:
+        description: favourite movies used to determine recommended movies
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteMoviesPayload'
+            examples:
+              FavouriteMoviesPayloadExample:
+                $ref: '#/components/examples/FavouriteMoviesPayloadExample'
+      responses:
+        "200":
+          description: Successfully list recommended Movies
+          content:
+            application/json:
+              examples:
+                RecommendedMovieListExample:
+                  $ref: '#/components/examples/RecommendedMovieListExample'
+        "401":
+          description: Validation error when attempting to retrieve recommended movies
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list movies
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
   /api/movies/:resource_id:
     get:
       tags:
@@ -1170,6 +1210,46 @@ paths:
                   $ref: '#/components/examples/401AccountVerificationExample'
         "500":
           description: Unable to list tv series
+          content:
+            application/json:
+              examples:
+                GenericErrorExample:
+                  $ref: '#/components/examples/GenericErrorExample'
+      security:
+      - BEARER: []
+  /api/tv/recommended:
+    post:
+      tags:
+      - tv series
+      description: List recommended tv series
+      operationId: listRecommendedTvSeries
+      requestBody:
+        description: favourite tv series used to determine recommended movies
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteMoviesPayload'
+            examples:
+              FavouriteTvSeriesPayloadExample:
+                $ref: '#/components/examples/FavouriteTvSeriesPayloadExample'
+      responses:
+        "200":
+          description: Successfully list recommended tv series
+          content:
+            application/json:
+              examples:
+                MovieListExample:
+                  $ref: '#/components/examples/RecommendedTvSeriesListExample'
+        "401":
+          description: Validation error when attempting to retrieve recommended tv series
+          content:
+            application/json:
+              examples:
+                401Example:
+                  $ref: '#/components/examples/401AccountVerificationExample'
+        "500":
+          description: Unable to list recommended tv series
           content:
             application/json:
               examples:
@@ -1598,6 +1678,12 @@ components:
         name: John Doe
         roleName: John Wick
         description: single living middle aged man taking vengeance on bad people
+    FavouriteMoviesPayloadExample:
+      value:
+        "favouriteMovies": [640146, 868759]
+    FavouriteTvSeriesPayloadExample:
+      value:
+        "favouriteMovies": [100088]
     AccountCreationExample:
       value:
         "id": "6447c3eb02fae8cac719672f"
@@ -1912,6 +1998,117 @@ components:
                 }
             ]
         }
+    RecommendedTvSeriesListExample:
+      value: |
+        [
+            {
+                "adult": false,
+                "backdrop_path": "/JrBiUtR2CwxZR5GMK5Z9dU7Wr4.jpg",
+                "genre_ids": [
+                    10765,
+                    10759,
+                    18
+                ],
+                "id": 19,
+                "origin_country": [
+                    "US"
+                ],
+                "original_language": "en",
+                "original_name": "Planet of the Apes",
+                "overview": "Two astronauts and a sympathetic chimp friend are fugitives in a future Earth dominated by a civilization of humanoid apes. \n\nBased on the 1968 Planet of the Apes film and its sequels, which were inspired by the novel of the same name by Pierre Boulle.",
+                "popularity": 10.64,
+                "poster_path": "/zxo5Vrd0oXgm9ZCz4r7Q3L8veWg.jpg",
+                "first_air_date": "1974-09-13",
+                "name": "Planet of the Apes",
+                "vote_average": 6.862,
+                "vote_count": 65
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/da5qFYz4JT1d4kTwbU1Gf15TRBD.jpg",
+                "genre_ids": [
+                    16,
+                    10765,
+                    10759,
+                    35
+                ],
+                "id": 44,
+                "origin_country": [
+                    "US"
+                ],
+                "original_language": "en",
+                "original_name": "Adventures of Sonic the Hedgehog",
+                "overview": "Follow the adventures of Sonic the Hedgehog, and his sidekick Tails, as they attempt to stop Dr. Robotnik and his array of robots from taking over the planet Mobius.",
+                "popularity": 11.838,
+                "poster_path": "/wMDixjRrrWtuOWf2La4Vb4a5QKw.jpg",
+                "first_air_date": "1993-09-06",
+                "name": "Adventures of Sonic the Hedgehog",
+                "vote_average": 6.5,
+                "vote_count": 81
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/dlDynz58qyEqrd3gzxqfYB2JiUW.jpg",
+                "genre_ids": [
+                    18,
+                    10759,
+                    10765
+                ],
+                "id": 184,
+                "origin_country": [
+                    "CA",
+                    "US"
+                ],
+                "original_language": "en",
+                "original_name": "Jeremiah",
+                "overview": "Jeremiah is an American television series starring Luke Perry and Malcolm-Jamal Warner that ran on the Showtime network from 2002 to 2004. The series takes place in a post-apocalyptic future where most of the adult population has been wiped out by a deadly virus.",
+                "popularity": 5.847,
+                "poster_path": "/yBaq79cbv8Lmhaa7ej3z6GOp9zK.jpg",
+                "first_air_date": "2002-03-03",
+                "name": "Jeremiah",
+                "vote_average": 6.981,
+                "vote_count": 53
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/w6mvtiWPuzfV5lPJAXA2sQ8xqBL.jpg",
+                "genre_ids": [
+                    10765,
+                    10759
+                ],
+                "id": 237,
+                "origin_country": [
+                    "US"
+                ],
+                "original_language": "en",
+                "original_name": "Mortal Kombat: Conquest",
+                "overview": "Kung Lao has triumphed in the Mortal Kombat tournament, defeating Shang Tsung and saving Earth Realm. Now, he must train a new generation of warriors for the next tournament. Meanwhile, an exiled Shang Tsung attempts to thwart Lao's efforts with the aid of supernatural warriors such as Scorpion and Sub-Zero.",
+                "popularity": 13.118,
+                "poster_path": "/tHICkzrorbw0EgTxreIyUfc1pca.jpg",
+                "first_air_date": "1998-10-03",
+                "name": "Mortal Kombat: Conquest",
+                "vote_average": 6.93,
+                "vote_count": 291
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/ltuy3np1zLbzchdwOCGQj1flKlo.jpg",
+                "genre_ids": [
+                    10764
+                ],
+                "id": 86479,
+                "origin_country": [],
+                "original_language": "en",
+                "original_name": "Ed Stafford: First Man Out",
+                "overview": "Ed Stafford takes on a series of head-to-head challenges against some of the biggest names in survival, risking life, limb, and reputation along the way. Over miles of hostile terrain in Asia, Ed and his opponents will face high stakes survival challenges as they race to reach a predetermined extraction point, in a bid to prove they are top of their game and be the first man out.",
+                "popularity": 7.797,
+                "poster_path": "/77rXDebsD4QaEbFsBLeysFrsl9i.jpg",
+                "first_air_date": "2019-01-31",
+                "name": "Ed Stafford: First Man Out",
+                "vote_average": 6.8,
+                "vote_count": 5
+            }
+        ]
     TvSeriesListExample:
       value: |
         {
@@ -2004,6 +2201,107 @@ components:
             "vote_average": 6.5,
             "vote_count": 1741
         }
+    RecommendedMovieListExample:
+      value: |
+        [
+            {
+                "adult": false,
+                "backdrop_path": null,
+                "genre_ids": [
+                    35,
+                    16
+                ],
+                "id": 989337,
+                "original_language": "en",
+                "original_title": "A Family Affair",
+                "overview": "Krazy Kat follows Ignatz Mouse and thinks about family as the latter takes his children out on a walk.",
+                "popularity": 0.6,
+                "poster_path": "/m8wRnMnwQ8X23yVF4OJ4gem7l7f.jpg",
+                "release_date": "1920-10-25",
+                "title": "A Family Affair",
+                "video": false,
+                "vote_average": 5,
+                "vote_count": 1
+            },
+            {
+                "adult": false,
+                "backdrop_path": null,
+                "genre_ids": [
+                    28,
+                    878
+                ],
+                "id": 38281,
+                "original_language": "en",
+                "original_title": "Atomic Rulers",
+                "overview": "Super criminals are planning to infiltrate Earth with mass nuclear destruction! Only Starman can defend civilization by thwarting evil!",
+                "popularity": 1.697,
+                "poster_path": "/bL8RRjaw1DOUbgSQ25Hfc2PTGly.jpg",
+                "release_date": "1965-01-01",
+                "title": "Atomic Rulers",
+                "video": false,
+                "vote_average": 3.8,
+                "vote_count": 6
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/iiNSeAjAbglRJNsobusROn6y0pf.jpg",
+                "genre_ids": [
+                    35,
+                    10749
+                ],
+                "id": 38303,
+                "original_language": "en",
+                "original_title": "You Again",
+                "overview": "History -- make that high school -- may repeat itself when Marni learns that Joanna, the mean girl from her past, is set to be her sister-in-law. Before the wedding bells toll, Marni must show her brother that a tiger doesn't change its stripes. On Marni's side is her mother, while Joanna's backed by her wealthy aunt.",
+                "popularity": 15.906,
+                "poster_path": "/9qI5JE6yjmtakTankuDOMZ1vgEx.jpg",
+                "release_date": "2010-09-24",
+                "title": "You Again",
+                "video": false,
+                "vote_average": 6.305,
+                "vote_count": 1146
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/9Z09HJ4NsT0booJJYaIkaroUdRI.jpg",
+                "genre_ids": [
+                    35,
+                    10749,
+                    10751
+                ],
+                "id": 38317,
+                "original_language": "en",
+                "original_title": "Zookeeper",
+                "overview": "Kindhearted Griffin Keyes is one of the best-loved caretakers at the Franklin Park Zoo, but since he is more comfortable with the animals than with females of his own species, his love life is lacking. When Griffin decides that the only way to get a girlfriend is to find a more-glamorous career, the animals panic. To keep him from leaving, they reveal their secret ability to talk and offer to teach him the rules of courtship, animal-style.",
+                "popularity": 19.061,
+                "poster_path": "/y3b4AYw8dr4hIKTfEAjxUxx0z8G.jpg",
+                "release_date": "2011-07-06",
+                "title": "Zookeeper",
+                "video": false,
+                "vote_average": 5.415,
+                "vote_count": 1466
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/9pamTKugDIa1YQD8k280au3NVKd.jpg",
+                "genre_ids": [
+                    80,
+                    35,
+                    28
+                ],
+                "id": 38322,
+                "original_language": "en",
+                "original_title": "Big Mommas: Like Father, Like Son",
+                "overview": "FBI agent Malcolm Turner and his 17-year-old son, Trent, go undercover at an all-girls performing arts school after Trent witnesses a murder. Posing as Big Momma and Charmaine, they must find the murderer before he finds them.",
+                "popularity": 24.303,
+                "poster_path": "/n1GSxFcDaZ6lMVf21M0KloPfuhu.jpg",
+                "release_date": "2011-02-16",
+                "title": "Big Mommas: Like Father, Like Son",
+                "video": false,
+                "vote_average": 5.516,
+                "vote_count": 1092
+            }
+        ]
     MovieListExample:
       value: |
         {
@@ -2287,6 +2585,16 @@ components:
           description:
             description: FantasyMovieCast description
             type: string
+    FavouriteMoviesPayload:
+      description: array of favourite movies IDs
+      required:
+        - favouriteMovies
+      properties:
+        favouriteMovies:
+          description: list of favourite movies TMDB ids
+          type: array
+          items:
+            type: integer
     AccountPayload:
       description: Schema for the request body sent to /api/accounts POST when creating an account
       required:
