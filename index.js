@@ -1,15 +1,15 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import createAccountsRouter from './src/accounts/routes';
-import createGenresRouter from './src/genres/routes';
-import createTvSeriesRouter from './src/tvSeries/routes';
-import buildDependencies from './src/config/dependencies';
-import createMoviesRouter from './src/movies/routes';
-import createActorsRouter from './src/actors/routes';
-import createLogsRouter from './src/logsProcessing/routes';
-import db from './src/config/db';
+import createAccountsRouter from './src/accounts/routes/index.js';
+import createGenresRouter from './src/genres/routes/index.js';
+import createTvSeriesRouter from './src/tvSeries/routes/index.js';
+import buildDependencies from './src/config/dependencies.js';
+import createMoviesRouter from './src/movies/routes/index.js';
+import createActorsRouter from './src/actors/routes/index.js';
+import createLogsRouter from './src/logsProcessing/routes/index.js';
+import db from './src/config/db.js';
 import errorHandler from './src/utils/errors/handler.js';
-import { genres } from "./src//genres/genresData";
+import { genres } from "./src//genres/genresData.js";
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 const swaggerDocument = YAML.load('./swagger.yaml')

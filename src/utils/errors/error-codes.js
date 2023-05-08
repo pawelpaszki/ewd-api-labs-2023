@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   UNAUTHORIZED: {
     statusCode: 401,
     error: 'Unauthorised',

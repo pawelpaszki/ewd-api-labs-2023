@@ -1,8 +1,8 @@
-import logger from "./logger";
-import { formatUrl } from "./urlFormatter";
-const fs = require('fs');
+import logger from "./logger.js";
+import formatUrl from "./urlFormatter.js";
+import fs from "fs";
 
-function processAndPersistLogs(level, request, status, accountId) {
+export function processAndPersistLogs(level, request, status, accountId) {
   let logObj = {method: request.method, url: formatUrl(request), status: status};
   if (accountId !== "") {
     logObj.accountId = accountId;
@@ -14,7 +14,7 @@ function processAndPersistLogs(level, request, status, accountId) {
   }
 }
 
-function getLogs() {
+export function getLogs() {
   const logs = [];
   const logsContents = fs.readFileSync('logs/api.log', 'utf-8');
   logsContents.split(/\r?\n/).forEach(line => {
@@ -25,7 +25,7 @@ function getLogs() {
   return logs;
 }
 
-function getLogsAnalytics() {
+export function getLogsAnalytics() {
   const logs = getLogs();
   let analytics = {
     totalRequests: logs.length,
@@ -75,5 +75,3 @@ function getLogsAnalytics() {
   }
   return analytics;
 }
-
-module.exports = { processAndPersistLogs, getLogsAnalytics };

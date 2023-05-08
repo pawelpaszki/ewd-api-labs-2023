@@ -1,6 +1,6 @@
 import express from 'express';
-import TvSeriesController from '../controllers';
-import AccountsController from '../../accounts/controllers';
+import TvSeriesController from '../controllers/index.js';
+import AccountsController from '../../accounts/controllers/index.js';
 
 const createTvSeriesRouter = (dependencies) => {
   const router = express.Router();

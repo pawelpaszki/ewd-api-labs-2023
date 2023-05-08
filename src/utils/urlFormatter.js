@@ -1,4 +1,4 @@
-function formatUrl(request) {
+export default function formatUrl(request) {
   const url = request.originalUrl.split('?')[0]; // make sure that the url query params are not included
   const nonReplaceableTokens = [
     "api",
@@ -32,5 +32,3 @@ function formatUrl(request) {
   parsedUrl = parsedUrl.slice(0, -1); // remove trailing slash
   return parsedUrl;
 }
-
-module.exports = { formatUrl };

@@ -1,4 +1,4 @@
-import AccountRepository from './Repository';
+import AccountRepository from './Repository.js';
 
 export default class extends AccountRepository {
 

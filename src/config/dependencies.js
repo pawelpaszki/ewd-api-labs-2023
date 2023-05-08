@@ -1,9 +1,9 @@
-import AccountsRepositoryInMemory from '../accounts/repositories/InMemoryRepository';
-import AccountsRepositoryMongo from '../accounts/repositories/MongoAccountRepository';
-import GenresRepositoryMongo from '../genres/repositories/MongoGenreRepository';
-import AccountSchema from '../accounts/validators';
-import Authenticator from '../accounts/security/BCryptAuthenticator';
-import TokenManager from '../accounts/security/JWTToken';
+import AccountsRepositoryInMemory from '../accounts/repositories/InMemoryRepository.js';
+import AccountsRepositoryMongo from '../accounts/repositories/MongoAccountRepository.js';
+import GenresRepositoryMongo from '../genres/repositories/MongoGenreRepository.js';
+import AccountSchema from '../accounts/validators/index.js';
+import Authenticator from '../accounts/security/BCryptAuthenticator.js';
+import TokenManager from '../accounts/security/JWTToken.js';
 
 const buildDependencies = () => {
   const dependencies = {

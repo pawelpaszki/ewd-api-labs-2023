@@ -1,4 +1,4 @@
-import logsProcessingService from "./../services";
+import logsProcessingService from "./../services/index.js";
 
 export default (dependencies) => {
 
