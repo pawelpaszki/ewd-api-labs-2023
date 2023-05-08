@@ -32,6 +32,20 @@ export default (dependencies) => {
     }
   };
 
+  const findRecommended = async (request, response, next) => {
+    try {
+      //input
+      const { favouriteMovies } = request.body;
+      // Treatment
+      const movies = await tvSeriesService.findRecommended(favouriteMovies, dependencies);
+      //output
+      processAndPersistLogs("info", request, 200, "");
+      response.status(200).json(movies);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   const findSimilar = async (request, response, next) => {
     //input
     const movieId = request.params.resource_id;
@@ -69,6 +83,7 @@ export default (dependencies) => {
     getTvSeries,
     find,
     findSimilar,
+    findRecommended,
     getMovieImages
   };
 };

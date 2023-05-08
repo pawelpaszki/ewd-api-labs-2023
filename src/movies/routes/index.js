@@ -20,6 +20,9 @@ const createMoviesRouter = (dependencies) => {
   router.route('/upcoming')
     .get(moviesController.getUpcomingMovies);
 
+  router.route('/recommended')
+    .post(moviesController.findRecommended);
+
   router.route('/:resource_id')
     .get(moviesController.getMovie);
 

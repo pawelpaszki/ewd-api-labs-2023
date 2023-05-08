@@ -13,6 +13,7 @@ function formatUrl(request) {
     "accounts",
     "security",
     "token",
+    "recommended",
     "favourite_movies",
     "favourite_tv",
     "favourite_actors",

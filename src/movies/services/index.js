@@ -22,6 +22,24 @@ export default {
     );
     return response.data;
   },
+  findRecommended: async (favouriteMovies) => {
+    let recommended = [];
+    try {
+      for (let index = 0; index < favouriteMovies.length; index++) {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${favouriteMovies[index]}/similar?api_key=${process.env.TMDB_KEY}&language=en-US&include_adult=false&include_video=false`
+        );
+        if (response.data.results.length > 5) {
+          for (let j = 0; j < 5; j++) {
+            recommended.push(response.data.results[j]);
+          }
+        }
+      }
+      return recommended;
+    } catch (error) {
+      throw new CustomError('INTERNAL_ERROR', "");
+    }
+  },
   findSimilar: async (movieId, query) => {
     try {
       const response = await axios.get(
