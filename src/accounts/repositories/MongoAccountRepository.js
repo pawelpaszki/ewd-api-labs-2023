@@ -10,7 +10,7 @@ export default class extends AccountRepository {
       name: String,
       roleName: String,
       description: String,
-      // avatar
+      avatar: String
     });
     const fantasyMovieSchema = new mongoose.Schema({
       title: String,

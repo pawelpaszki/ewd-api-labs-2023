@@ -127,7 +127,7 @@ export default {
       throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
-  addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, { accountsRepository }) => {
+  addToFantasyMoviesCast: async (accountId, movieId, name, roleName, description, avatar, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
     if (account !== undefined) {
       for (var i = account.fantasyMovies.length - 1; i >= 0; i--) {
@@ -135,7 +135,8 @@ export default {
           account.fantasyMovies[i].cast.push({
             name: name,
             roleName: roleName,
-            description: description
+            description: description,
+            avatar: avatar
           })
           break;
         }
