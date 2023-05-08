@@ -150,9 +150,9 @@ export default (dependencies) => {
       // Input
       const accountId = request.params.id;
       await validateParams(request, next);
-      const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
+      const { title, overview, runtime, moviePoster, productionCompanies, genres, releaseDate } = request.body;
       // Treatment
-      const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
+      const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, moviePoster, productionCompanies, genres, releaseDate, dependencies);
       //output
       processAndPersistLogs("info", request, 201, accountId);
       response.status(201).json(account);

@@ -16,7 +16,7 @@ export default class extends AccountRepository {
       title: String,
       overview: String,
       runtime: Number,
-      // moviePoster
+      moviePoster: String,
       productionCompanies: [String],
       genres: [String],
       releaseDate: String,

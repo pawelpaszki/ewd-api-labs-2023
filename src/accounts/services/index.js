@@ -68,13 +68,14 @@ export default {
       throw new CustomError('ACCOUNT_NOT_FOUND', accountId);
     }
   },
-  addToFantasyMovies: async (accountId, title, overview, runtime, productionCompanies, genres, releaseDate, { accountsRepository }) => {
+  addToFantasyMovies: async (accountId, title, overview, runtime, moviePoster, productionCompanies, genres, releaseDate, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
     if (account !== undefined) {
       account.fantasyMovies.push({
         title: title,
         overview: overview,
         runtime: runtime,
+        moviePoster: moviePoster,
         productionCompanies: productionCompanies,
         genres: genres,
         releaseDate: releaseDate

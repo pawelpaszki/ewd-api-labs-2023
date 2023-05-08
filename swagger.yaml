@@ -1668,10 +1668,11 @@ components:
         password: Password1%
     FantasyMoviePayloadExample:
       value:
-        title: 
-        runtime: 
-        productionCompanies: 
-        genres: 
+        title: title
+        runtime: 122
+        moviePoster: valid.url
+        productionCompanies: sony, pixar
+        genres: Western
         releaseDate: "Tue 25 Apr 2022 15:17:53 UTC"
     FantasyMovieCastPayloadExample:
       value:
@@ -2534,6 +2535,7 @@ components:
           - _id
           - title
           - runtime
+          - moviePoster
           - productionCompanies
           - genres
           - releaseDate
@@ -2547,6 +2549,9 @@ components:
           runtime:
             description: FantasyMovie runtime in minutes (between 1 and 600 - both incl)
             type: integer
+          moviePoster:
+            description: FantasyMovie poster url
+            type: string
           productionCompanies:
             type: array
             description: array of FantasyMovie production companies
@@ -2622,6 +2627,7 @@ components:
       required:
         - title
         - runtime
+        - moviePoster
         - productionCompanies
         - genres
         - releaseDate
@@ -2632,6 +2638,9 @@ components:
         runtime:
           description: FantasyMovie runtime in minutes (between 1 and 600 - both incl)
           type: integer
+        moviePoster:
+          description: FantasyMovie poster url
+          type: string
         productionCompanies:
           type: array
           description: array of FantasyMovie production companies
