@@ -8,7 +8,7 @@ export default (dependencies) => {
     //input
     const movieId = request.params.resource_id;
     try {
-      validateParams(request);
+      validateParams(request, next);
       // Treatment
       const tvSeries = await tvSeriesService.getTvSeries(movieId, dependencies);
       //output
@@ -38,7 +38,7 @@ export default (dependencies) => {
     try {
       //input
       const movieId = request.params.resource_id;
-      validateParams(request);
+      validateParams(request, next);
       const query = request.url.substr(request.url.indexOf('?') + 1);
       // Treatment
       const movies = await tvSeriesService.findSimilar(movieId, query, dependencies);
@@ -54,7 +54,7 @@ export default (dependencies) => {
     //input
     const movieId = request.params.resource_id;
     try {
-      validateParams(request);
+      validateParams(request, next);
       // Treatment
       const images = await tvSeriesService.getMovieImages(movieId, dependencies);
       //output

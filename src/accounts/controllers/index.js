@@ -52,7 +52,7 @@ export default (dependencies) => {
     try {
       //input
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       // Treatment
       const account = await accountService.getAccount(accountId, dependencies);
       processAndPersistLogs("info", request, 200, accountId);
@@ -76,7 +76,7 @@ export default (dependencies) => {
     try {
       // Input
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       const { firstName, lastName, email, password } = request.body;
       // Treatment
       const account = await accountService.getAccount(id, dependencies);
@@ -91,7 +91,7 @@ export default (dependencies) => {
     try {
       let account = undefined;
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       const url = request.url.toString();
       const { id } = request.body;
       if (url.includes("movies")) {
@@ -112,7 +112,7 @@ export default (dependencies) => {
       let favouriteCollection = undefined;
       const url = request.url.toString();
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       if (url.includes("movies")) {
         favouriteCollection = await accountService.getFavouriteCollection(accountId, favouriteMoviesCollection, dependencies);
       } else if (url.includes("tv")) {
@@ -149,7 +149,7 @@ export default (dependencies) => {
     try {
       // Input
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       const { title, overview, runtime, productionCompanies, genres, releaseDate } = request.body;
       // Treatment
       const account = await accountService.addToFantasyMovies(accountId, title, overview, runtime, productionCompanies, genres, releaseDate, dependencies);
@@ -164,7 +164,7 @@ export default (dependencies) => {
     try {
       // Input
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       // Treatment
       const fantasyMovies = await accountService.getFantasyMovies(accountId, dependencies);
       //output
@@ -179,7 +179,7 @@ export default (dependencies) => {
       // Input
       const movieId = request.params.movie_id;
       const accountId = request.params.id;
-      await validateParams(request);
+      await validateParams(request, next);
       // Treatment
       const { account, movie } = await accountService.getFantasyMovie(accountId, movieId, dependencies);
       //output
@@ -194,7 +194,7 @@ export default (dependencies) => {
       // Input
       const accountId = request.params.id;
       const movieId = request.params.movie_id;
-      await validateParams(request);
+      await validateParams(request, next);
       // Treatment
       const account = await accountService.deleteFromFantasyMovies(accountId, movieId, dependencies);
       //output
@@ -210,7 +210,7 @@ export default (dependencies) => {
       // Input
       const accountId = request.params.id;
       const movieId = request.params.movie_id;
-      await validateParams(request);
+      await validateParams(request, next);
       const { name, roleName, description } = request.body;
       // Treatment
       const account = await accountService.addToFantasyMoviesCast(accountId, movieId, name, roleName, description, dependencies);
@@ -228,7 +228,7 @@ export default (dependencies) => {
       const accountId = request.params.id;
       const movieId = request.params.movie_id;
       const castId = request.params.cast_id;
-      await validateParams(request);
+      await validateParams(request, next);
       // Treatment
       const account = await accountService.deleteFromFantasyMoviesCast(accountId, movieId, castId, dependencies);
       //output

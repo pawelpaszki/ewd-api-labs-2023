@@ -8,7 +8,7 @@ export default (dependencies) => {
     //input
     const actorId = request.params.resource_id;
     try {
-      validateParams(request);
+      validateParams(request, next);
       // Treatment
       const actor = await actorsService.getActor(actorId, dependencies);
       //output
@@ -49,7 +49,7 @@ export default (dependencies) => {
     //input
     const personId = request.params.resource_id;
     try {
-      validateParams(request);
+      validateParams(request, next);
       // Treatment
       const images = await actorsService.getPersonImages(personId, dependencies);
       //output

@@ -8,7 +8,7 @@ export default (dependencies) => {
     try {
       //input
       const id = request.params.genre_id;
-      validateParams(request);
+      validateParams(request, next);
       // Treatment
       const genre = await genreService.getGenre(id, dependencies);
       //output

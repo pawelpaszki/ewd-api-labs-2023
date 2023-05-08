@@ -660,7 +660,7 @@
 									"  const jsonData = pm.response.json();",
 									"  ",
 									"  pm.test(\"Invalid Token: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(pm.response.code).to.equal(400);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -1153,7 +1153,7 @@
 									"  const jsonData = pm.response.json();",
 									"  ",
 									"  pm.test(\"Invalid Token: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(pm.response.code).to.equal(400);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -1647,7 +1647,7 @@
 									"  const jsonData = pm.response.json();",
 									"  ",
 									"  pm.test(\"Invalid Token: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(pm.response.code).to.equal(400);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -2325,7 +2325,7 @@
 									"  const jsonData = pm.response.json();",
 									"  ",
 									"  pm.test(\"Invalid Token: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403]);",
+									"     pm.expect(pm.response.code).to.equal(400);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -3344,7 +3344,7 @@
 									"  const jsonData = pm.response.json();",
 									"",
 									"  pm.test(\"Not Found: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -4019,7 +4019,7 @@
 									"  const jsonData = pm.response.json();",
 									"",
 									"  pm.test(\"Invalid Token: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
@@ -4793,7 +4793,7 @@
 									"  const jsonData = pm.response.json();",
 									"",
 									"  pm.test(\"Not Found: Correct Response\", function () {",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,401,403, 404]);",
+									"     pm.expect(pm.response.code).to.equal(404);",
 									"     pm.expect(jsonData).to.be.an(\"object\");",
 									"     pm.expect(jsonData).to.have.property(\"error\");",
 									"  });"
