@@ -1,5 +1,5 @@
 import axios from 'axios';
-import CustomError from '../../utils/errors/custom-error';
+import CustomError from '../../utils/errors/custom-error.js';
 
 export default {
   getTvSeries: async (movieId) => {

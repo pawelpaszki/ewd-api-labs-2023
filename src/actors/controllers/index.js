@@ -1,6 +1,6 @@
-import actorsService from "./../services";
-import { validateParams } from "../../utils/paramsValidator";
-import { processAndPersistLogs } from "../../utils/logProcessor";
+import actorsService from "./../services//index.js";
+import { validateParams } from "../../utils/paramsValidator.js";
+import { processAndPersistLogs } from "../../utils/logProcessor.js";
 
 export default (dependencies) => {
 

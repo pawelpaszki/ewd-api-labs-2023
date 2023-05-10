@@ -1,6 +1,6 @@
 import express from 'express';
-import AccountsController from '../controllers';
-import ValidationController from '../controllers/ValidationController'; //add to import statements at top of file
+import AccountsController from '../controllers/index.js';
+import ValidationController from '../controllers/ValidationController.js'; //add to import statements at top of file
 
 const createRouter = (dependencies) => {
   const validationController = ValidationController(dependencies);

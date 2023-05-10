@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import TokenManager from './TokenManager';
+import TokenManager from './TokenManager.js';
 
 export default class extends TokenManager {
 

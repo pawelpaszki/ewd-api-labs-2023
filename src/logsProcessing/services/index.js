@@ -1,5 +1,5 @@
-import CustomError from "../../utils/errors/custom-error";
-import { getLogsAnalytics } from "../../utils/logProcessor";
+import CustomError from "../../utils/errors/custom-error.js";
+import { getLogsAnalytics } from "../../utils/logProcessor.js";
 
 export default {
   getLogsAnalytics: async () => {

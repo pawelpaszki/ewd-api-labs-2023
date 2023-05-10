@@ -1,7 +1,8 @@
-var ObjectId = require('mongoose').Types.ObjectId;
-import CustomError from './errors/custom-error';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
+import CustomError from './errors/custom-error.js';
 
-async function validateParams(request, next) {
+export async function validateParams(request, next) {
   if (request.params.id !== undefined) {
     if (!ObjectId.isValid(request.params.id)) {
       next( new CustomError('INVALID_ID', ""));
@@ -28,5 +29,3 @@ async function validateParams(request, next) {
     }
   }
 }
-
-module.exports = { validateParams };

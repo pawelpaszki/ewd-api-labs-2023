@@ -1,5 +1,5 @@
 import express from 'express';
-import LogsController from '../controllers';
+import LogsController from '../controllers/index.js';
 
 const createLogsRouter = (dependencies) => {
   const router = express.Router();

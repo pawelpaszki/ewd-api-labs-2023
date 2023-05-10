@@ -1,4 +1,4 @@
-import Authenticator from './Authenticator';
+import Authenticator from './Authenticator.js';
 import bcrypt from 'bcryptjs';
 
 export default class extends Authenticator {

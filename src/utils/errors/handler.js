@@ -1,7 +1,7 @@
-const errorCodes = require('./error-codes');
-import { processAndPersistLogs } from "../logProcessor";
+import  errorCodes from './error-codes.js';
+import { processAndPersistLogs } from "../logProcessor.js";
 
-function errorHandler(err, req, res, next) {
+export default function errorHandler(err, req, res, next) {
   const code = (err && err.code) || null;
   const accountId = (err && err.account_id) || "";
   const error = errorCodes[code] || errorCodes['INTERNAL_ERROR'];
@@ -12,5 +12,3 @@ function errorHandler(err, req, res, next) {
     .status(error.statusCode)
     .json({ error: error.error });
 };
-
-module.exports = errorHandler;

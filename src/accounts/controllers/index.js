@@ -1,7 +1,6 @@
-import accountService from "../services";
-import { validateParams } from "../../utils/paramsValidator";
-import { processAndPersistLogs } from "../../utils/logProcessor";
-const CustomError = require('../..//utils/errors/custom-error');
+import accountService from "../services/index.js";
+import { validateParams } from "../../utils/paramsValidator.js";
+import { processAndPersistLogs } from "../../utils/logProcessor.js";
 
 export default (dependencies) => {
 

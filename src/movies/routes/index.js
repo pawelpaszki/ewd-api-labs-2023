@@ -1,6 +1,6 @@
 import express from 'express';
-import MoviesController from '../controllers';
-import AccountsController from '../../accounts/controllers';
+import MoviesController from '../controllers/index.js';
+import AccountsController from '../../accounts/controllers/index.js';
 
 const createMoviesRouter = (dependencies) => {
   const router = express.Router();

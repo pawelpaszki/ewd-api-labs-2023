@@ -1,5 +1,5 @@
-import Account from "../entities/Account";
-const CustomError = require('../../utils/errors/custom-error');
+import Account from "../entities/Account.js";
+import CustomError from '../../utils/errors/custom-error.js';
 
 export default {
   authenticate: async (email, password, { accountsRepository, authenticator, tokenManager }) => {
