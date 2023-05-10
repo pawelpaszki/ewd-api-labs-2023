@@ -644,8 +644,6 @@ export const getMovieReviews = (id) => {
 
 ~~~
 
-[You can also add images of React app here also if you wish. This can be also shown in the video]
-
 ## Extra features
 
 Extended error handling was developed, so that based on the error codes, different responses are returned on request failure. See [this folder](./src/utils/errors).

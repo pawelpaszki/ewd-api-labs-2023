@@ -19,10 +19,6 @@ export default {
     statusCode: 500,
     error: 'Internal Server Error',
   },
-  INTERNAL_ERROR: {
-    statusCode: 400,
-    error: 'Internal Server Error',
-  },
   INVALID_CAST_ID: {
     statusCode: 400,
     error: 'cast_id url parameter is invalid.',
